@@ -1,2 +1,26 @@
-console.log("hello world 2");
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+require("reflect-metadata");
+const data_source_1 = require("./data-source");
+const Post_1 = require("./entities/Post");
+const main = () => __awaiter(void 0, void 0, void 0, function* () {
+    yield data_source_1.AppDataSource.initialize();
+    const post = new Post_1.Post();
+    post.title = "my second post";
+    post.body = "my second body";
+    yield post.save();
+    console.log("Post has been saved", post.id);
+});
+main().catch((err) => {
+    console.error(err);
+});
 //# sourceMappingURL=index.js.map
