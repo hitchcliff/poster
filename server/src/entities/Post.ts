@@ -7,7 +7,7 @@ import {
   BaseEntity,
 } from "typeorm";
 
-@Entity()
+@Entity("post")
 export class Post extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -18,9 +18,9 @@ export class Post extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @Column()
+  @Column({ type: "text" })
   title: string;
 
-  @Column()
+  @Column({ type: "text" })
   body: string;
 }

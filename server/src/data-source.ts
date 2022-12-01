@@ -1,7 +1,8 @@
-import { DataSource } from "typeorm";
+import path from "path";
+import { DataSource, DataSourceOptions } from "typeorm";
 import { Post } from "./entities/Post";
 
-export const AppDataSource = new DataSource({
+export const options = {
   type: "postgres",
   host: "localhost",
   port: 5432,
@@ -10,7 +11,9 @@ export const AppDataSource = new DataSource({
   database: "poster",
   synchronize: true,
   logging: true,
-  entities: [Post],
   subscribers: [],
-  migrations: [],
-});
+  entities: [Post],
+  migrations: [path.join(__dirname, "./migrations/*")],
+} as DataSourceOptions;
+
+export const AppDataSource = new DataSource(options);

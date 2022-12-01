@@ -9,12 +9,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-require("reflect-metadata");
-const data_source_1 = require("./data-source");
-const main = () => __awaiter(void 0, void 0, void 0, function* () {
-    yield data_source_1.AppDataSource.initialize();
-});
-main().catch((err) => {
-    console.error(err);
-});
-//# sourceMappingURL=index.js.map
+exports.Post1669856740663 = void 0;
+class Post1669856740663 {
+    up(queryRunner) {
+        return __awaiter(this, void 0, void 0, function* () {
+        });
+    }
+    down(queryRunner) {
+        return __awaiter(this, void 0, void 0, function* () {
+        });
+    }
+}
+exports.Post1669856740663 = Post1669856740663;
+//# sourceMappingURL=1669856740663-Post.js.map

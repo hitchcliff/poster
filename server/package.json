@@ -5,9 +5,19 @@
   "scripts": {
     "watch": "tsc -w",
     "dev": "nodemon dist/index.js",
-    "start": "npm-run-all -p watch dev"
+    "start": "npm-run-all -p watch dev",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "migration:create": "cd src/migrations && typeorm migration:create",
+    "migration:generate": "cd src/migrations && typeorm migration:create",
+    "migration:run": "npx typeorm-ts-node-commonjs migration:run -d src/data-source",
+    "migration:revert": "npx typeorm-ts-node-commonjs migration:revert -d src/data-source"
   },
   "license": "MIT",
+  "dependencies": {
+    "pg": "^8.8.0",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.3.10"
+  },
   "devDependencies": {
     "@types/node": "^18.11.9",
     "nodemon": "^2.0.20",
