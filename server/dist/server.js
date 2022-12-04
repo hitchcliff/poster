@@ -9,13 +9,18 @@ const express_1 = __importDefault(require("express"));
 const hello_1 = __importDefault(require("./resolvers/hello"));
 const apollo_server_express_1 = require("apollo-server-express");
 const type_graphql_1 = require("type-graphql");
+const post_1 = __importDefault(require("./resolvers/post"));
 const main = async () => {
     const app = (0, express_1.default)();
     await data_source_1.AppDataSource.initialize();
     const apolloServer = new apollo_server_express_1.ApolloServer({
         schema: await (0, type_graphql_1.buildSchema)({
-            resolvers: [hello_1.default],
+            resolvers: [hello_1.default, post_1.default],
             validate: false,
+        }),
+        context: ({ req, res }) => ({
+            req,
+            res,
         }),
     });
     await apolloServer.start();
@@ -34,4 +39,4 @@ const main = async () => {
 main().catch((err) => {
     console.error(err);
 });
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=server.js.map
