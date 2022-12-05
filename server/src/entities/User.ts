@@ -1,16 +1,17 @@
+import { Min } from "class-validator";
 import { Field, ObjectType } from "type-graphql";
 import {
-  Entity,
-  PrimaryGeneratedColumn,
+  BaseEntity,
   Column,
   CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
-  BaseEntity,
 } from "typeorm";
 
 @ObjectType()
-@Entity("post")
-class Post extends BaseEntity {
+@Entity("user")
+class User extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id: number;
@@ -24,12 +25,13 @@ class Post extends BaseEntity {
   updatedAt: Date;
 
   @Field()
-  @Column({ type: "text" })
-  title: string;
+  @Min(4)
+  @Column({ type: "text", unique: true })
+  username!: string;
 
-  @Field()
+  @Min(4)
   @Column({ type: "text" })
-  body: string;
+  password!: string;
 }
 
-export default Post;
+export default User;

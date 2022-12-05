@@ -1,7 +1,6 @@
-import { Post } from "../entities/Post";
+import Post from "../entities/Post";
 import {
   Arg,
-  Ctx,
   Field,
   InputType,
   Int,
