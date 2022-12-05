@@ -1,14 +1,26 @@
 import User from "../entities/User";
 import {
   Arg,
+  Ctx,
   Field,
   InputType,
   Mutation,
   ObjectType,
+  Query,
   Resolver,
 } from "type-graphql";
 import argon2 from "argon2";
 import { unique, validation } from "../utils/validation";
+import { Context } from "../types";
+
+@InputType()
+class LoginInput {
+  @Field()
+  username: string;
+
+  @Field()
+  password: string;
+}
 
 @ObjectType()
 export class FieldError {
@@ -42,9 +54,23 @@ export class UsernamePasswordInput {
 
 @Resolver(User)
 class UserResolver {
+  @Query(() => User, { nullable: true })
+  async me(@Ctx() { req }: Context): Promise<User | null> {
+    if (!req.session.userId) return null;
+
+    const user = await User.findOne({
+      where: {
+        id: req.session.userId,
+      },
+    });
+
+    return user;
+  }
+
   @Mutation(() => UserResponse)
   async register(
-    @Arg("options") options: UsernamePasswordInput
+    @Arg("options") options: UsernamePasswordInput,
+    @Ctx() { req }: Context
   ): Promise<UserResponse> {
     // validation
     const errors = validation(options);
@@ -77,9 +103,71 @@ class UserResolver {
       }
     }
 
+    // Store userId in Redis
+    req.session.userId = user.id;
+
     return {
       user,
     };
+  }
+
+  @Mutation(() => UserResponse)
+  async login(
+    @Arg("options") options: LoginInput,
+    @Ctx() { req }: Context
+  ): Promise<UserResponse> {
+    const user = await User.findOne({
+      where: {
+        username: options.username,
+      },
+    });
+
+    if (!user) {
+      return {
+        errors: [
+          {
+            field: "username",
+            message: "username doesn't exists",
+          },
+        ],
+      };
+    }
+
+    const verified = await argon2.verify(user.password, options.password);
+
+    if (!verified) {
+      return {
+        errors: [
+          {
+            field: "password",
+            message: "wrong password",
+          },
+        ],
+      };
+    }
+
+    // Store cookies in Redis
+    req.session.userId = user.id;
+
+    return {
+      user,
+    };
+  }
+
+  @Mutation(() => Boolean)
+  logout(@Ctx() { req, res }: Context) {
+    return new Promise((resolve) => {
+      req.session.destroy((err: any) => {
+        res.clearCookie("kevinId");
+        if (err) {
+          console.error(err);
+          resolve(false);
+          return;
+        }
+
+        resolve(true);
+      });
+    });
   }
 }
 
