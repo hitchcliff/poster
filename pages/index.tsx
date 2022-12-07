@@ -2,6 +2,7 @@ import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Form, Formik } from "formik";
+import Button from "../components/Button";
 import InputField from "../components/Form/InputField";
 
 export default function Home() {
@@ -41,22 +42,46 @@ export default function Home() {
 
         <div className="primary-gradient w-full h-full p-10 flex flex-col justify-center">
           <div>
-            <h2>Login</h2>
-            <div className="bg-white rounded-md shadow-md p-5">
+            <h2 className="text-light text-2xl">Login to your account</h2>
+            <div className="bg-white rounded-md shadow-md p-5 mt-5">
               <Formik
                 initialValues={{ username: "", password: "" }}
-                onSubmit={(values) => {
+                onSubmit={async (values) => {
                   console.log(values);
+                  return new Promise((res) => {
+                    setTimeout(() => {
+                      if (!values.username) {
+                        return res(false);
+                      }
+                      return res(true);
+                    }, 1000);
+                  });
                 }}
               >
                 {({ isSubmitting }) => (
                   <Form>
-                    <InputField
-                      label="username"
-                      name="username"
-                      placeholder="enter username"
-                    />
-                    <button type="submit">Submit</button>
+                    <div>
+                      <InputField
+                        label="username"
+                        name="username"
+                        placeholder="enter username"
+                      />
+                    </div>
+
+                    <div className="mt-2">
+                      <InputField
+                        type="password"
+                        label="password"
+                        name="password"
+                        placeholder="enter password"
+                      />
+                    </div>
+
+                    <div className="mt-5">
+                      <Button type="submit" isSubmitting={isSubmitting}>
+                        Submit
+                      </Button>
+                    </div>
                   </Form>
                 )}
               </Formik>
