@@ -3,10 +3,31 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Form, Formik } from "formik";
 import Link from "next/link";
+import { useEffect } from "react";
+import { useQuery } from "urql";
 import Button from "../components/Button";
 import InputField from "../components/Form/InputField";
 
+const PostsQuery = `
+  
+query {
+  posts {
+    id
+    title
+  }
+}
+
+`;
+
 export default function Home() {
+  const [{ data, error }] = useQuery({
+    query: PostsQuery,
+  });
+
+  useEffect(() => {
+    console.log(data);
+  }, []);
+
   return (
     <div className="bg-light min-h-screen">
       <div className="flex flex-row justify-between items-center mx-auto h-screen">
