@@ -1,33 +1,17 @@
-import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Form, Formik } from "formik";
+import { Form, Formik, useFormik } from "formik";
 import Link from "next/link";
-import { useEffect } from "react";
-import { useQuery } from "urql";
 import Button from "../components/Button";
 import InputField from "../components/Form/InputField";
+import * as Yup from "yup";
 
-const PostsQuery = `
-  
-query {
-  posts {
-    id
-    title
-  }
-}
-
-`;
+const loginSchema = Yup.object().shape({
+  username: Yup.string().required("Required"),
+  password: Yup.string().required("Required"),
+});
 
 export default function Home() {
-  const [{ data, error }] = useQuery({
-    query: PostsQuery,
-  });
-
-  useEffect(() => {
-    console.log(data);
-  }, []);
-
   return (
     <div className="bg-light min-h-screen">
       <div className="flex flex-row justify-between items-center mx-auto h-screen">
@@ -76,11 +60,15 @@ export default function Home() {
             <h2 className="text-light text-2xl">Login to your account</h2>
             <div className="bg-white rounded-md shadow-md p-5 mt-5">
               <Formik
+                key={1}
                 initialValues={{ username: "", password: "" }}
-                onSubmit={async (values) => {
+                onSubmit={async (values, { setErrors }) => {
                   console.log(values);
+
                   return new Promise((res) => {
                     setTimeout(() => {
+                      setErrors({ username: "hey im an er!" });
+
                       if (!values.username) {
                         return res(false);
                       }
@@ -96,6 +84,7 @@ export default function Home() {
                         label="username"
                         name="username"
                         placeholder="enter username"
+                        type="text"
                       />
                     </div>
 

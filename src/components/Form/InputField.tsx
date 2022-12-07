@@ -1,4 +1,6 @@
-import { useField } from "formik";
+import { faWarning } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ErrorMessage, useField } from "formik";
 import { InputHTMLAttributes } from "react";
 
 type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
@@ -10,16 +12,20 @@ const InputField = ({ label, ...props }: InputFieldProps) => {
   const [field, { error }] = useField(props);
   return (
     <div className="flex flex-col">
-      <label className="capitalize" htmlFor={field.name}>
-        {label}
-      </label>
+      <label className="capitalize">{label}</label>
       <input
-        className="mt-2 block py-2 px-2 bg-light placeholder:capitalize"
+        className="mt-2 block py-2 px-2 bg-light border border-red-500 placeholder:capitalize"
+        style={{ border: !!error ? "1px solid rgb(239 68 68)" : "none" }}
+        id={field.name}
         {...field}
         {...props}
-        name={field.name}
       />
-      {!!error && <span>{error}</span>}
+      {!!error && (
+        <span className="text-red-500 px-2 mt-2 text-sm">
+          <FontAwesomeIcon icon={faWarning} className="mr-2" />
+          {error}
+        </span>
+      )}
     </div>
   );
 };
