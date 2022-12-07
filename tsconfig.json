@@ -14,8 +14,9 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "experimentalDecorators":true
+    "experimentalDecorators":true,
+    "moduleDetection": "force"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "codegen.yaml"],
   "exclude": ["node_modules", "server"]
 }

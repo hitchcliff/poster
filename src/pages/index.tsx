@@ -2,16 +2,16 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Form, Formik, useFormik } from "formik";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import Button from "../components/Button";
 import InputField from "../components/Form/InputField";
-import * as Yup from "yup";
-
-const loginSchema = Yup.object().shape({
-  username: Yup.string().required("Required"),
-  password: Yup.string().required("Required"),
-});
+import { useLoginMutation } from "../gen/graphql";
+import toRecordError from "../utils/toRecordError";
 
 export default function Home() {
+  const [, login] = useLoginMutation();
+  const route = useRouter();
+
   return (
     <div className="bg-light min-h-screen">
       <div className="flex flex-row justify-between items-center mx-auto h-screen">
@@ -63,18 +63,14 @@ export default function Home() {
                 key={1}
                 initialValues={{ username: "", password: "" }}
                 onSubmit={async (values, { setErrors }) => {
-                  console.log(values);
+                  const response = await login({ options: values });
+                  const errors = response.data?.login.errors;
 
-                  return new Promise((res) => {
-                    setTimeout(() => {
-                      setErrors({ username: "hey im an er!" });
-
-                      if (!values.username) {
-                        return res(false);
-                      }
-                      return res(true);
-                    }, 1000);
-                  });
+                  if (errors) {
+                    setErrors(toRecordError(errors));
+                  } else if (response.data?.login.user) {
+                    route.push("/");
+                  }
                 }}
               >
                 {({ isSubmitting }) => (
