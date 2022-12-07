@@ -2,6 +2,7 @@ import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Form, Formik } from "formik";
+import Link from "next/link";
 import Button from "../components/Button";
 import InputField from "../components/Form/InputField";
 
@@ -9,10 +10,10 @@ export default function Home() {
   return (
     <div className="bg-light min-h-screen">
       <div className="flex flex-row justify-between items-center mx-auto h-screen">
-        <div className="w-full h-full px-10 flex flex-col">
+        <div className="w-full h-full px-10 flex flex-col relative">
           <div className="my-auto">
             <h1 className="text-5xl uppercase font-brand text-primary">
-              poster.io
+              poster.tk
             </h1>
             <p className="mt-5 text-2xl">
               A lightweight social media app,{" "}
@@ -20,11 +21,20 @@ export default function Home() {
             </p>
             <p className="text-xl mt-5">
               This app is built in NextJs, Postress, NodeJs, Graphql, Urql,
-              Apollo, and Redis.
+              Apollo, and Redis.{" "}
+              <a
+                className="italic text-blue-500 underline"
+                href="#"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {" "}
+                View code in Github
+              </a>
             </p>
           </div>
 
-          <div className="pb-5">
+          <div className="pb-5 absolute bottom-5 w-full">
             <span>
               Develop with{" "}
               <FontAwesomeIcon className="text-red-600" icon={faHeart} /> by{" "}
@@ -85,6 +95,12 @@ export default function Home() {
                   </Form>
                 )}
               </Formik>
+            </div>
+            <div className="text-light mt-5 flex flex-row">
+              <h2 className="mr-2">Dont have an account?</h2>
+              <Link className="underline italic" href="/register">
+                Register here
+              </Link>
             </div>
           </div>
         </div>
