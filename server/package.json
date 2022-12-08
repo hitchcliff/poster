@@ -4,8 +4,8 @@
   "main": "server.js",
   "scripts": {
     "watch": "tsc -w",
-    "dev": "nodemon dist/server.js",
-    "start": "npm-run-all -p watch dev",
+    "start": "nodemon dist/server.js",
+    "dev": "npm-run-all -p watch start",
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:create": "cd src/migrations && typeorm migration:create",
     "migration:generate": "cd src/migrations && typeorm migration:create",

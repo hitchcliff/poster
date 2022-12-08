@@ -5,13 +5,12 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Button from "../components/Button";
 import InputField from "../components/Form/InputField";
+import LoginForm from "../components/Form/LoginForm";
 import { useLoginMutation } from "../gen/graphql";
+import RoutePattern from "../routes/RoutePattern";
 import toRecordError from "../utils/toRecordError";
 
 export default function Home() {
-  const [, login] = useLoginMutation();
-  const route = useRouter();
-
   return (
     <div className="bg-light min-h-screen">
       <div className="flex flex-row justify-between items-center mx-auto h-screen">
@@ -57,54 +56,11 @@ export default function Home() {
 
         <div className="primary-gradient w-full h-full p-10 flex flex-col justify-center">
           <div>
-            <h2 className="text-light text-2xl">Login to your account</h2>
-            <div className="bg-white rounded-md shadow-md p-5 mt-5">
-              <Formik
-                key={1}
-                initialValues={{ username: "", password: "" }}
-                onSubmit={async (values, { setErrors }) => {
-                  const response = await login({ options: values });
-                  const errors = response.data?.login.errors;
-
-                  if (errors) {
-                    setErrors(toRecordError(errors));
-                  } else if (response.data?.login.user) {
-                    route.push("/");
-                  }
-                }}
-              >
-                {({ isSubmitting }) => (
-                  <Form>
-                    <div>
-                      <InputField
-                        label="username"
-                        name="username"
-                        placeholder="enter username"
-                        type="text"
-                      />
-                    </div>
-
-                    <div className="mt-2">
-                      <InputField
-                        type="password"
-                        label="password"
-                        name="password"
-                        placeholder="enter password"
-                      />
-                    </div>
-
-                    <div className="mt-5">
-                      <Button type="submit" isSubmitting={isSubmitting}>
-                        Submit
-                      </Button>
-                    </div>
-                  </Form>
-                )}
-              </Formik>
-            </div>
+            <h2 className="text-light">Login to your account</h2>
+            <LoginForm />
             <div className="text-light mt-5 flex flex-row">
               <h2 className="mr-2">Dont have an account?</h2>
-              <Link className="underline italic" href="/register">
+              <Link className="underline italic" href={RoutePattern.REGISTER}>
                 Register here
               </Link>
             </div>
