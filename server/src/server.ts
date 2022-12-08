@@ -14,6 +14,7 @@ import { buildSchema } from "type-graphql";
 import HelloResolver from "./resolvers/hello";
 import PostResolver from "./resolvers/post";
 import UserResolver from "./resolvers/user";
+import { COOKIE_NAME } from "./utils/constants";
 
 const main = async () => {
   // Database
@@ -28,7 +29,7 @@ const main = async () => {
 
   app.use(
     session({
-      name: "kevinid",
+      name: COOKIE_NAME,
       store: new RedisStore({
         client: redis,
         disableTouch: true,

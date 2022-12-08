@@ -12,6 +12,7 @@ import {
 import argon2 from "argon2";
 import { unique, validation } from "../utils/validation";
 import { Context } from "../types";
+import { COOKIE_NAME } from "../utils/constants";
 
 @InputType()
 class LoginInput {
@@ -157,8 +158,8 @@ class UserResolver {
   @Mutation(() => Boolean)
   logout(@Ctx() { req, res }: Context) {
     return new Promise((resolve) => {
-      req.session.destroy((err: any) => {
-        res.clearCookie("kevinId");
+      return req.session.destroy((err: any) => {
+        res.clearCookie(COOKIE_NAME);
         if (err) {
           console.error(err);
           resolve(false);
