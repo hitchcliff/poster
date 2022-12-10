@@ -66,6 +66,11 @@ const Index = () => {
                 Register here
               </Link>
             </div>
+            <div className="mt-5">
+              <Link className="text-white" href={RoutePattern.FORGOT_PASSWORD}>
+                Forgot password?
+              </Link>
+            </div>
           </div>
         </div>
       </div>

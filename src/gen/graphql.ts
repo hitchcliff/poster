@@ -22,6 +22,11 @@ export type FieldError = {
   message?: Maybe<Scalars['String']>;
 };
 
+export type ForgotPasswordInput = {
+  newPassword: Scalars['String'];
+  token: Scalars['String'];
+};
+
 export type LoginInput = {
   password: Scalars['String'];
   username: Scalars['String'];
@@ -29,11 +34,18 @@ export type LoginInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  changePassword: UserResponse;
   createPost: Post;
   deletePost: Scalars['Boolean'];
+  forgotPassword: Scalars['Boolean'];
   login: UserResponse;
   logout: Scalars['Boolean'];
   register: UserResponse;
+};
+
+
+export type MutationChangePasswordArgs = {
+  options: ForgotPasswordInput;
 };
 
 
@@ -44,6 +56,11 @@ export type MutationCreatePostArgs = {
 
 export type MutationDeletePostArgs = {
   id: Scalars['Int'];
+};
+
+
+export type MutationForgotPasswordArgs = {
+  email: Scalars['String'];
 };
 
 
@@ -106,6 +123,13 @@ export type UsernamePasswordInput = {
 };
 
 export type UserResponseFragment = { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field?: string | null, message?: string | null }> | null, user?: { __typename?: 'User', id: number, username: string, email: string, createdAt: any, updatedAt: any } | null };
+
+export type ForgotPasswordMutationVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type ForgotPasswordMutation = { __typename?: 'Mutation', forgotPassword: boolean };
 
 export type LoginMutationVariables = Exact<{
   options: LoginInput;
@@ -170,6 +194,29 @@ export default {
         "name": "Mutation",
         "fields": [
           {
+            "name": "changePassword",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "UserResponse",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "options",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "createPost",
             "type": {
               "kind": "NON_NULL",
@@ -204,6 +251,28 @@ export default {
             "args": [
               {
                 "name": "id",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "forgotPassword",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": [
+              {
+                "name": "email",
                 "type": {
                   "kind": "NON_NULL",
                   "ofType": {
@@ -520,6 +589,15 @@ export const UserResponseFragmentDoc = gql`
   }
 }
     `;
+export const ForgotPasswordDocument = gql`
+    mutation ForgotPassword($email: String!) {
+  forgotPassword(email: $email)
+}
+    `;
+
+export function useForgotPasswordMutation() {
+  return Urql.useMutation<ForgotPasswordMutation, ForgotPasswordMutationVariables>(ForgotPasswordDocument);
+};
 export const LoginDocument = gql`
     mutation Login($options: LoginInput!) {
   login(options: $options) {

@@ -3,6 +3,7 @@ const RoutePattern = {
   REGISTER: "/register",
   LOGIN: "/login",
   HOME: "/home",
+  FORGOT_PASSWORD: "/forgot-password",
 };
 
 export default RoutePattern;
