@@ -10,9 +10,14 @@ import {
   Resolver,
 } from "type-graphql";
 import argon2 from "argon2";
-import { unique, validation } from "../utils/validation";
+import { v4 } from "uuid";
 import { Context } from "../types";
-import { COOKIE_NAME } from "../utils/constants";
+import {
+  COOKIE_NAME,
+  BASE_URL,
+  FORGET_PASSWORD_PREFIX,
+} from "../utils/constants";
+import { sendEmail, validation, unique } from "../utils";
 
 @InputType()
 class LoginInput {
@@ -190,6 +195,41 @@ class UserResolver {
         resolve(true);
       });
     });
+  }
+
+  @Mutation(() => Boolean)
+  async forgotPassword(
+    @Arg("email") email: string,
+    @Ctx() { redis }: Context
+  ): Promise<boolean> {
+    const user = await User.findOne({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      return false;
+    }
+
+    // Generate UUID
+    const token = v4();
+
+    // Store in Redis
+    await redis.set(
+      FORGET_PASSWORD_PREFIX + token,
+      user.id,
+      "EX",
+      1000 * 60 * 60 * 24 * 3
+    );
+
+    // Send email to Nodemailer
+    const body = `
+    <a href="${BASE_URL}/change-password/${token}" rel="noreferrer" target="_blank">Click here</a>
+    `;
+    await sendEmail({ email, html: body });
+
+    return true;
   }
 }
 
