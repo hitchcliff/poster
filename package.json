@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start:dev": "next start",
     "lint": "next lint",
     "gen": "graphql-codegen --config codegen.yaml"
   },
@@ -14,6 +14,7 @@
     "@fortawesome/free-brands-svg-icons": "^6.2.1",
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@urql/exchange-graphcache": "^5.0.7",
     "formik": "^2.2.9",
     "graphql": "^16.6.0",
     "next": "13.0.6",

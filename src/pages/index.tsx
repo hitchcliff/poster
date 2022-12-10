@@ -1,16 +1,16 @@
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Form, Formik, useFormik } from "formik";
+import { withUrqlClient } from "next-urql";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Button from "../components/Button";
-import InputField from "../components/Form/InputField";
+import { useEffect } from "react";
 import LoginForm from "../components/Form/LoginForm";
-import { useLoginMutation } from "../gen/graphql";
+import { useMeQuery } from "../gen/graphql";
+import useMeService from "../hooks/useMeService";
 import RoutePattern from "../routes/RoutePattern";
-import toRecordError from "../utils/toRecordError";
+import createUrqlClient from "../urql/createUrqlClient";
 
-export default function Home() {
+const index = () => {
   return (
     <div className="bg-light min-h-screen">
       <div className="flex flex-row justify-between items-center mx-auto h-screen">
@@ -69,4 +69,6 @@ export default function Home() {
       </div>
     </div>
   );
-}
+};
+
+export default withUrqlClient(createUrqlClient, { ssr: true })(index);
