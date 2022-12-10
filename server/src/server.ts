@@ -15,10 +15,12 @@ import HelloResolver from "./resolvers/hello";
 import PostResolver from "./resolvers/post";
 import UserResolver from "./resolvers/user";
 import { COOKIE_NAME } from "./utils/constants";
+import User from "./entities/User";
 
 const main = async () => {
   // Database
   await AppDataSource.initialize();
+  console.log(await AppDataSource.manager.find(User));
 
   // Run Server
   const app = express();

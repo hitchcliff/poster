@@ -84,7 +84,24 @@ class UserResolver {
       };
     }
 
-    // Has Password
+    const emailIsTaken = await User.findOne({
+      where: {
+        email: options.email,
+      },
+    });
+
+    if (emailIsTaken) {
+      return {
+        errors: [
+          {
+            field: "email",
+            message: "email already exists",
+          },
+        ],
+      };
+    }
+
+    // Hash Password
     const hashedPassword = await argon2.hash(options.password);
     const user = new User();
 

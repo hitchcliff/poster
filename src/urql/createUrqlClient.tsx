@@ -6,6 +6,7 @@ import {
   LogoutMutation,
   MeDocument,
   MeQuery,
+  RegisterMutation,
 } from "../gen/graphql";
 
 const createUrqlClient = (ssrExchange: any, ctx: any): ClientOptions => {
@@ -30,6 +31,17 @@ const createUrqlClient = (ssrExchange: any, ctx: any): ClientOptions => {
       cacheExchange({
         updates: {
           Mutation: {
+            register: (result: RegisterMutation, args, cache: Cache, _info) => {
+              cache.updateQuery({ query: MeDocument }, (): MeQuery => {
+                if (result.register.errors) {
+                  return null as any;
+                } else {
+                  return {
+                    me: result.register.user,
+                  };
+                }
+              });
+            },
             login: (result: LoginMutation, args, cache: Cache, _info) => {
               cache.updateQuery({ query: MeDocument }, (): MeQuery => {
                 if (result.login.errors) {
