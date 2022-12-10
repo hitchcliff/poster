@@ -10,7 +10,9 @@ import useMeService from "../hooks/useMeService";
 import RoutePattern from "../routes/RoutePattern";
 import createUrqlClient from "../urql/createUrqlClient";
 
-const index = () => {
+const Index = () => {
+  useMeService();
+
   return (
     <div className="bg-light min-h-screen">
       <div className="flex flex-row justify-between items-center mx-auto h-screen">
@@ -71,4 +73,4 @@ const index = () => {
   );
 };
 
-export default withUrqlClient(createUrqlClient, { ssr: true })(index);
+export default withUrqlClient(createUrqlClient, { ssr: true })(Index);

@@ -11,10 +11,13 @@ export default function useMeService() {
     // if there is no user
     if (!data?.me) {
       router.push(RoutePattern.LANDING_PAGE);
+    } else if (fetching) {
+      // data is fetching
+      console.log("Identifying user...");
     } else {
       router.push(RoutePattern.HOME);
     }
-  }, [data, router]);
+  }, []);
 
   return [{ data, fetching, ...props }];
 }

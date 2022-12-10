@@ -1,12 +1,13 @@
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import Button from "../components/Button";
-import { useLogoutMutation, useMeQuery } from "../gen/graphql";
+import { useLogoutMutation } from "../gen/graphql";
 import useMeService from "../hooks/useMeService";
+import RoutePattern from "../routes/RoutePattern";
 import createUrqlClient from "../urql/createUrqlClient";
 
 const Home = () => {
-  const [{ data, fetching }] = useMeQuery();
+  const [{ data, fetching }] = useMeService();
   const [{ fetching: logoutFetching }, logout] = useLogoutMutation();
   const route = useRouter();
 
@@ -20,11 +21,8 @@ const Home = () => {
         isSubmitting={logoutFetching}
         onClick={async () => {
           const { data } = await logout({});
-          console.log(data);
 
-          if (data?.logout) {
-            route.push("/");
-          }
+          route.push(RoutePattern.LANDING_PAGE);
         }}
       >
         Logout
