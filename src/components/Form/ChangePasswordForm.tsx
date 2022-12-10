@@ -5,6 +5,7 @@ import {
   useChangePasswordMutation,
   useForgotPasswordMutation,
 } from "../../gen/graphql";
+import { SuccessType1 } from "../../utils/swal";
 import toRecordError from "../../utils/toRecordError";
 import Button from "../Button";
 import InputField from "./InputField";
@@ -29,7 +30,7 @@ const ChangePasswordForm = ({ token }: ChangePasswordFormProps) => {
           if (res.data?.changePassword.errors) {
             setErrors(toRecordError(res.data.changePassword.errors));
           } else {
-            alert("Password Changed!");
+            SuccessType1();
           }
         }}
       >

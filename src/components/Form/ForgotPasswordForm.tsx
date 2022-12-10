@@ -1,5 +1,7 @@
 import { Form, Formik } from "formik";
+import Swal from "sweetalert2";
 import { useForgotPasswordMutation } from "../../gen/graphql";
+import { SuccessType1 } from "../../utils/swal";
 import Button from "../Button";
 import InputField from "./InputField";
 
@@ -14,6 +16,8 @@ const ForgotPasswordForm = () => {
         }}
         onSubmit={async (values) => {
           const res = await forgotPassword(values);
+
+          SuccessType1();
 
           return res;
         }}
