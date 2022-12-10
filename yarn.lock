@@ -3906,6 +3906,11 @@ swap-case@^2.0.2:
   dependencies:
     tslib "^2.0.3"
 
+sweetalert2@^11.6.15:
+  version "11.6.15"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-11.6.15.tgz#0459e97100810b0734c62d2cce4d3d41c8f30b0a"
+  integrity sha512-FqMy1gRGHEI5G145NE5XSP059TziCJu9Xf9/mkki/aKu5pLNcYzjggOzKO5Ex10EBgAGDXQ99jyGfYYzGCYXRQ==
+
 tailwindcss@^3.2.4:
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-3.2.4.tgz#afe3477e7a19f3ceafb48e4b083e292ce0dc0250"

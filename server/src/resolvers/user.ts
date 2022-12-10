@@ -257,8 +257,9 @@ class UserResolver {
       };
     }
 
+    const key = FORGET_PASSWORD_PREFIX + options.token;
     // Get redis data
-    const userId = await redis.get(FORGET_PASSWORD_PREFIX + options.token);
+    const userId = await redis.get(key);
 
     // If cannot find user
     if (!userId) {
@@ -295,6 +296,9 @@ class UserResolver {
 
     // Save cookie after
     req.session.userId = userId;
+
+    // Delete redis data
+    await redis.del(key);
 
     return {
       user,
