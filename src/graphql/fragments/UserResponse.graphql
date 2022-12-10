@@ -1,0 +1,13 @@
+fragment UserResponse on UserResponse {
+  errors {
+    field
+    message
+  }
+  user {
+    id
+    username
+    email
+    createdAt
+    updatedAt
+  }
+}

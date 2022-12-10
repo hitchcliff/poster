@@ -14,6 +14,13 @@ export const validation = (options: UsernamePasswordInput): FieldError[] => {
     });
   }
 
+  if (!options.email.includes("@")) {
+    errors.push({
+      field: "email",
+      message: "must be container @ sign",
+    });
+  }
+
   if (options.password.length <= 3) {
     errors.push({
       field: "password",

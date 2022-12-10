@@ -46,6 +46,9 @@ export class UsernamePasswordInput {
   @Field({ nullable: true })
   username: string;
 
+  @Field()
+  email: string;
+
   @Field({ nullable: true })
   password: string;
 
@@ -87,6 +90,7 @@ class UserResolver {
 
     try {
       user.username = options.username;
+      user.email = options.email;
       user.password = hashedPassword;
 
       await user.save();
