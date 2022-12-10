@@ -1,6 +1,8 @@
 import Link from "next/link";
 import RoutePattern from "../routes/RoutePattern";
 import ForgotPasswordForm from "../components/Form/ForgotPasswordForm";
+import { withUrqlClient } from "next-urql";
+import createUrqlClient from "../urql/createUrqlClient";
 
 const ForgotPassword = () => {
   return (
@@ -33,4 +35,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default withUrqlClient(createUrqlClient)(ForgotPassword);

@@ -20,6 +20,15 @@ import {
 import { sendEmail, validation, unique } from "../utils";
 
 @InputType()
+class ForgotPasswordInput {
+  @Field()
+  newPassword!: string;
+
+  @Field()
+  token!: string;
+}
+
+@InputType()
 class LoginInput {
   @Field()
   username: string;
@@ -230,6 +239,66 @@ class UserResolver {
     await sendEmail({ email, html: body });
 
     return true;
+  }
+
+  @Mutation(() => UserResponse)
+  async changePassword(
+    @Arg("options") options: ForgotPasswordInput,
+    @Ctx() { req, redis }: Context
+  ): Promise<UserResponse> {
+    if (options.newPassword.length <= 3) {
+      return {
+        errors: [
+          {
+            field: "newPassword",
+            message: "password is too short",
+          },
+        ],
+      };
+    }
+
+    // Get redis data
+    const userId = await redis.get(FORGET_PASSWORD_PREFIX + options.token);
+
+    // If cannot find user
+    if (!userId) {
+      return {
+        errors: [
+          {
+            field: "newPassword",
+            message: "token expired",
+          },
+        ],
+      };
+    }
+
+    const user = await User.findOne({
+      where: {
+        id: parseInt(userId),
+      },
+    });
+
+    if (!user) {
+      return {
+        errors: [
+          {
+            field: "newPassword",
+            message: "user doesn't exists",
+          },
+        ],
+      };
+    }
+
+    // Change password
+    user.password = await argon2.hash(options.newPassword);
+    user.save();
+
+    // Save cookie after
+    req.session.userId = userId;
+
+    return {
+      user,
+    };
   }
 }
 
