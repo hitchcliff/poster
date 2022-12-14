@@ -19,6 +19,7 @@ import { COOKIE_NAME } from "./utils/constants";
 const main = async () => {
   // Database
   await AppDataSource.initialize();
+  // await Post.delete({}) // deletes post
 
   // Run Server
   const app = express();

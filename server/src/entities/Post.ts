@@ -25,10 +25,6 @@ class Post extends BaseEntity {
 
   @Field()
   @Column({ type: "text" })
-  title: string;
-
-  @Field()
-  @Column({ type: "text" })
   body: string;
 }
 

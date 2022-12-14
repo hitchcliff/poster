@@ -12,9 +12,6 @@ import {
 @InputType()
 class PostInput {
   @Field()
-  title: string;
-
-  @Field()
   body: string;
 }
 
@@ -33,7 +30,6 @@ class PostResolver {
   @Mutation(() => Post)
   async createPost(@Arg("input") input: PostInput): Promise<Post> {
     const post = await Post.save({
-      title: input.title,
       body: input.body,
     });
 
