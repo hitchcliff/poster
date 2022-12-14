@@ -15,11 +15,14 @@ import HelloResolver from "./resolvers/hello";
 import PostResolver from "./resolvers/post";
 import UserResolver from "./resolvers/user";
 import { COOKIE_NAME } from "./utils/constants";
+// import Post from "./entities/Post";
+// import User from "./entities/User";
 
 const main = async () => {
   // Database
   await AppDataSource.initialize();
-  // await Post.delete({}) // deletes post
+  // await Post.delete({}) // deletes posts
+  // await User.delete({}) // deletes users
 
   // Run Server
   const app = express();

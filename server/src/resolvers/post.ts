@@ -1,6 +1,7 @@
 import Post from "../entities/Post";
 import {
   Arg,
+  Ctx,
   Field,
   InputType,
   Int,
@@ -10,6 +11,8 @@ import {
   UseMiddleware,
 } from "type-graphql";
 import isAuth from "../middleware/isAuth";
+import { Context } from "../types";
+import User from "../entities/User";
 
 @InputType()
 class PostInput {
@@ -21,7 +24,14 @@ class PostInput {
 class PostResolver {
   @Query(() => [Post])
   async posts(): Promise<Post[]> {
-    return await Post.find();
+    
+    const posts = await Post.find({
+      relations: {
+        user: true
+      }
+    })
+
+    return posts;
   }
 
   @Query(() => Post)
@@ -31,9 +41,20 @@ class PostResolver {
 
   @Mutation(() => Post)
   @UseMiddleware(isAuth)
-  async createPost(@Arg("input") input: PostInput): Promise<Post> {
+  async createPost(@Arg("input") input: PostInput,
+  @Ctx() {req}: Context): Promise<Post | null> {
+    const user = await User.findOne({where: 
+    {
+      id: req.session.userId
+    }});
+
+    if(!user) {
+      return null
+    }
+
     const post = await Post.save({
       body: input.body,
+      user
     });
 
     return post;

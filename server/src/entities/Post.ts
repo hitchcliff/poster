@@ -6,7 +6,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BaseEntity,
+  ManyToOne,
+  JoinColumn,
 } from "typeorm";
+import User from "./User";
 
 @ObjectType()
 @Entity("post")
@@ -26,6 +29,11 @@ class Post extends BaseEntity {
   @Field()
   @Column({ type: "text" })
   body: string;
+
+  @Field()
+  @ManyToOne(() => User, user => user.posts)
+  @JoinColumn()
+  user: User
 }
 
 export default Post;

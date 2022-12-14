@@ -80,6 +80,9 @@ class UserResolver {
       where: {
         id: req.session.userId,
       },
+      relations: {
+        posts: true
+      }
     });
 
     return user;
