@@ -4,10 +4,6 @@ fragment UserResponse on UserResponse {
     message
   }
   user {
-    id
-    username
-    email
-    createdAt
-    updatedAt
+    ...User
   }
 }
