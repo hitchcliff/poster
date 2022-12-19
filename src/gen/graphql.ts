@@ -78,13 +78,12 @@ export type Post = {
   body: Scalars['String'];
   createdAt: Scalars['DateTime'];
   id: Scalars['Float'];
-  title: Scalars['String'];
   updatedAt: Scalars['DateTime'];
+  user: User;
 };
 
 export type PostInput = {
   body: Scalars['String'];
-  title: Scalars['String'];
 };
 
 export type Query = {
@@ -105,6 +104,7 @@ export type User = {
   createdAt: Scalars['DateTime'];
   email: Scalars['String'];
   id: Scalars['Float'];
+  posts?: Maybe<Array<Post>>;
   updatedAt: Scalars['DateTime'];
   username: Scalars['String'];
 };
@@ -121,6 +121,8 @@ export type UsernamePasswordInput = {
   password?: InputMaybe<Scalars['String']>;
   username?: InputMaybe<Scalars['String']>;
 };
+
+export type UserFragment = { __typename?: 'User', id: number, username: string, email: string, createdAt: any, updatedAt: any };
 
 export type UserResponseFragment = { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field?: string | null, message?: string | null }> | null, user?: { __typename?: 'User', id: number, username: string, email: string, createdAt: any, updatedAt: any } | null };
 
@@ -388,7 +390,7 @@ export default {
             "args": []
           },
           {
-            "name": "title",
+            "name": "updatedAt",
             "type": {
               "kind": "NON_NULL",
               "ofType": {
@@ -399,12 +401,13 @@ export default {
             "args": []
           },
           {
-            "name": "updatedAt",
+            "name": "user",
             "type": {
               "kind": "NON_NULL",
               "ofType": {
-                "kind": "SCALAR",
-                "name": "Any"
+                "kind": "OBJECT",
+                "name": "User",
+                "ofType": null
               }
             },
             "args": []
@@ -518,6 +521,21 @@ export default {
             "args": []
           },
           {
+            "name": "posts",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "NON_NULL",
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Post",
+                  "ofType": null
+                }
+              }
+            },
+            "args": []
+          },
+          {
             "name": "updatedAt",
             "type": {
               "kind": "NON_NULL",
@@ -581,6 +599,15 @@ export default {
     "directives": []
   }
 } as unknown as IntrospectionQuery;
+export const UserFragmentDoc = gql`
+    fragment User on User {
+  id
+  username
+  email
+  createdAt
+  updatedAt
+}
+    `;
 export const UserResponseFragmentDoc = gql`
     fragment UserResponse on UserResponse {
   errors {
@@ -588,14 +615,10 @@ export const UserResponseFragmentDoc = gql`
     message
   }
   user {
-    id
-    username
-    email
-    createdAt
-    updatedAt
+    ...User
   }
 }
-    `;
+    ${UserFragmentDoc}`;
 export const ChangePasswordDocument = gql`
     mutation ChangePassword($options: ForgotPasswordInput!) {
   changePassword(options: $options) {
@@ -650,14 +673,10 @@ export function useRegisterMutation() {
 export const MeDocument = gql`
     query Me {
   me {
-    id
-    username
-    email
-    createdAt
-    updatedAt
+    ...User
   }
 }
-    `;
+    ${UserFragmentDoc}`;
 
 export function useMeQuery(options?: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'>) {
   return Urql.useQuery<MeQuery, MeQueryVariables>({ query: MeDocument, ...options });
