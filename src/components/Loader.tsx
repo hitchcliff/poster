@@ -1,8 +1,9 @@
 const Loader = () => {
-  console.log("Loading..");
-
   return (
-    <div className="z-50 fixed flex top-0 left-0 w-full h-full bg-light">
+    <div
+      className="z-50 fixed flex top-0 left-0 w-full h-full bg-light"
+      style={{ zIndex: 123123123123 }}
+    >
       <span className="m-auto flex flex-row items-center text-primary">
         <svg
           className="animate-spin h-5 w-5 mr-3"
