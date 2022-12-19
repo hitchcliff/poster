@@ -1,9 +1,6 @@
 import { withUrqlClient } from "next-urql";
 import Link from "next/link";
 import LoginForm from "../components/Form/LoginForm";
-import RegisterForm from "../components/Form/RegisterForm";
-import { useMeQuery } from "../gen/graphql";
-import useMeService from "../hooks/useMeService";
 import RoutePattern from "../routes/RoutePattern";
 import createUrqlClient from "../urql/createUrqlClient";
 

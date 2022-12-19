@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Button from "../components/Button";
 import Loader from "../components/Loader";
+import PrivateRoute from "../components/Route/PrivateRoute";
 import { useLogoutMutation, useMeQuery, usePostsQuery } from "../gen/graphql";
 import { useAuthService } from "../hooks";
 import RoutePattern from "../routes/RoutePattern";
@@ -33,4 +34,4 @@ const Home = () => {
   );
 };
 
-export default withUrqlClient(createUrqlClient, { ssr: true })(Home);
+export default PrivateRoute(Home, { ssr: true });

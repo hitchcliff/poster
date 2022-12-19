@@ -1,22 +1,23 @@
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { withUrqlClient } from "next-urql";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import LoginForm from "../components/Form/LoginForm";
-import Loader from "../components/Loader";
-import { useAuthService } from "../hooks";
+import PublicRoute from "../components/Route/PublicRoute";
+import useLoadingState from "../hooks/useLoadingState";
 import { RootState } from "../redux/store";
 import RoutePattern from "../routes/RoutePattern";
-import createUrqlClient from "../urql/createUrqlClient";
-import useLoadingState from "../hooks/useLoadingState";
 
 const Index = () => {
   const loading = useSelector((state: RootState) => state.global.loading);
   useLoadingState();
-  useAuthService();
 
-  if (loading) return null;
+  if (loading)
+    return (
+      <>
+        <div></div>
+      </>
+    );
 
   return (
     <div className="bg-light min-h-screen relative">
@@ -83,4 +84,4 @@ const Index = () => {
   );
 };
 
-export default withUrqlClient(createUrqlClient, { ssr: true })(Index);
+export default PublicRoute(Index, { ssr: true });

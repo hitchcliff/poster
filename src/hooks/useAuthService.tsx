@@ -7,9 +7,7 @@ const useAuthService = () => {
   const [{ data, fetching }] = useMeQuery();
 
   useEffect(() => {
-    if (data?.me || fetching) {
-      router.replace(RoutePattern.HOME);
-    } else {
+    if (!data?.me && fetching) {
       router.replace(RoutePattern.LANDING_PAGE);
     }
   }, [data, fetching, router]);
