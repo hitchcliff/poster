@@ -81,8 +81,8 @@ class UserResolver {
         id: req.session.userId,
       },
       relations: {
-        posts: true
-      }
+        posts: true,
+      },
     });
 
     return user;

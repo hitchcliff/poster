@@ -2,18 +2,23 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { withUrqlClient } from "next-urql";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 import LoginForm from "../components/Form/LoginForm";
 import Loader from "../components/Loader";
 import { useAuthService } from "../hooks";
+import { RootState } from "../redux/store";
 import RoutePattern from "../routes/RoutePattern";
 import createUrqlClient from "../urql/createUrqlClient";
+import useLoadingState from "../hooks/useLoadingState";
 
 const Index = () => {
-  const [{ user }] = useAuthService();
+  const loading = useSelector((state: RootState) => state.global.loading);
+  useLoadingState();
+
+  if (loading) return null;
 
   return (
     <div className="bg-light min-h-screen relative">
-      {user && <Loader />}
       <div className="flex flex-row justify-between items-center mx-auto h-screen">
         <div className="w-full h-full px-10 flex flex-col relative">
           <div className="my-auto">
