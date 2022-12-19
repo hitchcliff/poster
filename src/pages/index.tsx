@@ -14,6 +14,7 @@ import useLoadingState from "../hooks/useLoadingState";
 const Index = () => {
   const loading = useSelector((state: RootState) => state.global.loading);
   useLoadingState();
+  useAuthService();
 
   if (loading) return null;
 
