@@ -35,3 +35,8 @@ button {
     rgba(228, 114, 0, 1) 90%
   ) !important;
 }
+
+/* Info Bar */
+.infobar-icons > button {
+  @apply relative hover:text-white transition-all;
+}
