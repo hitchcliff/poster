@@ -1,6 +1,6 @@
 const Notifications = ({ ...props }) => {
   return (
-    <span className="flex justify-center items-center w-5 h-5 bg-blue-500 font-bold rounded-full text-xs absolute top-0 right-0">
+    <span className="flex justify-center items-center w-5 h-5 text-white bg-blue-500 font-bold rounded-full text-xs absolute top-0 right-0">
       {props.children}
     </span>
   );
