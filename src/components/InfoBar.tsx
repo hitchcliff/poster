@@ -14,11 +14,11 @@ import Notifications from "./Notifications";
 
 const InfoBar = () => {
   return (
-    <div className="p-2 primary-gradient flex-col justify-start items-start">
-      <div className="h-10 w-10 border-2 border-light rounded-full bg-white overflow-hidden">
+    <div className="px-2 py-7 bg-dark text-light flex-col justify-start items-start">
+      <div className="h-10 w-10 border-2 border-dark rounded-full bg-white overflow-hidden">
         <Img className="object-cover" src={PROFILE_IMG} alt="kevin nacario" />
       </div>
-      <div className="flex flex-col gap-5 mt-5 text-light infobar-icons">
+      <div className="flex flex-col gap-5 mt-5 infobar-icons">
         <button>
           <FontAwesomeIcon icon={faHome} />
         </button>
