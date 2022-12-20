@@ -4,19 +4,21 @@ import { ErrorMessage, useField } from "formik";
 import { InputHTMLAttributes } from "react";
 
 type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
-  label: string;
+  label?: string;
   name: string;
+  placeholder?: string;
 };
 
-const InputField = ({ label, ...props }: InputFieldProps) => {
+const InputField = ({ label, placeholder, ...props }: InputFieldProps) => {
   const [field, { error }] = useField(props);
   return (
     <div className="flex flex-col">
-      <label className="capitalize">{label}</label>
+      {label && <label className="capitalize">{label}</label>}
       <input
         className="mt-2 block py-2 px-2 bg-light border border-red-500 placeholder:capitalize"
         style={{ border: !!error ? "1px solid rgb(239 68 68)" : "none" }}
         id={field.name}
+        placeholder={placeholder}
         {...field}
         {...props}
       />
