@@ -1,12 +1,16 @@
 import { faDotCircle, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Badge from "./Badge";
 
 const PosterInfo = () => {
   return (
     <>
       <div className="flex justify-between w-full">
         <div className="flex w-full">
-          <h2 className="font-bold mr-2">Kevin Nacario</h2>
+          <h2 className="font-bold mr-2">
+            Kevin Nacario
+            <Badge />
+          </h2>
           <span className="text-light opacity-80 mr-2">@username</span>
           <span className="text-light opacity-80">
             <FontAwesomeIcon
