@@ -14,7 +14,7 @@ import Notifications from "./Notifications";
 
 const InfoBar = () => {
   return (
-    <div className="px-2 py-7 bg-dark text-light flex-col justify-start items-start">
+    <div className="h-full px-2 py-7 bg-dark text-light flex-col justify-start items-start">
       <div className="h-10 w-10 border border-white rounded-full bg-white overflow-hidden">
         <Img className="object-cover" src={PROFILE_IMG} alt="kevin nacario" />
       </div>

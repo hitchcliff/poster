@@ -1,18 +1,7 @@
-import {
-  faComment,
-  faDotCircle,
-  faPenToSquare,
-  faThumbsUp,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Form, Formik } from "formik";
 import Img from "next/image";
 import PROFILE_IMG from "../assets/images/profile.jpg";
-import useGlobalService from "../hooks/useGlobalService";
 import { useGlobalSelector } from "../redux/features/global.selector";
-import Button from "./Button";
 import Comments from "./Comments";
-import InputField from "./Form/InputField";
 import PosterInfo from "./PosterInfo";
 import PostReactions from "./PostReactions";
 
@@ -21,6 +10,7 @@ const Feeds = () => {
 
   return (
     <div className="relative bg-dark text-light rounded-md overflow-hidden p-5 w-full">
+      {/* Feed 1 */}
       <div className="flex flex-row justify-start">
         <div className="h-12 w-12 border-2 border-dark rounded-full bg-white overflow-hidden">
           <Img className="object-cover" src={PROFILE_IMG} alt="kevin nacario" />
