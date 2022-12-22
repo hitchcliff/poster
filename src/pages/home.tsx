@@ -3,6 +3,7 @@ import Feeds from "../components/Feeds";
 import FriendSuggestions from "../components/FriendSuggestions";
 import InfoBar from "../components/InfoBar";
 import PrivateRoute from "../components/Route/PrivateRoute";
+import SearchBar from "../components/SearchBar";
 
 const Home = () => {
   return (
@@ -14,6 +15,7 @@ const Home = () => {
       </div>
       <div className="relative py-7 pr-7 w-1/2 flex flex-col gap-7">
         <FriendSuggestions />
+        <SearchBar />
       </div>
     </div>
   );
