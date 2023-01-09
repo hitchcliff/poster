@@ -1,8 +1,7 @@
 import { faDotCircle, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-import { Post, PostsQuery, PostsQueryVariables, User } from "../gen/graphql";
-import useDayjs from "../hooks/useDayjs";
+import { User } from "../gen/graphql";
+import { useDayJs } from "../hooks";
 import Badge from "./Badge";
 
 interface PosterInfoProps {
@@ -12,7 +11,7 @@ interface PosterInfoProps {
 }
 
 const PosterInfo = ({ body, user, updatedAt }: PosterInfoProps) => {
-  const date = useDayjs({ fromNow: updatedAt });
+  const date = useDayJs({ fromNow: updatedAt });
 
   return (
     <>

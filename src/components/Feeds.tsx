@@ -1,6 +1,6 @@
 import Img from "next/image";
 import PROFILE_IMG from "../assets/images/profile.jpg";
-import { Post, PostsQuery, usePostsQuery } from "../gen/graphql";
+import { Post } from "../gen/graphql";
 import { useGlobalSelector } from "../redux/features/global.selector";
 import Comments from "./Comments";
 import PosterInfo from "./PosterInfo";

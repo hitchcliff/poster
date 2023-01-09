@@ -1,16 +1,19 @@
 import { faImage, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Form, Formik } from "formik";
+import { useCreatePostMutation } from "../gen/graphql";
 import Button from "./Button";
 import TextAreaField from "./Form/TextAreaField";
 
 const CreateFeed = () => {
+  const [, createPost] = useCreatePostMutation();
+
   return (
     <div className="flex flex-col rounded-md bg-dark w-full shadowm-sm overflow-hidden">
       <Formik
         initialValues={{ body: "" }}
-        onSubmit={(values) => {
-          console.log(values);
+        onSubmit={async (values) => {
+          await createPost({ input: values });
         }}
       >
         {({ isSubmitting }) => (
