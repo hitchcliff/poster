@@ -24,12 +24,14 @@ class PostInput {
 class PostResolver {
   @Query(() => [Post])
   async posts(): Promise<Post[]> {
-    
     const posts = await Post.find({
       relations: {
-        user: true
-      }
-    })
+        user: true,
+      },
+      order: {
+        id: "DESC",
+      },
+    });
 
     return posts;
   }
@@ -41,20 +43,23 @@ class PostResolver {
 
   @Mutation(() => Post)
   @UseMiddleware(isAuth)
-  async createPost(@Arg("input") input: PostInput,
-  @Ctx() {req}: Context): Promise<Post | null> {
-    const user = await User.findOne({where: 
-    {
-      id: req.session.userId
-    }});
+  async createPost(
+    @Arg("input") input: PostInput,
+    @Ctx() { req }: Context
+  ): Promise<Post | null> {
+    const user = await User.findOne({
+      where: {
+        id: req.session.userId,
+      },
+    });
 
-    if(!user) {
-      return null
+    if (!user) {
+      return null;
     }
 
     const post = await Post.save({
       body: input.body,
-      user
+      user,
     });
 
     return post;
