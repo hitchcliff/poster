@@ -31,9 +31,9 @@ class Post extends BaseEntity {
   body: string;
 
   @Field()
-  @ManyToOne(() => User, user => user.posts)
+  @ManyToOne(() => User, (user) => user.posts)
   @JoinColumn()
-  user: User
+  user: User;
 }
 
 export default Post;

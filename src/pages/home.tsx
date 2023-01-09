@@ -1,3 +1,5 @@
+import { useState } from "react";
+import Button from "../components/Button";
 import CreateFeed from "../components/CreateFeed";
 import Feeds from "../components/Feeds";
 import FriendSuggestions from "../components/FriendSuggestions";
@@ -8,7 +10,17 @@ import Trendings from "../components/Trendings";
 import { usePostsQuery } from "../gen/graphql";
 
 const Home = () => {
-  const [{ data: fetchPosts, fetching }] = usePostsQuery();
+  const [take, setTake] = useState(3);
+  const [{ data: fetchPosts, fetching }] = usePostsQuery({
+    variables: {
+      take,
+      skip: 0,
+    },
+  });
+
+  const loadMore = () => {
+    setTake((prev) => prev + take);
+  };
 
   return (
     <div className="relative bg-light flex flex-row min-h-screen gap-7">
@@ -22,9 +34,14 @@ const Home = () => {
       </div>
       <div className="relative py-7 w-full flex flex-col gap-7">
         <CreateFeed />
-        {fetchPosts?.posts.map((post) => (
-          <Feeds key={post.id} post={post} />
+        {fetchPosts?.posts.map((post, idx) => (
+          <Feeds key={idx} post={post} />
         ))}
+        <div className="text-center">
+          <Button isSubmitting={fetching} onClick={loadMore}>
+            Load More
+          </Button>
+        </div>
       </div>
       <div className="relative py-7 pr-7 w-1/2">
         <div className="flex flex-col gap-7">

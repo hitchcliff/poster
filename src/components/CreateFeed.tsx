@@ -26,7 +26,9 @@ const CreateFeed = () => {
             />
             <div className="p-5 flex flex-row items-center justify-between text-light">
               <div>
-                <Button isSubmitting={isSubmitting}>Post</Button>
+                <Button type="submit" isSubmitting={isSubmitting}>
+                  Post
+                </Button>
               </div>
               <div className="gap-5 flex">
                 <button>

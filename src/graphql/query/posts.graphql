@@ -1,15 +1,11 @@
-query Posts {
-  posts {
+query Posts($take: Int!, $skip: Int!) {
+  posts(take: $take, skip: $skip) {
     id
     body
     createdAt
     updatedAt
     user {
-      id
-      username
-      email
-      createdAt
-      updatedAt
+      ...User
     }
   }
 }

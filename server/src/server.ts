@@ -21,7 +21,7 @@ import { COOKIE_NAME } from "./utils/constants";
 const main = async () => {
   // Database
   await AppDataSource.initialize();
-  // await Post.delete({}) // deletes posts
+  // await Post.delete({}); // deletes posts
   // await User.delete({}) // deletes users
 
   // Run Server

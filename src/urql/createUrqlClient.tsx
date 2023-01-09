@@ -1,5 +1,5 @@
 import { Cache, cacheExchange } from "@urql/exchange-graphcache";
-import { ClientOptions, dedupExchange, fetchExchange } from "urql";
+import { ClientOptions, dedupExchange, fetchExchange, gql } from "urql";
 import {
   CreatePostMutation,
   LoginMutation,
@@ -37,21 +37,19 @@ const createUrqlClient = (ssrExchange: any, ctx: any): ClientOptions => {
           Mutation: {
             createPost: (
               result: CreatePostMutation,
-              _args,
+              args,
               cache: Cache,
-              _info
+              info
             ) => {
-              CacheUpdateQuery<PostsQuery, CreatePostMutation>(
-                result,
-                { query: PostsDocument },
-                cache,
-                (data, result) => {
-                  // adds the post to the existing data
-                  data.posts.unshift(result.createPost);
-
-                  return data;
-                }
+              const allFields = cache.inspectFields("Query"); // get all the query
+              const fieldInfos = allFields.filter(
+                (info) => info.fieldName === "posts" // filter the query
               );
+
+              // invalidate all query
+              fieldInfos.forEach((fi) => {
+                cache.invalidate("Query", "posts", fi.arguments || {});
+              });
             },
             register: (result: RegisterMutation, args, cache: Cache, _info) => {
               cache.updateQuery({ query: MeDocument }, (): MeQuery => {

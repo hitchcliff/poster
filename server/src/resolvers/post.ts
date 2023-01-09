@@ -23,7 +23,10 @@ class PostInput {
 @Resolver(Post)
 class PostResolver {
   @Query(() => [Post])
-  async posts(): Promise<Post[]> {
+  async posts(
+    @Arg("take", () => Int) take: number,
+    @Arg("skip", () => Int) skip: number
+  ): Promise<Post[]> {
     const posts = await Post.find({
       relations: {
         user: true,
@@ -31,6 +34,8 @@ class PostResolver {
       order: {
         id: "DESC",
       },
+      take,
+      skip,
     });
 
     return posts;
