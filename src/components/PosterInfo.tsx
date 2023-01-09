@@ -1,8 +1,19 @@
 import { faDotCircle, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { Post, PostsQuery, PostsQueryVariables, User } from "../gen/graphql";
+import useDayjs from "../hooks/useDayjs";
 import Badge from "./Badge";
 
-const PosterInfo = () => {
+interface PosterInfoProps {
+  body: string;
+  user: User;
+  updatedAt: string;
+}
+
+const PosterInfo = ({ body, user, updatedAt }: PosterInfoProps) => {
+  const date = useDayjs({ fromNow: updatedAt });
+
   return (
     <>
       <div className="flex justify-between w-full">
@@ -11,13 +22,13 @@ const PosterInfo = () => {
             Kevin Nacario
             <Badge />
           </h2>
-          <span className="text-light opacity-80 mr-2">@username</span>
+          <span className="text-light opacity-80 mr-2">@{user.username}</span>
           <span className="text-light opacity-80">
             <FontAwesomeIcon
               icon={faDotCircle}
               className="mr-2 text-green-400"
             />
-            2h
+            {date}
           </span>
         </div>
         <div>
@@ -25,11 +36,7 @@ const PosterInfo = () => {
         </div>
       </div>
       <div className="text-white mt-2">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa,
-          asperiores dolorem distinctio ipsam et iusto facilis laboriosam
-          perferendis ipsum dolor?
-        </p>
+        <p>{body}</p>
       </div>
     </>
   );
