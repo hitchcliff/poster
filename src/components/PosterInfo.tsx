@@ -12,13 +12,14 @@ interface PosterInfoProps {
 
 const PosterInfo = ({ body, user, updatedAt }: PosterInfoProps) => {
   const date = useDayJs({ fromNow: updatedAt });
+  const fullName = `${user.firstName} ${user.lastName}`;
 
   return (
     <>
       <div className="flex justify-between w-full">
         <div className="flex w-full">
           <h2 className="font-bold mr-2">
-            Kevin Nacario
+            {!user.firstName || !user.lastName ? user.username : fullName}
             <Badge />
           </h2>
           <span className="text-light opacity-80 mr-2">@{user.username}</span>

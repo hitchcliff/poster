@@ -12,8 +12,10 @@ const CreateFeed = () => {
     <div className="flex flex-col rounded-md bg-dark w-full shadowm-sm overflow-hidden">
       <Formik
         initialValues={{ body: "" }}
-        onSubmit={async (values) => {
+        onSubmit={async (values, { resetForm }) => {
           await createPost({ input: values });
+
+          resetForm();
         }}
       >
         {({ isSubmitting }) => (

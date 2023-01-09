@@ -26,6 +26,14 @@ class User extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  firstName: string;
+
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  lastName: string;
+
   @Field()
   @Min(4)
   @Column({ type: "text", unique: true })
@@ -40,9 +48,9 @@ class User extends BaseEntity {
   @Column({ type: "text" })
   password!: string;
 
-  @Field(() => [Post], {nullable: true})
-  @OneToMany(() => Post, post=> post.user)
-  posts?: Post[]
+  @Field(() => [Post], { nullable: true })
+  @OneToMany(() => Post, (post) => post.user)
+  posts?: Post[];
 }
 
 export default User;
