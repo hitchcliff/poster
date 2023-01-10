@@ -16,6 +16,7 @@ const PublicRoute = (
     const router = useRouter();
 
     useEffect(() => {
+      const controller = new AbortController();
       if (user?.me) {
         if (router.query.next) {
           router.replace(router.query!.next as string);
@@ -23,6 +24,10 @@ const PublicRoute = (
           router.replace(RoutePattern.HOME);
         }
       }
+
+      return () => {
+        controller.abort();
+      };
     }, [router, user, fetching]);
 
     if (user?.me) return <Loader />;

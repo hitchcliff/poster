@@ -1,14 +1,13 @@
-import PROFILE_IMG from "../assets/images/profile.jpg";
-import Img from "next/image";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBell,
   faGear,
   faHome,
-  faListDots,
   faMessage,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Img from "next/image";
 import Link from "next/link";
+import PROFILE_IMG from "../assets/images/profile.jpg";
 import RoutePattern from "../routes/RoutePattern";
 import Notifications from "./Notifications";
 
@@ -18,23 +17,25 @@ const InfoBar = () => {
       <div className="h-10 w-10 border border-white rounded-full bg-white overflow-hidden">
         <Img className="object-cover" src={PROFILE_IMG} alt="kevin nacario" />
       </div>
-      <div className="flex flex-col gap-5 mt-5 infobar-icons">
-        <button>
-          <FontAwesomeIcon icon={faHome} />
+      <div className="flex flex-col justify-center gap-5 mt-5 infobar-icons">
+        <button aria-label="homepage">
+          <Link href={RoutePattern.HOME}>
+            <FontAwesomeIcon icon={faHome} />
+          </Link>
         </button>
-        <button className="relative">
+        <button className="relative" aria-label="notifications">
           <Link href={RoutePattern.NOTIFICATIONS}>
             <FontAwesomeIcon icon={faBell} />
             <Notifications>10</Notifications>
           </Link>
         </button>
-        <button>
+        <button aria-label="messages">
           <Link href={RoutePattern.MESSAGES}>
             <FontAwesomeIcon icon={faMessage} />
             <Notifications>5</Notifications>
           </Link>
         </button>
-        <button>
+        <button aria-label="settings">
           <Link href={RoutePattern.SETTINGS}>
             <FontAwesomeIcon icon={faGear} />
           </Link>

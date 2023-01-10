@@ -1,0 +1,19 @@
+.doornav-btns {
+  @apply font-bold flex gap-5 py-2;
+}
+
+.doornav__btn {
+  @apply px-2 border-b-4 border-opacity-0;
+}
+
+.doornav__btn:hover:not(.active) {
+  @apply text-opacity-50 border-b-4 border-b-blue-600;
+}
+
+.doornav__btn.active {
+  @apply text-blue-600 font-bold bg-gray-300 px-2 rounded-md;
+}
+
+.doornav-children {
+  @apply py-7;
+}

@@ -16,6 +16,8 @@ const PrivateRoute = (
     const router = useRouter();
 
     useEffect(() => {
+      const controller = new AbortController();
+
       if (!user?.me || fetching) {
         router.push(RoutePattern.LOGIN);
       } else if (user.me) {
@@ -23,6 +25,10 @@ const PrivateRoute = (
           router.replace(router.query!.next as string);
         }
       }
+
+      return () => {
+        controller.abort();
+      };
     }, [router, user, fetching]);
 
     if (!user?.me) return <Loader />;

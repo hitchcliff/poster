@@ -1,8 +1,7 @@
-import { withUrqlClient } from "next-urql";
 import Link from "next/link";
 import LoginForm from "../components/Form/LoginForm";
+import PublicRoute from "../components/Route/PublicRoute";
 import RoutePattern from "../routes/RoutePattern";
-import createUrqlClient from "../urql/createUrqlClient";
 
 const login = () => {
   return (
@@ -31,4 +30,4 @@ const login = () => {
   );
 };
 
-export default withUrqlClient(createUrqlClient)(login);
+export default PublicRoute(login);
