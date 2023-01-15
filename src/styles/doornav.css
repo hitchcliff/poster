@@ -3,11 +3,11 @@
 }
 
 .doornav__btn {
-  @apply px-2 border-b-4 border-opacity-0;
+  @apply px-2;
 }
 
 .doornav__btn:hover:not(.active) {
-  @apply text-opacity-50 border-b-4 border-b-blue-600;
+  @apply text-opacity-50;
 }
 
 .doornav__btn.active {

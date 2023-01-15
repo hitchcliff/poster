@@ -16,7 +16,7 @@ const InputField = ({ label, placeholder, ...props }: InputFieldProps) => {
     <div className="flex flex-col">
       {label && <label className="capitalize">{label}</label>}
       <input
-        className="mt-2 block py-2 px-2 bg-light border border-red-500 placeholder:capitalize"
+        className="mt-2 block py-2 px-2 rounded-md bg-light border border-red-500 placeholder:capitalize"
         style={{ border: !!error ? "1px solid rgb(239 68 68)" : "none" }}
         id={field.name}
         placeholder={placeholder}
