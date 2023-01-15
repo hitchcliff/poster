@@ -1,4 +1,3 @@
-import User from "../entities/User";
 import {
   Arg,
   Ctx,
@@ -9,22 +8,17 @@ import {
   Query,
   Resolver,
 } from "type-graphql";
-import argon2 from "argon2";
-import { v4 } from "uuid";
+import User from "../entities/User";
 import { Context } from "../types";
 import {
-  COOKIE_NAME,
-  BASE_URL,
-  FORGET_PASSWORD_PREFIX,
-} from "../utils/constants";
-import { sendEmail, validation, unique } from "../utils";
-import { MeQuery } from "./components";
-import RegisterMutation from "./components/RegisterMutation";
-import LoginMutation from "./components/LoginMutation";
-import LogoutMutation from "./components/LogoutMutation";
-import ForgotPasswordMutation from "./components/ForgotPasswordMutation";
-import UpdatePasswordMutation from "./components/UpdatePasswordMutation copy";
-import ChangePasswordMutation from "./components/ChangePasswordMutation";
+  ChangePasswordMutation,
+  ForgotPasswordMutation,
+  LoginMutation,
+  LogoutMutation,
+  MeQuery,
+  RegisterMutation,
+  UpdatePasswordMutation,
+} from "./components";
 
 @InputType()
 export class UpdatePasswordInput {
