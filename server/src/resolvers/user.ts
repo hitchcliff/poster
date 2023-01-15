@@ -18,12 +18,16 @@ import {
   FORGET_PASSWORD_PREFIX,
 } from "../utils/constants";
 import { sendEmail, validation, unique } from "../utils";
+import { MeQuery } from "./components";
+import RegisterMutation from "./components/RegisterMutation";
+import LoginMutation from "./components/LoginMutation";
+import LogoutMutation from "./components/LogoutMutation";
+import ForgotPasswordMutation from "./components/ForgotPasswordMutation";
+import UpdatePasswordMutation from "./components/UpdatePasswordMutation copy";
+import ChangePasswordMutation from "./components/ChangePasswordMutation";
 
 @InputType()
-class UpdatePasswordInput {
-  @Field()
-  oldPassword!: string;
-
+export class UpdatePasswordInput {
   @Field()
   newPassword!: string;
 
@@ -32,7 +36,7 @@ class UpdatePasswordInput {
 }
 
 @InputType()
-class ForgotPasswordInput {
+export class ForgotPasswordInput {
   @Field()
   newPassword!: string;
 
@@ -41,7 +45,7 @@ class ForgotPasswordInput {
 }
 
 @InputType()
-class LoginInput {
+export class LoginInput {
   @Field()
   username: string;
 
@@ -85,326 +89,53 @@ export class UsernamePasswordInput {
 @Resolver(User)
 class UserResolver {
   @Query(() => User, { nullable: true })
-  async me(@Ctx() { req }: Context): Promise<User | null> {
-    if (!req.session.userId) return null;
-
-    const user = await User.findOne({
-      where: {
-        id: req.session.userId,
-      },
-      relations: {
-        posts: true,
-      },
-    });
-
-    return user;
+  async me(@Ctx() ctx: Context): Promise<User | null> {
+    return MeQuery(ctx);
   }
 
   @Mutation(() => UserResponse)
   async register(
     @Arg("options") options: UsernamePasswordInput,
-    @Ctx() { req }: Context
+    @Ctx() ctx: Context
   ): Promise<UserResponse> {
-    // validation
-    const errors = validation(options);
-    if (errors.length) {
-      return {
-        errors,
-      };
-    }
-
-    const emailIsTaken = await User.findOne({
-      where: {
-        email: options.email,
-      },
-    });
-
-    if (emailIsTaken) {
-      return {
-        errors: [
-          {
-            field: "email",
-            message: "email already exists",
-          },
-        ],
-      };
-    }
-
-    // Hash Password
-    const hashedPassword = await argon2.hash(options.password);
-    const user = new User();
-
-    try {
-      user.username = options.username;
-      user.email = options.email;
-      user.password = hashedPassword;
-
-      await user.save();
-
-      return {
-        user,
-      };
-    } catch (error) {
-      const usernameError = unique(error.code, error.detail);
-
-      if (usernameError.length) {
-        return {
-          errors: usernameError,
-        };
-      }
-    }
-
-    // Store userId in Redis
-    req.session.userId = user.id;
-
-    return {
-      user,
-    };
+    return RegisterMutation(options, ctx);
   }
 
   @Mutation(() => UserResponse)
   async login(
     @Arg("options") options: LoginInput,
-    @Ctx() { req }: Context
+    @Ctx() ctx: Context
   ): Promise<UserResponse> {
-    const user = await User.findOne({
-      where: {
-        username: options.username,
-      },
-    });
-
-    if (!user) {
-      return {
-        errors: [
-          {
-            field: "username",
-            message: "username doesn't exists",
-          },
-        ],
-      };
-    }
-
-    const verified = await argon2.verify(user.password, options.password);
-
-    if (!verified) {
-      return {
-        errors: [
-          {
-            field: "password",
-            message: "wrong password",
-          },
-        ],
-      };
-    }
-
-    // Store cookies in Redis
-    req.session.userId = user.id;
-
-    return {
-      user,
-    };
+    return LoginMutation(options, ctx);
   }
 
   @Mutation(() => Boolean)
-  logout(@Ctx() { req, res }: Context) {
-    return new Promise((resolve) => {
-      return req.session.destroy((err: any) => {
-        res.clearCookie(COOKIE_NAME);
-        if (err) {
-          console.error(err);
-          resolve(false);
-          return;
-        }
-
-        resolve(true);
-      });
-    });
+  logout(@Ctx() ctx: Context) {
+    return LogoutMutation(ctx);
   }
 
   @Mutation(() => Boolean)
   async forgotPassword(
     @Arg("email") email: string,
-    @Ctx() { redis }: Context
+    @Ctx() ctx: Context
   ): Promise<boolean> {
-    const user = await User.findOne({
-      where: {
-        email,
-      },
-    });
-
-    if (!user) {
-      return false;
-    }
-
-    // Generate UUID
-    const token = v4();
-
-    // Store in Redis
-    await redis.set(
-      FORGET_PASSWORD_PREFIX + token,
-      user.id,
-      "EX",
-      1000 * 60 * 60 * 24 * 3
-    );
-
-    // Send email to Nodemailer
-    const body = `
-    <a href="${BASE_URL}/change-password/${token}" rel="noreferrer" target="_blank">Click here</a>
-    `;
-    await sendEmail({ email, html: body });
-
-    return true;
+    return ForgotPasswordMutation(email, ctx);
   }
 
   @Mutation(() => UserResponse)
   async updatePassword(
     @Arg("options") options: UpdatePasswordInput,
-    @Ctx() { req }: Context
+    @Ctx() ctx: Context
   ): Promise<UserResponse | boolean> {
-    if (!req.session.userId)
-      return {
-        errors: [
-          {
-            message: "need to login first",
-          },
-        ],
-      };
-
-    const user = await User.findOne({
-      where: {
-        id: req.session.userId,
-      },
-    });
-
-    if (!user)
-      return {
-        errors: [
-          {
-            message: "can't find user",
-          },
-        ],
-      };
-
-    const oldPasswordMatch = await argon2.verify(
-      user.password,
-      options.oldPassword
-    );
-    const newPasswordMatch = await argon2.verify(
-      user.password,
-      options.newPassword
-    );
-
-    if (!oldPasswordMatch) {
-      return {
-        errors: [
-          {
-            field: "oldPassword",
-            message: "does not match to old password",
-          },
-        ],
-      };
-    }
-
-    if (newPasswordMatch) {
-      return {
-        errors: [
-          {
-            field: "newPassword",
-            message: "new password is the same",
-          },
-        ],
-      };
-    }
-
-    if (options.confirmPassword !== options.newPassword) {
-      return {
-        errors: [
-          {
-            field: "newPassword",
-            message: "new password does not match",
-          },
-          {
-            field: "confirmPassword",
-            message: "confirm password does not match",
-          },
-        ],
-      };
-    }
-
-    // Hash new password
-    const newPassword = await argon2.hash(options.newPassword);
-
-    // Set new password
-    user.password = newPassword;
-    user.save();
-
-    return {
-      user,
-    };
+    return UpdatePasswordMutation(options, ctx);
   }
 
   @Mutation(() => UserResponse)
   async changePassword(
     @Arg("options") options: ForgotPasswordInput,
-    @Ctx() { req, redis }: Context
+    @Ctx() ctx: Context
   ): Promise<UserResponse> {
-    if (options.newPassword.length <= 3) {
-      return {
-        errors: [
-          {
-            field: "newPassword",
-            message: "password is too short",
-          },
-        ],
-      };
-    }
-
-    const key = FORGET_PASSWORD_PREFIX + options.token;
-    // Get redis data
-    const userId = await redis.get(key);
-
-    // If cannot find user
-    if (!userId) {
-      return {
-        errors: [
-          {
-            field: "newPassword",
-            message: "token expired",
-          },
-        ],
-      };
-    }
-
-    const user = await User.findOne({
-      where: {
-        id: parseInt(userId),
-      },
-    });
-
-    if (!user) {
-      return {
-        errors: [
-          {
-            field: "newPassword",
-            message: "user doesn't exists",
-          },
-        ],
-      };
-    }
-
-    // Change password
-    user.password = await argon2.hash(options.newPassword);
-    user.save();
-
-    // Save cookie after
-    req.session.userId = userId;
-
-    // Delete redis data
-    await redis.del(key);
-
-    return {
-      user,
-    };
+    return ChangePasswordMutation(options, ctx);
   }
 }
 

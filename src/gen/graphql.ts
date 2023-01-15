@@ -41,6 +41,7 @@ export type Mutation = {
   login: UserResponse;
   logout: Scalars['Boolean'];
   register: UserResponse;
+  updatePassword: UserResponse;
 };
 
 
@@ -73,6 +74,11 @@ export type MutationRegisterArgs = {
   options: UsernamePasswordInput;
 };
 
+
+export type MutationUpdatePasswordArgs = {
+  options: UpdatePasswordInput;
+};
+
 export type Post = {
   __typename?: 'Post';
   body: Scalars['String'];
@@ -103,6 +109,11 @@ export type QueryPostArgs = {
 export type QueryPostsArgs = {
   skip: Scalars['Int'];
   take: Scalars['Int'];
+};
+
+export type UpdatePasswordInput = {
+  confirmPassword: Scalars['String'];
+  newPassword: Scalars['String'];
 };
 
 export type User = {
@@ -173,6 +184,13 @@ export type RegisterMutationVariables = Exact<{
 
 
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field?: string | null, message?: string | null }> | null, user?: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any } | null } };
+
+export type UpdatePasswordMutationVariables = Exact<{
+  options: UpdatePasswordInput;
+}>;
+
+
+export type UpdatePasswordMutation = { __typename?: 'Mutation', updatePassword: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field?: string | null, message?: string | null }> | null, user?: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any } | null } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -351,6 +369,29 @@ export default {
           },
           {
             "name": "register",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "UserResponse",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "options",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "updatePassword",
             "type": {
               "kind": "NON_NULL",
               "ofType": {
@@ -748,6 +789,17 @@ export const RegisterDocument = gql`
 
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
+};
+export const UpdatePasswordDocument = gql`
+    mutation UpdatePassword($options: UpdatePasswordInput!) {
+  updatePassword(options: $options) {
+    ...UserResponse
+  }
+}
+    ${UserResponseFragmentDoc}`;
+
+export function useUpdatePasswordMutation() {
+  return Urql.useMutation<UpdatePasswordMutation, UpdatePasswordMutationVariables>(UpdatePasswordDocument);
 };
 export const MeDocument = gql`
     query Me {
