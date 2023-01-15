@@ -1,35 +1,21 @@
 import { Context } from "../../types";
 import User from "../../entities/User";
 import argon2 from "argon2";
-import { UpdatePasswordInput } from "../user";
+import { PasswordInput } from "../user";
 
 const UpdatePasswordMutation = async (
-  options: UpdatePasswordInput,
+  options: PasswordInput,
   { req }: Context
 ) => {
-  if (!req.session.userId)
-    return {
-      errors: [
-        {
-          message: "need to login first",
-        },
-      ],
-    };
-
   const user = await User.findOne({
     where: {
       id: req.session.userId,
     },
   });
 
-  if (!user)
-    return {
-      errors: [
-        {
-          message: "can't find user",
-        },
-      ],
-    };
+  if (!user) {
+    throw new Error("no user found");
+  }
 
   const newPasswordMatch = await argon2.verify(
     user.password,

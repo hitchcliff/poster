@@ -1,3 +1,4 @@
+import isAuth from "../middleware/isAuth";
 import {
   Arg,
   Ctx,
@@ -7,6 +8,7 @@ import {
   ObjectType,
   Query,
   Resolver,
+  UseMiddleware,
 } from "type-graphql";
 import User from "../entities/User";
 import { Context } from "../types";
@@ -18,10 +20,20 @@ import {
   MeQuery,
   RegisterMutation,
   UpdatePasswordMutation,
+  UpdateUserProfileMutation,
 } from "./components";
 
 @InputType()
-export class UpdatePasswordInput {
+export class UserProfileInput {
+  @Field()
+  firstName: string;
+
+  @Field()
+  lastName: string;
+}
+
+@InputType()
+export class PasswordInput {
   @Field()
   newPassword!: string;
 
@@ -82,6 +94,15 @@ export class UsernamePasswordInput {
 
 @Resolver(User)
 class UserResolver {
+  @UseMiddleware(isAuth)
+  @Mutation(() => UserResponse, { nullable: true })
+  async updateUserProfile(
+    @Arg("options") options: UserProfileInput,
+    @Ctx() ctx: Context
+  ): Promise<UserResponse> {
+    return UpdateUserProfileMutation(options, ctx);
+  }
+
   @Query(() => User, { nullable: true })
   async me(@Ctx() ctx: Context): Promise<User | null> {
     return MeQuery(ctx);
@@ -116,9 +137,10 @@ class UserResolver {
     return ForgotPasswordMutation(email, ctx);
   }
 
+  @UseMiddleware(isAuth)
   @Mutation(() => UserResponse)
   async updatePassword(
-    @Arg("options") options: UpdatePasswordInput,
+    @Arg("options") options: PasswordInput,
     @Ctx() ctx: Context
   ): Promise<UserResponse | boolean> {
     return UpdatePasswordMutation(options, ctx);
