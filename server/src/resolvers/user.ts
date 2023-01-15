@@ -20,6 +20,18 @@ import {
 import { sendEmail, validation, unique } from "../utils";
 
 @InputType()
+class UpdatePasswordInput {
+  @Field()
+  oldPassword!: string;
+
+  @Field()
+  newPassword!: string;
+
+  @Field()
+  confirmPassword!: string;
+}
+
+@InputType()
 class ForgotPasswordInput {
   @Field()
   newPassword!: string;
@@ -242,6 +254,93 @@ class UserResolver {
     await sendEmail({ email, html: body });
 
     return true;
+  }
+
+  @Mutation(() => UserResponse)
+  async updatePassword(
+    @Arg("options") options: UpdatePasswordInput,
+    @Ctx() { req }: Context
+  ): Promise<UserResponse | boolean> {
+    if (!req.session.userId)
+      return {
+        errors: [
+          {
+            message: "need to login first",
+          },
+        ],
+      };
+
+    const user = await User.findOne({
+      where: {
+        id: req.session.userId,
+      },
+    });
+
+    if (!user)
+      return {
+        errors: [
+          {
+            message: "can't find user",
+          },
+        ],
+      };
+
+    const oldPasswordMatch = await argon2.verify(
+      user.password,
+      options.oldPassword
+    );
+    const newPasswordMatch = await argon2.verify(
+      user.password,
+      options.newPassword
+    );
+
+    if (!oldPasswordMatch) {
+      return {
+        errors: [
+          {
+            field: "oldPassword",
+            message: "does not match to old password",
+          },
+        ],
+      };
+    }
+
+    if (newPasswordMatch) {
+      return {
+        errors: [
+          {
+            field: "newPassword",
+            message: "new password is the same",
+          },
+        ],
+      };
+    }
+
+    if (options.confirmPassword !== options.newPassword) {
+      return {
+        errors: [
+          {
+            field: "newPassword",
+            message: "new password does not match",
+          },
+          {
+            field: "confirmPassword",
+            message: "confirm password does not match",
+          },
+        ],
+      };
+    }
+
+    // Hash new password
+    const newPassword = await argon2.hash(options.newPassword);
+
+    // Set new password
+    user.password = newPassword;
+    user.save();
+
+    return {
+      user,
+    };
   }
 
   @Mutation(() => UserResponse)
