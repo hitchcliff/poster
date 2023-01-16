@@ -1,13 +1,14 @@
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
-import { useRegisterMutation } from "../../gen/graphql";
+import { useUpdateUserProfileMutation } from "../../gen/graphql";
 import RoutePattern from "../../routes/RoutePattern";
+import { ThrowSuccess } from "../../utils/swal";
 import toRecordError from "../../utils/toRecordError";
 import Button from "../Button";
 import InputField from "./InputField";
 
 const ProfileForm = () => {
-  const [, register] = useRegisterMutation();
+  const [, updateProfile] = useUpdateUserProfileMutation();
   const route = useRouter();
 
   return (
@@ -18,7 +19,15 @@ const ProfileForm = () => {
           lastName: "",
         }}
         onSubmit={async (values, { setErrors }) => {
-          console.log(values);
+          const { data } = await updateProfile({ options: values });
+
+          if (data?.updateUserProfile?.errors) {
+            setErrors(toRecordError(data.updateUserProfile.errors));
+          } else if (data?.updateUserProfile?.user) {
+            await ThrowSuccess({ text: "Profile updated successfully" });
+
+            route.push("/" + RoutePattern.HOME);
+          }
         }}
       >
         {({ isSubmitting }) => (

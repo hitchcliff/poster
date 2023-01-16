@@ -42,6 +42,7 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   register: UserResponse;
   updatePassword: UserResponse;
+  updateUserProfile?: Maybe<UserResponse>;
 };
 
 
@@ -76,7 +77,17 @@ export type MutationRegisterArgs = {
 
 
 export type MutationUpdatePasswordArgs = {
-  options: UpdatePasswordInput;
+  options: PasswordInput;
+};
+
+
+export type MutationUpdateUserProfileArgs = {
+  options: UserProfileInput;
+};
+
+export type PasswordInput = {
+  confirmPassword: Scalars['String'];
+  newPassword: Scalars['String'];
 };
 
 export type Post = {
@@ -111,11 +122,6 @@ export type QueryPostsArgs = {
   take: Scalars['Int'];
 };
 
-export type UpdatePasswordInput = {
-  confirmPassword: Scalars['String'];
-  newPassword: Scalars['String'];
-};
-
 export type User = {
   __typename?: 'User';
   createdAt: Scalars['DateTime'];
@@ -126,6 +132,11 @@ export type User = {
   posts?: Maybe<Array<Post>>;
   updatedAt: Scalars['DateTime'];
   username: Scalars['String'];
+};
+
+export type UserProfileInput = {
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
 };
 
 export type UserResponse = {
@@ -186,11 +197,18 @@ export type RegisterMutationVariables = Exact<{
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field?: string | null, message?: string | null }> | null, user?: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any } | null } };
 
 export type UpdatePasswordMutationVariables = Exact<{
-  options: UpdatePasswordInput;
+  options: PasswordInput;
 }>;
 
 
 export type UpdatePasswordMutation = { __typename?: 'Mutation', updatePassword: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field?: string | null, message?: string | null }> | null, user?: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any } | null } };
+
+export type UpdateUserProfileMutationVariables = Exact<{
+  options: UserProfileInput;
+}>;
+
+
+export type UpdateUserProfileMutation = { __typename?: 'Mutation', updateUserProfile?: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field?: string | null, message?: string | null }> | null, user?: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any } | null } | null };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -399,6 +417,26 @@ export default {
                 "name": "UserResponse",
                 "ofType": null
               }
+            },
+            "args": [
+              {
+                "name": "options",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "updateUserProfile",
+            "type": {
+              "kind": "OBJECT",
+              "name": "UserResponse",
+              "ofType": null
             },
             "args": [
               {
@@ -791,7 +829,7 @@ export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
 };
 export const UpdatePasswordDocument = gql`
-    mutation UpdatePassword($options: UpdatePasswordInput!) {
+    mutation UpdatePassword($options: PasswordInput!) {
   updatePassword(options: $options) {
     ...UserResponse
   }
@@ -800,6 +838,17 @@ export const UpdatePasswordDocument = gql`
 
 export function useUpdatePasswordMutation() {
   return Urql.useMutation<UpdatePasswordMutation, UpdatePasswordMutationVariables>(UpdatePasswordDocument);
+};
+export const UpdateUserProfileDocument = gql`
+    mutation UpdateUserProfile($options: UserProfileInput!) {
+  updateUserProfile(options: $options) {
+    ...UserResponse
+  }
+}
+    ${UserResponseFragmentDoc}`;
+
+export function useUpdateUserProfileMutation() {
+  return Urql.useMutation<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>(UpdateUserProfileDocument);
 };
 export const MeDocument = gql`
     query Me {

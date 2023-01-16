@@ -1,0 +1,5 @@
+mutation UpdateUserProfile($options: UserProfileInput!) {
+  updateUserProfile(options: $options) {
+    ...UserResponse
+  }
+}
