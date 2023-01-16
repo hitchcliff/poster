@@ -5,10 +5,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import Photo from "./Photo";
 import Post from "./Post";
 
 @ObjectType()
@@ -47,6 +50,14 @@ class User extends BaseEntity {
   @Min(4)
   @Column({ type: "text" })
   password!: string;
+
+  @Column({ nullable: true })
+  photoId?: number;
+
+  @Field(() => Photo, { nullable: true })
+  @OneToOne(() => Photo, (photo) => photo.user)
+  @JoinColumn()
+  photo?: Photo;
 
   @Field(() => [Post], { nullable: true })
   @OneToMany(() => Post, (post) => post.user)

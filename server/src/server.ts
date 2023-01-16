@@ -15,6 +15,8 @@ import HelloResolver from "./resolvers/hello";
 import PostResolver from "./resolvers/post";
 import UserResolver from "./resolvers/user";
 import { COOKIE_NAME } from "./utils/constants";
+import PhotoResolver from "./resolvers/photo";
+// import Photo from "./entities/Photo";
 // import Post from "./entities/Post";
 // import User from "./entities/User";
 
@@ -23,6 +25,7 @@ const main = async () => {
   await AppDataSource.initialize();
   // await Post.delete({}); // deletes posts
   // await User.delete({}) // deletes users
+  // await Photo.delete({}); // deletes users
 
   // Run Server
   const app = express();
@@ -72,7 +75,7 @@ const main = async () => {
   // Apollo
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, PostResolver, UserResolver],
+      resolvers: [HelloResolver, PostResolver, UserResolver, PhotoResolver],
       validate: false,
     }),
     context: ({ req, res }): Context => ({

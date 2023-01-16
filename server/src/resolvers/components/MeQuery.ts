@@ -10,6 +10,7 @@ async function MeQuery({ req }: Context) {
     },
     relations: {
       posts: true,
+      photo: true,
     },
   });
 

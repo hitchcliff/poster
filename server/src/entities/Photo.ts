@@ -1,19 +1,18 @@
 import { Field, ObjectType } from "type-graphql";
 import {
-  Entity,
-  PrimaryGeneratedColumn,
+  BaseEntity,
   Column,
   CreateDateColumn,
+  Entity,
+  OneToOne,
+  PrimaryGeneratedColumn,
   UpdateDateColumn,
-  BaseEntity,
-  ManyToOne,
-  JoinColumn,
 } from "typeorm";
 import User from "./User";
 
 @ObjectType()
-@Entity("post")
-class Post extends BaseEntity {
+@Entity("photo")
+class Photo extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id: number;
@@ -27,13 +26,12 @@ class Post extends BaseEntity {
   updatedAt: Date;
 
   @Field()
-  @Column({ type: "text" })
-  body: string;
+  @Column()
+  src: String;
 
   @Field(() => User)
-  @ManyToOne(() => User, (user) => user.posts)
-  @JoinColumn()
+  @OneToOne(() => User, (user) => user.photo)
   user: User;
 }
 
-export default Post;
+export default Photo;
