@@ -1,13 +1,17 @@
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
-import { useRegisterMutation } from "../../gen/graphql";
+import {
+  useRegisterMutation,
+  useUpdatePasswordMutation,
+} from "../../gen/graphql";
 import RoutePattern from "../../routes/RoutePattern";
+import { ThrowSuccess } from "../../utils/swal";
 import toRecordError from "../../utils/toRecordError";
 import Button from "../Button";
 import InputField from "./InputField";
 
 const SecurityForm = () => {
-  const [, register] = useRegisterMutation();
+  const [, updatePassword] = useUpdatePasswordMutation();
   const route = useRouter();
 
   return (
@@ -15,17 +19,15 @@ const SecurityForm = () => {
       <div>
         <Formik
           initialValues={{
-            username: "",
-            email: "",
+            newPassword: "",
             confirmPassword: "",
-            password: "",
           }}
           onSubmit={async (values, { setErrors }) => {
-            const res = await register({ options: values });
-
-            if (res.data?.register.errors) {
-              setErrors(toRecordError(res.data.register.errors));
-            } else if (res.data?.register.user) {
+            const { data } = await updatePassword({ options: values });
+            if (data?.updatePassword.errors) {
+              setErrors(toRecordError(data.updatePassword.errors));
+            } else if (data?.updatePassword.user) {
+              await ThrowSuccess({ text: "Updated password successfully" });
               route.push(RoutePattern.HOME);
             }
           }}
@@ -34,7 +36,7 @@ const SecurityForm = () => {
             <Form>
               <div className="mt-2">
                 <InputField
-                  name="password"
+                  name="newPassword"
                   placeholder="New Password"
                   label="password"
                   type="password"
@@ -50,7 +52,7 @@ const SecurityForm = () => {
               </div>
               <div className="mt-7">
                 <Button type="submit" isSubmitting={isSubmitting}>
-                  Signup
+                  Update password
                 </Button>
               </div>
             </Form>

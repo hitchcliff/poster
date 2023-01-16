@@ -26,7 +26,7 @@ const ProfileForm = () => {
           } else if (data?.updateUserProfile?.user) {
             await ThrowSuccess({ text: "Profile updated successfully" });
 
-            route.push("/" + RoutePattern.HOME);
+            route.push(RoutePattern.HOME);
           }
         }}
       >
