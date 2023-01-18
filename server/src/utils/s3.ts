@@ -5,7 +5,7 @@ interface s3Props extends Upload {
   foldername?: string;
 }
 
-export const s3 = async ({ filename, mimetype, foldername }: s3Props) => {
+export const s3 = async ({ foldername, filename, mimetype }: s3Props) => {
   const BUCKET_NAME = process.env.BUCKET_NAME;
   const REGION_CODE = process.env.REGION_CODE;
   const ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;

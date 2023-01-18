@@ -21,6 +21,8 @@ export class Upload {
   filename: string;
   @Field()
   mimetype: string;
+  @Field()
+  size: string;
 }
 
 @ObjectType()
