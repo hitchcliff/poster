@@ -43,10 +43,12 @@ async function UploadPhotoMutation(
       };
 
     // upload a photo to bucket
-    const { url } = await s3({
+    const { url, signedRequest } = await s3({
       ...values.file,
       foldername: process.env.PROFILE_PICTURES,
     });
+
+    console.log("=================" + signedRequest);
 
     photo.src = url;
     await photo.save();
@@ -56,11 +58,13 @@ async function UploadPhotoMutation(
 
     return {
       photo,
+      url,
+      signedRequest,
     };
   }
 
   // uploads a photo to bucket
-  const { url } = await s3({
+  const { url, signedRequest } = await s3({
     ...values.file,
     foldername: process.env.PROFILE_PICTURES,
   });
@@ -74,6 +78,8 @@ async function UploadPhotoMutation(
 
   return {
     photo,
+    url,
+    signedRequest,
   };
 }
 

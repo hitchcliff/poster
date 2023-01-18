@@ -1,15 +1,16 @@
-import Photo from "../entities/Photo";
 import {
   Arg,
   Ctx,
   Field,
   InputType,
+  Int,
   Mutation,
   ObjectType,
   Query,
   Resolver,
   UseMiddleware,
 } from "type-graphql";
+import Photo from "../entities/Photo";
 import isAuth from "../middleware/isAuth";
 import { Context } from "../types";
 import MyPhotoQuery from "./components/MyPhotoQuery";
@@ -21,8 +22,9 @@ export class Upload {
   filename: string;
   @Field()
   mimetype: string;
-  @Field()
-  size: string;
+
+  @Field(() => Int)
+  size: number;
 }
 
 @ObjectType()
@@ -38,6 +40,12 @@ export class UploadPhotoResponse {
 
   @Field({ nullable: true })
   photo?: Photo;
+
+  @Field({ nullable: true })
+  url?: string;
+
+  @Field({ nullable: true })
+  signedRequest?: string;
 }
 
 @InputType()
@@ -59,7 +67,7 @@ class PhotoResolver {
   async uploadPhoto(
     @Arg("values") values: UploadPhotoInput,
     @Ctx() ctx: Context
-  ) {
+  ): Promise<UploadPhotoResponse> {
     return UploadPhotoMutation(values, ctx);
   }
 }

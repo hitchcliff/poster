@@ -26,4 +26,4 @@ const Settings = () => {
   );
 };
 
-export default PrivateRoute(Settings);
+export default PrivateRoute(Settings, { ssr: true });

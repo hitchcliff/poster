@@ -1,0 +1,15 @@
+mutation UploadPhoto($values: UploadPhotoInput!) {
+  uploadPhoto(values: $values) {
+    error {
+      message
+    }
+    photo {
+      id
+      createdAt
+      updatedAt
+      src
+    }
+    url
+    signedRequest
+  }
+}

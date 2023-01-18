@@ -1,5 +1,10 @@
 import { Upload } from "../resolvers/photo";
-import { S3 } from "@aws-sdk/client-s3";
+import {
+  GetObjectCommand,
+  PutObjectCommandInput,
+  S3,
+} from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 interface s3Props extends Upload {
   foldername?: string;
@@ -21,12 +26,18 @@ export const s3 = async ({ foldername, filename, mimetype }: s3Props) => {
 
   const folder = foldername ? `${foldername}/` : "";
 
-  const signedRequest = await client.putObject({
+  const options = {
     Bucket: BUCKET_NAME,
     Key: folder + filename,
     ContentType: mimetype,
-  });
+  } as PutObjectCommandInput;
 
+  // add in bucket
+  await client.putObject(options);
+  // commands for options
+  const command = new GetObjectCommand(options);
+
+  const signedRequest = await getSignedUrl(client, command); // will be used
   const url = `https://${BUCKET_NAME}.s3.${REGION_CODE}.amazonaws.com/${folder}${filename}`;
 
   return {

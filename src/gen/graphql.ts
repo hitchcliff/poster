@@ -43,6 +43,7 @@ export type Mutation = {
   register: UserResponse;
   updatePassword: UserResponse;
   updateUserProfile?: Maybe<UserResponse>;
+  uploadPhoto: UploadPhotoResponse;
 };
 
 
@@ -85,9 +86,28 @@ export type MutationUpdateUserProfileArgs = {
   options: UserProfileInput;
 };
 
+
+export type MutationUploadPhotoArgs = {
+  values: UploadPhotoInput;
+};
+
 export type PasswordInput = {
   confirmPassword: Scalars['String'];
   newPassword: Scalars['String'];
+};
+
+export type Photo = {
+  __typename?: 'Photo';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['Float'];
+  src: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+  user: User;
+};
+
+export type PhotoError = {
+  __typename?: 'PhotoError';
+  message: Scalars['String'];
 };
 
 export type Post = {
@@ -107,6 +127,7 @@ export type Query = {
   __typename?: 'Query';
   hello: Scalars['String'];
   me?: Maybe<User>;
+  myPhoto?: Maybe<Photo>;
   post: Post;
   posts: Array<Post>;
 };
@@ -122,6 +143,24 @@ export type QueryPostsArgs = {
   take: Scalars['Int'];
 };
 
+export type Upload = {
+  filename: Scalars['String'];
+  mimetype: Scalars['String'];
+  size: Scalars['Int'];
+};
+
+export type UploadPhotoInput = {
+  file: Upload;
+};
+
+export type UploadPhotoResponse = {
+  __typename?: 'UploadPhotoResponse';
+  error?: Maybe<PhotoError>;
+  photo?: Maybe<Photo>;
+  signedRequest?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
+};
+
 export type User = {
   __typename?: 'User';
   createdAt: Scalars['DateTime'];
@@ -129,6 +168,7 @@ export type User = {
   firstName?: Maybe<Scalars['String']>;
   id: Scalars['Float'];
   lastName?: Maybe<Scalars['String']>;
+  photo?: Maybe<Photo>;
   posts?: Maybe<Array<Post>>;
   updatedAt: Scalars['DateTime'];
   username: Scalars['String'];
@@ -155,6 +195,13 @@ export type UsernamePasswordInput = {
 export type UserFragment = { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any };
 
 export type UserResponseFragment = { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field?: string | null, message?: string | null }> | null, user?: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any } | null };
+
+export type UploadPhotoMutationVariables = Exact<{
+  values: UploadPhotoInput;
+}>;
+
+
+export type UploadPhotoMutation = { __typename?: 'Mutation', uploadPhoto: { __typename?: 'UploadPhotoResponse', url?: string | null, signedRequest?: string | null, error?: { __typename?: 'PhotoError', message: string } | null, photo?: { __typename?: 'Photo', id: number, createdAt: any, updatedAt: any, src: string } | null } };
 
 export type ChangePasswordMutationVariables = Exact<{
   options: ForgotPasswordInput;
@@ -450,6 +497,110 @@ export default {
                 }
               }
             ]
+          },
+          {
+            "name": "uploadPhoto",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "UploadPhotoResponse",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "values",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "Photo",
+        "fields": [
+          {
+            "name": "createdAt",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "id",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "src",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "updatedAt",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "user",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "User",
+                "ofType": null
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "PhotoError",
+        "fields": [
+          {
+            "name": "message",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
           }
         ],
         "interfaces": []
@@ -542,6 +693,15 @@ export default {
             "args": []
           },
           {
+            "name": "myPhoto",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Photo",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
             "name": "post",
             "type": {
               "kind": "NON_NULL",
@@ -608,6 +768,47 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "UploadPhotoResponse",
+        "fields": [
+          {
+            "name": "error",
+            "type": {
+              "kind": "OBJECT",
+              "name": "PhotoError",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "photo",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Photo",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "signedRequest",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "url",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "User",
         "fields": [
           {
@@ -656,6 +857,15 @@ export default {
             "type": {
               "kind": "SCALAR",
               "name": "Any"
+            },
+            "args": []
+          },
+          {
+            "name": "photo",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Photo",
+              "ofType": null
             },
             "args": []
           },
@@ -760,6 +970,27 @@ export const UserResponseFragmentDoc = gql`
   }
 }
     ${UserFragmentDoc}`;
+export const UploadPhotoDocument = gql`
+    mutation UploadPhoto($values: UploadPhotoInput!) {
+  uploadPhoto(values: $values) {
+    error {
+      message
+    }
+    photo {
+      id
+      createdAt
+      updatedAt
+      src
+    }
+    url
+    signedRequest
+  }
+}
+    `;
+
+export function useUploadPhotoMutation() {
+  return Urql.useMutation<UploadPhotoMutation, UploadPhotoMutationVariables>(UploadPhotoDocument);
+};
 export const ChangePasswordDocument = gql`
     mutation ChangePassword($options: ForgotPasswordInput!) {
   changePassword(options: $options) {

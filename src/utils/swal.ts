@@ -37,3 +37,27 @@ export const SuccessType1 = () =>
     allowEscapeKey: true,
     allowOutsideClick: true,
   });
+
+interface ThrowErrorProps {
+  text: string;
+}
+export const ThrowError = ({ text }: ThrowErrorProps): Promise<boolean> =>
+  new Promise((res) => {
+    setTimeout(() => {
+      Swal.fire({
+        text,
+        color: "white",
+        background: "#a60101",
+        width: "200px",
+        confirmButtonColor: "#e47200",
+        confirmButtonText: "Close",
+        showCloseButton: false,
+        showCancelButton: false,
+        showDenyButton: false,
+        allowEnterKey: true,
+        allowEscapeKey: true,
+        allowOutsideClick: true,
+      });
+    }, 300);
+    res(true);
+  });
