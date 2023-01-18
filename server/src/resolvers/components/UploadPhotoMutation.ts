@@ -1,3 +1,4 @@
+import { s3 } from "../../utils";
 import Photo from "../../entities/Photo";
 import User from "../../entities/User";
 import { Context } from "../../types";
@@ -42,7 +43,12 @@ async function UploadPhotoMutation(
       };
 
     // upload a photo to bucket
-    photo.src = "aphoto.com";
+    const { url } = await s3({
+      ...values.file,
+      foldername: process.env.PROFILE_PICTURES,
+    });
+
+    photo.src = url;
     await photo.save();
 
     user.photo = photo;
@@ -54,8 +60,13 @@ async function UploadPhotoMutation(
   }
 
   // uploads a photo to bucket
+  const { url } = await s3({
+    ...values.file,
+    foldername: process.env.PROFILE_PICTURES,
+  });
+
   const photo = new Photo();
-  photo.src = "aphoto.com";
+  photo.src = url;
   await photo.save();
 
   user.photo = photo;

@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import dotenv from "dotenv";
 import { AppDataSource } from "./data-source";
 import express from "express";
 import session from "express-session";
@@ -21,6 +22,8 @@ import PhotoResolver from "./resolvers/photo";
 // import User from "./entities/User";
 
 const main = async () => {
+  dotenv.config();
+
   // Database
   await AppDataSource.initialize();
   // await Post.delete({}); // deletes posts
