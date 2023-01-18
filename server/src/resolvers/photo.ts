@@ -13,6 +13,15 @@ import {
 import isAuth from "../middleware/isAuth";
 import { Context } from "../types";
 import User from "../entities/User";
+// import { Upload } from "../types/Upload";
+
+@InputType()
+export class Upload {
+  @Field()
+  filename: string;
+  @Field()
+  mimetype: string;
+}
 
 @ObjectType()
 export class PhotoError {
@@ -31,8 +40,8 @@ export class UploadPhotoResponse {
 
 @InputType()
 export class UploadPhotoInput {
-  @Field()
-  src: String;
+  @Field(() => Upload)
+  file: Upload;
 }
 
 @Resolver(Photo)
@@ -82,10 +91,10 @@ class PhotoResolver {
       throw new Error("no user found");
     }
 
-    if (!values.src) {
+    if (!values.file) {
       return {
         error: {
-          message: "there is no image",
+          message: "no file found",
         },
       };
     }
@@ -104,7 +113,9 @@ class PhotoResolver {
           },
         };
 
-      photo.src = values.src;
+      // Upload a photo to bucket
+
+      photo.src = "aphoto.com";
       await photo.save();
 
       user.photo = photo;
@@ -116,7 +127,7 @@ class PhotoResolver {
     }
 
     const photo = new Photo();
-    photo.src = values.src;
+    photo.src = "aphoto.com";
     await photo.save();
 
     user.photo = photo;

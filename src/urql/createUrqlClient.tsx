@@ -1,17 +1,15 @@
 import { Cache, cacheExchange } from "@urql/exchange-graphcache";
-import { ClientOptions, dedupExchange, fetchExchange, gql } from "urql";
+import { multipartFetchExchange } from "@urql/exchange-multipart-fetch";
+import { ClientOptions, dedupExchange } from "urql";
 import {
   CreatePostMutation,
   LoginMutation,
   LogoutMutation,
   MeDocument,
   MeQuery,
-  PostsDocument,
-  PostsQuery,
   RegisterMutation,
 } from "../gen/graphql";
 import { GRAPHQL_URL } from "../utils/constants";
-import { CacheUpdateQuery } from "./CacheUpdateQuery";
 
 const createUrqlClient = (ssrExchange: any, ctx: any): ClientOptions => {
   let cookie = "";
@@ -82,7 +80,7 @@ const createUrqlClient = (ssrExchange: any, ctx: any): ClientOptions => {
         },
       }),
       ssrExchange,
-      fetchExchange,
+      multipartFetchExchange,
     ],
   };
 };

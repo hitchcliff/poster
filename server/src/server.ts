@@ -74,6 +74,7 @@ const main = async () => {
 
   // Apollo
   const apolloServer = new ApolloServer({
+    csrfPrevention: true,
     schema: await buildSchema({
       resolvers: [HelloResolver, PostResolver, UserResolver, PhotoResolver],
       validate: false,
@@ -83,6 +84,7 @@ const main = async () => {
       res,
       redis,
     }),
+
     plugins,
   });
   await apolloServer.start();
