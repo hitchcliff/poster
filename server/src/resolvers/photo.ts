@@ -1,9 +1,9 @@
+import { FileUpload, GraphQLUpload, Upload } from "graphql-upload-ts";
 import {
   Arg,
   Ctx,
   Field,
   InputType,
-  Int,
   Mutation,
   ObjectType,
   Query,
@@ -15,17 +15,6 @@ import isAuth from "../middleware/isAuth";
 import { Context } from "../types";
 import MyPhotoQuery from "./components/MyPhotoQuery";
 import UploadPhotoMutation from "./components/UploadPhotoMutation";
-
-@InputType()
-export class Upload {
-  @Field()
-  filename: string;
-  @Field()
-  mimetype: string;
-
-  @Field(() => Int)
-  size: number;
-}
 
 @ObjectType()
 export class PhotoError {
@@ -41,17 +30,16 @@ export class UploadPhotoResponse {
   @Field({ nullable: true })
   photo?: Photo;
 
-  @Field({ nullable: true })
-  url?: string;
-
-  @Field({ nullable: true })
+  @Field()
   signedRequest?: string;
 }
 
 @InputType()
-export class UploadPhotoInput {
-  @Field(() => Upload)
-  file: Upload;
+export class UploadImgInput {
+  @Field()
+  filename: string;
+  @Field()
+  type: string;
 }
 
 @Resolver(Photo)
@@ -62,13 +50,13 @@ class PhotoResolver {
     return MyPhotoQuery(ctx);
   }
 
-  @UseMiddleware(isAuth)
   @Mutation(() => UploadPhotoResponse)
   async uploadPhoto(
-    @Arg("values") values: UploadPhotoInput,
+    @Arg("options") options: UploadImgInput,
     @Ctx() ctx: Context
   ): Promise<UploadPhotoResponse> {
-    return UploadPhotoMutation(values, ctx);
+    // const f: FileUpload = file as any;
+    return UploadPhotoMutation(options, ctx);
   }
 }
 

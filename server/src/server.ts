@@ -17,6 +17,7 @@ import PostResolver from "./resolvers/post";
 import UserResolver from "./resolvers/user";
 import { COOKIE_NAME } from "./utils/constants";
 import PhotoResolver from "./resolvers/photo";
+import { graphqlUploadExpress } from "graphql-upload-ts";
 // import Photo from "./entities/Photo";
 // import Post from "./entities/Post";
 // import User from "./entities/User";
@@ -87,15 +88,19 @@ const main = async () => {
       res,
       redis,
     }),
-
     plugins,
   });
   await apolloServer.start();
+
+  // Uploading a files/images
+  app.use(graphqlUploadExpress({ maxFileSize: 100000, maxFiles: 1 }));
+
+  // runs the middleware
   apolloServer.applyMiddleware({
     app,
     cors: {
       origin: ["https://studio.apollographql.com/", "http://localhost:3000"],
-      credentials: true,
+      credentials: true, // cookies
     },
   });
 

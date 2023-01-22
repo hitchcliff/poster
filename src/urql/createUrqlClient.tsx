@@ -1,6 +1,6 @@
 import { Cache, cacheExchange } from "@urql/exchange-graphcache";
 import { multipartFetchExchange } from "@urql/exchange-multipart-fetch";
-import { ClientOptions, dedupExchange } from "urql";
+import { ClientOptions, dedupExchange, fetchExchange } from "urql";
 import {
   CreatePostMutation,
   LoginMutation,

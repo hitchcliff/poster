@@ -1,5 +1,6 @@
 import Doornav from "../components/Doornav";
 import ProfileForm from "../components/Form/ProfileForm";
+import ProfilePicture from "../components/Form/ProfilePicture";
 import SecurityForm from "../components/Form/SecurityForm";
 import InfoBar from "../components/InfoBar";
 import PrivateRoute from "../components/Route/PrivateRoute";
@@ -17,9 +18,12 @@ const Settings = () => {
       </div>
 
       <div className="bg-dark text-light rounded-md shadow-md relative p-7 w-full flex flex-col gap-7">
-        <Doornav buttons={["Update Profile", "Privacy & Security"]}>
+        <Doornav
+          buttons={["Update Profile", "Privacy & Security", "Upload Picture"]}
+        >
           <ProfileForm />
           <SecurityForm />
+          <ProfilePicture />
         </Doornav>
       </div>
     </div>

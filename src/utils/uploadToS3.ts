@@ -1,4 +1,5 @@
 import axios from "axios";
+import dayjs from "dayjs";
 import { v4 } from "uuid";
 
 interface uploadToS3Props {
@@ -14,19 +15,11 @@ const uploadToS3 = async ({ file, signedRequest }: uploadToS3Props) => {
         "Content-Type": file.type,
       },
     };
-    const { data } = await axios.put(signedRequest, file, options);
-    console.log(data);
+
+    await axios.put(signedRequest, { data: file });
   } catch (error) {
-    console.log(error);
+    console.error("Kevin Error: ", error);
   }
 };
 
 export default uploadToS3;
-
-export const RenameFile = ({ file }: any) => {
-  const f = file as File;
-
-  const name = f.lastModified + "-" + v4() + "_" + f.name;
-
-  return name;
-};

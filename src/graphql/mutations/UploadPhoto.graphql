@@ -1,5 +1,5 @@
-mutation UploadPhoto($values: UploadPhotoInput!) {
-  uploadPhoto(values: $values) {
+mutation UploadPhoto($options: UploadImgInput!) {
+  uploadPhoto(options: $options) {
     error {
       message
     }
@@ -9,7 +9,6 @@ mutation UploadPhoto($values: UploadPhotoInput!) {
       updatedAt
       src
     }
-    url
     signedRequest
   }
 }

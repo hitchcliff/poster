@@ -88,7 +88,7 @@ export type MutationUpdateUserProfileArgs = {
 
 
 export type MutationUploadPhotoArgs = {
-  values: UploadPhotoInput;
+  options: UploadImgInput;
 };
 
 export type PasswordInput = {
@@ -143,22 +143,16 @@ export type QueryPostsArgs = {
   take: Scalars['Int'];
 };
 
-export type Upload = {
+export type UploadImgInput = {
   filename: Scalars['String'];
-  mimetype: Scalars['String'];
-  size: Scalars['Int'];
-};
-
-export type UploadPhotoInput = {
-  file: Upload;
+  type: Scalars['String'];
 };
 
 export type UploadPhotoResponse = {
   __typename?: 'UploadPhotoResponse';
   error?: Maybe<PhotoError>;
   photo?: Maybe<Photo>;
-  signedRequest?: Maybe<Scalars['String']>;
-  url?: Maybe<Scalars['String']>;
+  signedRequest: Scalars['String'];
 };
 
 export type User = {
@@ -195,13 +189,6 @@ export type UsernamePasswordInput = {
 export type UserFragment = { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any };
 
 export type UserResponseFragment = { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field?: string | null, message?: string | null }> | null, user?: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any } | null };
-
-export type UploadPhotoMutationVariables = Exact<{
-  values: UploadPhotoInput;
-}>;
-
-
-export type UploadPhotoMutation = { __typename?: 'Mutation', uploadPhoto: { __typename?: 'UploadPhotoResponse', url?: string | null, signedRequest?: string | null, error?: { __typename?: 'PhotoError', message: string } | null, photo?: { __typename?: 'Photo', id: number, createdAt: any, updatedAt: any, src: string } | null } };
 
 export type ChangePasswordMutationVariables = Exact<{
   options: ForgotPasswordInput;
@@ -256,6 +243,13 @@ export type UpdateUserProfileMutationVariables = Exact<{
 
 
 export type UpdateUserProfileMutation = { __typename?: 'Mutation', updateUserProfile?: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field?: string | null, message?: string | null }> | null, user?: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any } | null } | null };
+
+export type UploadPhotoMutationVariables = Exact<{
+  options: UploadImgInput;
+}>;
+
+
+export type UploadPhotoMutation = { __typename?: 'Mutation', uploadPhoto: { __typename?: 'UploadPhotoResponse', signedRequest: string, error?: { __typename?: 'PhotoError', message: string } | null, photo?: { __typename?: 'Photo', id: number, createdAt: any, updatedAt: any, src: string } | null } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -510,7 +504,7 @@ export default {
             },
             "args": [
               {
-                "name": "values",
+                "name": "options",
                 "type": {
                   "kind": "NON_NULL",
                   "ofType": {
@@ -791,16 +785,11 @@ export default {
           {
             "name": "signedRequest",
             "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "url",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
             },
             "args": []
           }
@@ -970,27 +959,6 @@ export const UserResponseFragmentDoc = gql`
   }
 }
     ${UserFragmentDoc}`;
-export const UploadPhotoDocument = gql`
-    mutation UploadPhoto($values: UploadPhotoInput!) {
-  uploadPhoto(values: $values) {
-    error {
-      message
-    }
-    photo {
-      id
-      createdAt
-      updatedAt
-      src
-    }
-    url
-    signedRequest
-  }
-}
-    `;
-
-export function useUploadPhotoMutation() {
-  return Urql.useMutation<UploadPhotoMutation, UploadPhotoMutationVariables>(UploadPhotoDocument);
-};
 export const ChangePasswordDocument = gql`
     mutation ChangePassword($options: ForgotPasswordInput!) {
   changePassword(options: $options) {
@@ -1080,6 +1048,26 @@ export const UpdateUserProfileDocument = gql`
 
 export function useUpdateUserProfileMutation() {
   return Urql.useMutation<UpdateUserProfileMutation, UpdateUserProfileMutationVariables>(UpdateUserProfileDocument);
+};
+export const UploadPhotoDocument = gql`
+    mutation UploadPhoto($options: UploadImgInput!) {
+  uploadPhoto(options: $options) {
+    error {
+      message
+    }
+    photo {
+      id
+      createdAt
+      updatedAt
+      src
+    }
+    signedRequest
+  }
+}
+    `;
+
+export function useUploadPhotoMutation() {
+  return Urql.useMutation<UploadPhotoMutation, UploadPhotoMutationVariables>(UploadPhotoDocument);
 };
 export const MeDocument = gql`
     query Me {

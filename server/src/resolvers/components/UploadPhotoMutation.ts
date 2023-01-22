@@ -2,10 +2,12 @@ import { s3 } from "../../utils";
 import Photo from "../../entities/Photo";
 import User from "../../entities/User";
 import { Context } from "../../types";
-import { UploadPhotoInput, UploadPhotoResponse } from "../photo";
+import { UploadImgInput, UploadPhotoResponse } from "../photo";
+import { FileUpload, Upload } from "graphql-upload-ts";
 
 async function UploadPhotoMutation(
-  values: UploadPhotoInput,
+  // file: FileUpload,
+  options: UploadImgInput,
   { req }: Context
 ): Promise<UploadPhotoResponse> {
   const user = await User.findOne({
@@ -16,14 +18,6 @@ async function UploadPhotoMutation(
 
   if (!user) {
     throw new Error("no user found");
-  }
-
-  if (!values.file) {
-    return {
-      error: {
-        message: "no file found",
-      },
-    };
   }
 
   // replace the photo
@@ -44,11 +38,9 @@ async function UploadPhotoMutation(
 
     // upload a photo to bucket
     const { url, signedRequest } = await s3({
-      ...values.file,
-      foldername: process.env.PROFILE_PICTURES,
+      ...options,
+      foldername: "profile-picture",
     });
-
-    console.log("=================" + signedRequest);
 
     photo.src = url;
     await photo.save();
@@ -58,14 +50,14 @@ async function UploadPhotoMutation(
 
     return {
       photo,
-      url,
       signedRequest,
     };
   }
 
+  // if user doesn't have profile image
   // uploads a photo to bucket
   const { url, signedRequest } = await s3({
-    ...values.file,
+    ...options,
     foldername: process.env.PROFILE_PICTURES,
   });
 
@@ -78,7 +70,6 @@ async function UploadPhotoMutation(
 
   return {
     photo,
-    url,
     signedRequest,
   };
 }
