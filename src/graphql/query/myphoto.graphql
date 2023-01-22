@@ -1,0 +1,8 @@
+query MyPhoto($id: Int) {
+  myPhoto(id: $id) {
+    ...Photo
+    user {
+      ...User
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import { IsEmail, Min } from "class-validator";
-import { Field, ObjectType } from "type-graphql";
+import { Field, Int, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   Column,
@@ -51,6 +51,7 @@ class User extends BaseEntity {
   @Column({ type: "text" })
   password!: string;
 
+  @Field(() => Int, { nullable: true })
   @Column({ nullable: true })
   photoId?: number;
 

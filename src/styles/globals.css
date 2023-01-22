@@ -1,5 +1,8 @@
 @tailwind base;
+
 @tailwind components;
+@import "./skeleton.css";
+
 @tailwind utilities;
 
 @import "./doornav.css";

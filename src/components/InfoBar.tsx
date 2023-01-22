@@ -8,14 +8,24 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Img from "next/image";
 import Link from "next/link";
 import PROFILE_IMG from "../assets/images/profile.jpg";
+import { useMeQuery, useMyPhotoQuery } from "../gen/graphql";
 import RoutePattern from "../routes/RoutePattern";
+import Loader from "./Loader";
 import Notifications from "./Notifications";
 
 const InfoBar = () => {
+  const [{ fetching, data }] = useMeQuery();
+
+  if (fetching || !data?.me) return null;
+
+  const { me } = data;
+
   return (
     <div className="h-full px-2 py-7 bg-dark text-light flex-col justify-start items-start">
       <div className="h-10 w-10 border border-white rounded-full bg-white overflow-hidden">
-        <Img className="object-cover" src={PROFILE_IMG} alt="kevin nacario" />
+        {me.photo && (
+          <img className="object-cover" src={me.photo.src} alt={me.username} />
+        )}
       </div>
       <div className="flex flex-col justify-center gap-5 mt-5 infobar-icons">
         <button aria-label="homepage">

@@ -1,0 +1,6 @@
+fragment Photo on Photo {
+  id
+  src
+  createdAt
+  updatedAt
+}

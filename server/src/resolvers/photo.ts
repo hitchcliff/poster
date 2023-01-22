@@ -3,6 +3,7 @@ import {
   Ctx,
   Field,
   InputType,
+  Int,
   Mutation,
   ObjectType,
   Query,
@@ -45,8 +46,8 @@ export class UploadImgInput {
 class PhotoResolver {
   @UseMiddleware(isAuth)
   @Query(() => Photo, { nullable: true })
-  async myPhoto(@Ctx() ctx: Context) {
-    return MyPhotoQuery(ctx);
+  async myPhoto(@Arg("id", () => Int, { nullable: true }) id: number) {
+    return MyPhotoQuery(id);
   }
 
   @Mutation(() => UploadPhotoResponse)

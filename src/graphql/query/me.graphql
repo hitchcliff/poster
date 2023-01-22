@@ -1,5 +1,8 @@
 query Me {
   me {
     ...User
+    photo {
+      ...Photo
+    }
   }
 }

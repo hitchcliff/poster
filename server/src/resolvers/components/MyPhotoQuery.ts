@@ -1,21 +1,10 @@
 import User from "../../entities/User";
 import Photo from "../../entities/Photo";
-import { Context } from "../../types";
 
-async function MyPhotoQuery({ req }: Context): Promise<Photo | null> {
-  const user = await User.findOne({
-    where: {
-      id: req.session.userId,
-    },
-  });
-
-  if (!user) {
-    return null;
-  }
-
+async function MyPhotoQuery(id: number): Promise<Photo | null> {
   const photo = await Photo.findOne({
     where: {
-      id: user.photoId,
+      id,
     },
     relations: {
       user: true,

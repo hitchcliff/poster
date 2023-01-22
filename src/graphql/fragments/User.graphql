@@ -6,4 +6,6 @@ fragment User on User {
   email
   createdAt
   updatedAt
+  #User photo
+  photoId
 }

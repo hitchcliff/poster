@@ -24,7 +24,7 @@ const Home = () => {
 
   return (
     <div className="relative bg-light flex flex-row min-h-screen gap-7">
-      <div className="relative">
+      <div className="relative skeleton">
         <div className="opacity-0">
           <InfoBar />
         </div>
