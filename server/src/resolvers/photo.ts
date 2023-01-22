@@ -1,4 +1,3 @@
-import { FileUpload, GraphQLUpload, Upload } from "graphql-upload-ts";
 import {
   Arg,
   Ctx,
