@@ -1,4 +1,3 @@
-import User from "../../entities/User";
 import Photo from "../../entities/Photo";
 
 async function MyPhotoQuery(id: number): Promise<Photo | null> {

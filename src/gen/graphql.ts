@@ -91,6 +91,17 @@ export type MutationUploadPhotoArgs = {
   options: UploadImgInput;
 };
 
+export type PaginatedPostInput = {
+  limit: Scalars['Float'];
+  offset: Scalars['Float'];
+};
+
+export type PaginatedPostResponse = {
+  __typename?: 'PaginatedPostResponse';
+  postDetails: PostDetails;
+  poster: Poster;
+};
+
 export type PasswordInput = {
   confirmPassword: Scalars['String'];
   newPassword: Scalars['String'];
@@ -119,8 +130,23 @@ export type Post = {
   user: User;
 };
 
+export type PostDetails = {
+  __typename?: 'PostDetails';
+  body: Scalars['String'];
+  id: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
 export type PostInput = {
   body: Scalars['String'];
+};
+
+export type Poster = {
+  __typename?: 'Poster';
+  fullName: Scalars['String'];
+  id: Scalars['Float'];
+  profileImg: Scalars['String'];
+  username: Scalars['String'];
 };
 
 export type Query = {
@@ -128,6 +154,7 @@ export type Query = {
   hello: Scalars['String'];
   me?: Maybe<User>;
   myPhoto?: Maybe<Photo>;
+  paginatedPosts?: Maybe<Array<PaginatedPostResponse>>;
   post: Post;
   posts: Array<Post>;
 };
@@ -135,6 +162,11 @@ export type Query = {
 
 export type QueryMyPhotoArgs = {
   id?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryPaginatedPostsArgs = {
+  options: PaginatedPostInput;
 };
 
 
@@ -270,6 +302,13 @@ export type MyPhotoQueryVariables = Exact<{
 
 
 export type MyPhotoQuery = { __typename?: 'Query', myPhoto?: { __typename?: 'Photo', id: number, src: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any, photoId?: number | null } } | null };
+
+export type PaginatedPostQueryVariables = Exact<{
+  options: PaginatedPostInput;
+}>;
+
+
+export type PaginatedPostQuery = { __typename?: 'Query', paginatedPosts?: Array<{ __typename?: 'PaginatedPostResponse', postDetails: { __typename?: 'PostDetails', id: string, body: string, updatedAt: string }, poster: { __typename?: 'Poster', id: number, username: string, fullName: string, profileImg: string } }> | null };
 
 export type PostsQueryVariables = Exact<{
   take: Scalars['Int'];
@@ -535,6 +574,37 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "PaginatedPostResponse",
+        "fields": [
+          {
+            "name": "postDetails",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PostDetails",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "poster",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Poster",
+                "ofType": null
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "Photo",
         "fields": [
           {
@@ -679,6 +749,97 @@ export default {
       },
       {
         "kind": "OBJECT",
+        "name": "PostDetails",
+        "fields": [
+          {
+            "name": "body",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "id",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "updatedAt",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "Poster",
+        "fields": [
+          {
+            "name": "fullName",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "id",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "profileImg",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
+          {
+            "name": "username",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
         "name": "Query",
         "fields": [
           {
@@ -714,6 +875,32 @@ export default {
                 "type": {
                   "kind": "SCALAR",
                   "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "paginatedPosts",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "NON_NULL",
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "PaginatedPostResponse",
+                  "ofType": null
+                }
+              }
+            },
+            "args": [
+              {
+                "name": "options",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               }
             ]
@@ -1138,6 +1325,27 @@ ${UserFragmentDoc}`;
 
 export function useMyPhotoQuery(options?: Omit<Urql.UseQueryArgs<MyPhotoQueryVariables>, 'query'>) {
   return Urql.useQuery<MyPhotoQuery, MyPhotoQueryVariables>({ query: MyPhotoDocument, ...options });
+};
+export const PaginatedPostDocument = gql`
+    query PaginatedPost($options: PaginatedPostInput!) {
+  paginatedPosts(options: $options) {
+    postDetails {
+      id
+      body
+      updatedAt
+    }
+    poster {
+      id
+      username
+      fullName
+      profileImg
+    }
+  }
+}
+    `;
+
+export function usePaginatedPostQuery(options: Omit<Urql.UseQueryArgs<PaginatedPostQueryVariables>, 'query'>) {
+  return Urql.useQuery<PaginatedPostQuery, PaginatedPostQueryVariables>({ query: PaginatedPostDocument, ...options });
 };
 export const PostsDocument = gql`
     query Posts($take: Int!, $skip: Int!) {

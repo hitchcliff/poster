@@ -1,22 +1,26 @@
 import Img from "next/image";
 import PROFILE_IMG from "../assets/images/profile.jpg";
-import { Post, useMyPhotoQuery } from "../gen/graphql";
+import {
+  PaginatedPostResponse,
+  Post,
+  PostDetails,
+  Poster,
+  useMyPhotoQuery,
+} from "../gen/graphql";
 import { useGlobalSelector } from "../redux/features/global.selector";
 import Comments from "./Comments";
 import PosterInfo from "./PosterInfo";
 import PostReactions from "./PostReactions";
 
 interface FeedsProps {
-  post: Post;
+  poster: Poster;
+  postDetails: PostDetails;
 }
 
-const Feeds = ({
-  post: { id, body, createdAt, updatedAt, user },
-}: FeedsProps) => {
-  const [{ data }] = useMyPhotoQuery({ variables: { id: user.photoId } });
+const Feeds = ({ poster, postDetails }: FeedsProps) => {
   const { toggleComments } = useGlobalSelector();
 
-  console.log(data);
+  if (!poster) return;
 
   return (
     <div className="relative bg-dark text-light rounded-md overflow-hidden p-5 w-full">
@@ -24,12 +28,16 @@ const Feeds = ({
         <div className="h-12 w-12 border-2 border-dark rounded-full bg-white overflow-hidden">
           <img
             className="object-cover w-full h-full"
-            src={data?.myPhoto?.src}
-            alt={user.username}
+            src={poster.profileImg}
+            alt={poster.username}
           />
         </div>
         <div className="text-light px-5 w-full">
-          <PosterInfo body={body} user={user} updatedAt={updatedAt} />
+          <PosterInfo
+            body={postDetails.body}
+            user={poster}
+            updatedAt={postDetails.updatedAt}
+          />
           <PostReactions />
           {toggleComments && <Comments />}
         </div>

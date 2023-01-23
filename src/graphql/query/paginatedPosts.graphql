@@ -1,0 +1,15 @@
+query PaginatedPost($options: PaginatedPostInput!) {
+  paginatedPosts(options: $options) {
+    postDetails {
+      id
+      body
+      updatedAt
+    }
+    poster {
+      id
+      username
+      fullName
+      profileImg
+    }
+  }
+}

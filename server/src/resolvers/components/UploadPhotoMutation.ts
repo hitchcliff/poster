@@ -3,7 +3,6 @@ import Photo from "../../entities/Photo";
 import User from "../../entities/User";
 import { Context } from "../../types";
 import { UploadImgInput, UploadPhotoResponse } from "../photo";
-import { FileUpload, Upload } from "graphql-upload-ts";
 
 async function UploadPhotoMutation(
   // file: FileUpload,

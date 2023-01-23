@@ -1,25 +1,24 @@
 import { faDotCircle, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { User } from "../gen/graphql";
+import { Poster, User } from "../gen/graphql";
 import { useDayJs } from "../hooks";
 import Badge from "./Badge";
 
 interface PosterInfoProps {
   body: string;
-  user: User;
   updatedAt: string;
+  user: Poster;
 }
 
 const PosterInfo = ({ body, user, updatedAt }: PosterInfoProps) => {
   const date = useDayJs({ fromNow: updatedAt });
-  const fullName = `${user.firstName} ${user.lastName}`;
 
   return (
     <>
       <div className="flex justify-between w-full">
         <div className="flex w-full">
           <h2 className="font-bold mr-2">
-            {!user.firstName || !user.lastName ? user.username : fullName}
+            {!user.fullName ? user.username : user.fullName}
             <Badge />
           </h2>
           <span className="text-light opacity-80 mr-2">@{user.username}</span>

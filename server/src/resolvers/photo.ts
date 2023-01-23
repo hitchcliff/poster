@@ -46,7 +46,9 @@ export class UploadImgInput {
 class PhotoResolver {
   @UseMiddleware(isAuth)
   @Query(() => Photo, { nullable: true })
-  async myPhoto(@Arg("id", () => Int, { nullable: true }) id: number) {
+  async myPhoto(
+    @Arg("id", () => Int, { nullable: true }) id: number
+  ): Promise<Photo | null> {
     return MyPhotoQuery(id);
   }
 
