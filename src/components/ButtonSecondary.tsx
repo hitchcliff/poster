@@ -9,7 +9,8 @@ const ButtonSecondary = ({ isSubmitting, ...props }: ButtonProps) => {
     <button
       {...props}
       className={
-        props.className + "  z-50 block bg-blue-500 rounded-sm p-1 px-5 text-sm"
+        props.className +
+        "  z-50 block bg-blue-500 text-white rounded-sm p-1 px-5 text-sm"
       }
     >
       {isSubmitting ? (

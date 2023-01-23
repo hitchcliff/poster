@@ -3,8 +3,8 @@ import InputField from "./Form/InputField";
 
 const SearchBar = () => {
   return (
-    <div className="flex flex-col w-full">
-      <h2 className="text-dark font-bold">Search</h2>
+    <div className="flex flex-col w-full text-dark dark:text-light ">
+      <h2 className="font-bold">Search</h2>
       <Formik
         initialValues={{ search: "" }}
         onSubmit={() => {
@@ -16,7 +16,7 @@ const SearchBar = () => {
             <InputField
               name="search"
               placeholder="Search something..."
-              className="bg-dark text-light p-2 rounded-md"
+              className="bg-light text-dark dark:bg-dark dark:text-light p-2 rounded-md"
             />
           </Form>
         )}

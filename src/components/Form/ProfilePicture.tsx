@@ -94,10 +94,8 @@ const ProfilePicture = () => {
                 ) : (
                   <div
                     {...getRootProps()}
-                    className={`outline-dashed p-10 text-center transition-all cursor-pointer ${
-                      isDragActive
-                        ? "outline-secondary bg-secondary"
-                        : "bg-transparent outline-white"
+                    className={`outline-dashed outline-light-mode dark:outline-white p-10 text-center transition-all cursor-pointer ${
+                      isDragActive && "outline-secondary bg-secondary"
                     }
                       ${acceptedFiles[0] ? "mt-2" : "mt-0"}
                       `}
@@ -112,7 +110,7 @@ const ProfilePicture = () => {
                       </span>
                     ) : (
                       <span>
-                        <span className="rounded-md shadow-sm py-2 px-4 bg-white text-dark mr-2">
+                        <span className="rounded-md shadow-sm py-2 px-4 bg-dark text-light dark:text-dark dark:bg-white mr-2">
                           Upload Picture
                         </span>
                         <span>Or drag and drop files .jpg, .png, .webp</span>

@@ -6,9 +6,9 @@ import ButtonSecondary from "./ButtonSecondary";
 
 const FriendSuggestions = () => {
   return (
-    <div className="flex flex-col w-full">
-      <h2 className="text-dark font-bold">Friend suggestions</h2>
-      <div className="bg-dark text-light p-5 overflow-hidden shadow-sm rounded-md ">
+    <div className="flex flex-col w-full text-dark dark:text-light">
+      <h2 className="font-bold">Friend suggestions</h2>
+      <div className="bg-light text-dark dark:bg-dark dark:text-light p-5 overflow-hidden shadow-sm rounded-md ">
         <div className="py-2 flex flex-row">
           <div className="h-12 w-12 mr-5 border-2 border-dark rounded-full bg-white overflow-hidden">
             <Image

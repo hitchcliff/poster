@@ -41,6 +41,9 @@ class Poster {
 @ObjectType()
 class PaginatedPostResponse {
   @Field()
+  id: number;
+
+  @Field()
   poster: Poster;
 
   @Field()
@@ -90,6 +93,7 @@ class PostResolver {
 
     data.map((item: any) => {
       formattedData.push({
+        id: item.postId,
         postDetails: {
           id: item.postId,
           body: item.body,

@@ -21,8 +21,8 @@ const PosterInfo = ({ body, user, updatedAt }: PosterInfoProps) => {
             {!user.fullName ? user.username : user.fullName}
             <Badge />
           </h2>
-          <span className="text-light opacity-80 mr-2">@{user.username}</span>
-          <span className="text-light opacity-80">
+          <span className="opacity-80 mr-2">@{user.username}</span>
+          <span className="opacity-80">
             <FontAwesomeIcon
               icon={faDotCircle}
               className="mr-2 text-green-400"
@@ -34,7 +34,7 @@ const PosterInfo = ({ body, user, updatedAt }: PosterInfoProps) => {
           <FontAwesomeIcon icon={faPenToSquare} />
         </div>
       </div>
-      <div className="text-white mt-2">
+      <div className="mt-2">
         <p>{body}</p>
       </div>
     </>

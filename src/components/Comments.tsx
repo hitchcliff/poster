@@ -23,7 +23,7 @@ const Comments = () => {
                 name="comment"
                 type="comment"
                 placeholder="Leave your comment"
-                className="mt-0 p-2 rounded-md shadow-md"
+                className="mt-2 p-2 rounded-md shadow-md bg-light dark:bg-dark"
               />
               <ButtonSecondary
                 className="absolute top-1/2 transform -translate-y-1/2 right-2"
@@ -37,7 +37,7 @@ const Comments = () => {
         )}
       </Formik>
       <div className="mt-5 flex">
-        <div className="h-7 w-7 mr-5 border-2 border-dark rounded-full bg-white overflow-hidden">
+        <div className="h-7 w-7 mr-5 border-2 dark:border-dark rounded-full overflow-hidden">
           <Img className="object-cover" src={PROFILE_IMG} alt="kevin nacario" />
         </div>
         <p>Amazing as always!</p>

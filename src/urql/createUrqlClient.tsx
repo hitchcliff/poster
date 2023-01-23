@@ -30,6 +30,7 @@ const createUrqlClient = (ssrExchange: any, ctx: any): ClientOptions => {
     },
     exchanges: [
       dedupExchange,
+
       cacheExchange({
         updates: {
           Mutation: {

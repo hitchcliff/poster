@@ -24,7 +24,7 @@ const Home = () => {
   if (!fetchPosts?.paginatedPosts) return <Loader />;
 
   return (
-    <div className="relative bg-light flex flex-row min-h-screen gap-7">
+    <div className="relative bg-light-mode dark:bg-dark-mode flex flex-row min-h-screen gap-7">
       <div className="relative skeleton">
         <div className="opacity-0">
           <InfoBar />

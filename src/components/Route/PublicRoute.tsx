@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import { WithUrqlClientOptions, withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
+import Script from "next/script";
 import { useEffect } from "react";
 import { useMeQuery } from "../../gen/graphql";
 import RoutePattern from "../../routes/RoutePattern";
@@ -32,7 +33,11 @@ const PublicRoute = (
 
     if (user?.me) return <Loader />;
 
-    return <Component {...props} />;
+    return (
+      <>
+        <Component {...props} />
+      </>
+    );
   };
 
   return withUrqlClient(createUrqlClient, options)(C);

@@ -1,38 +1,38 @@
 import {
-  faArrowCircleRight,
   faArrowRightFromBracket,
-  faArrowRightToBracket,
-  faArrowsUpDownLeftRight,
-  faArrowUpFromBracket,
   faBell,
   faGear,
   faHome,
   faMessage,
+  faMoon,
+  faSun,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Img from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import PROFILE_IMG from "../assets/images/profile.jpg";
-import { useLogoutMutation, useMeQuery, useMyPhotoQuery } from "../gen/graphql";
+import { useLogoutMutation, useMeQuery } from "../gen/graphql";
+import useSpaghetti from "../hooks/useSpaghetti";
 import RoutePattern from "../routes/RoutePattern";
-import Loader from "./Loader";
 import Notifications from "./Notifications";
 
 const InfoBar = () => {
+  const [toggle, setToggle] = useSpaghetti();
   const [{ fetching, data }] = useMeQuery();
   const [, logout] = useLogoutMutation();
-  const router = useRouter();
 
   if (fetching || !data?.me) return null;
 
   const { me } = data;
 
   return (
-    <div className="h-full px-2 py-7 bg-dark text-light flex flex-col justify-start items-center ">
-      <div className="h-10 w-10 border border-white rounded-full bg-white overflow-hidden">
+    <div className="h-full px-2 py-7 bg-light text-dark dark:bg-dark dark:text-light flex flex-col justify-start items-center ">
+      <div className="h-10 w-10 border border-dark dark:border-white rounded-full bg-white overflow-hidden">
         {me.photo && (
-          <img className="object-cover" src={me.photo.src} alt={me.username} />
+          <img
+            className="object-cover w-full h-full"
+            src={me.photo.src}
+            alt={me.username}
+          />
         )}
       </div>
       <div className="flex flex-col justify-center gap-5 mt-5 infobar-icons">
@@ -58,6 +58,18 @@ const InfoBar = () => {
             <FontAwesomeIcon icon={faGear} />
           </Link>
         </button>
+        <button
+          aria-label="mode-switch"
+          onClick={() => {
+            setToggle(!toggle);
+          }}
+        >
+          {toggle ? (
+            <FontAwesomeIcon className="text-yellow-400" icon={faSun} />
+          ) : (
+            <FontAwesomeIcon className="text-gray-400" icon={faMoon} />
+          )}
+        </button>
       </div>
       <div className="w-full mt-auto mx-auto">
         <button
@@ -65,7 +77,7 @@ const InfoBar = () => {
             await logout({});
           }}
           aria-label="logout"
-          className="p-2 rounded-full bg-red-500 w-10 h-10"
+          className="p-2 rounded-full bg-red-500 w-10 h-10 text-white"
         >
           <FontAwesomeIcon icon={faArrowRightFromBracket} />
         </button>

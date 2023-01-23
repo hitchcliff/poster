@@ -98,6 +98,7 @@ export type PaginatedPostInput = {
 
 export type PaginatedPostResponse = {
   __typename?: 'PaginatedPostResponse';
+  id: Scalars['Float'];
   postDetails: PostDetails;
   poster: Poster;
 };
@@ -308,7 +309,7 @@ export type PaginatedPostQueryVariables = Exact<{
 }>;
 
 
-export type PaginatedPostQuery = { __typename?: 'Query', paginatedPosts?: Array<{ __typename?: 'PaginatedPostResponse', postDetails: { __typename?: 'PostDetails', id: string, body: string, updatedAt: string }, poster: { __typename?: 'Poster', id: number, username: string, fullName: string, profileImg: string } }> | null };
+export type PaginatedPostQuery = { __typename?: 'Query', paginatedPosts?: Array<{ __typename?: 'PaginatedPostResponse', id: number, postDetails: { __typename?: 'PostDetails', id: string, body: string, updatedAt: string }, poster: { __typename?: 'Poster', id: number, username: string, fullName: string, profileImg: string } }> | null };
 
 export type PostsQueryVariables = Exact<{
   take: Scalars['Int'];
@@ -576,6 +577,17 @@ export default {
         "kind": "OBJECT",
         "name": "PaginatedPostResponse",
         "fields": [
+          {
+            "name": "id",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
+          },
           {
             "name": "postDetails",
             "type": {
@@ -1329,6 +1341,7 @@ export function useMyPhotoQuery(options?: Omit<Urql.UseQueryArgs<MyPhotoQueryVar
 export const PaginatedPostDocument = gql`
     query PaginatedPost($options: PaginatedPostInput!) {
   paginatedPosts(options: $options) {
+    id
     postDetails {
       id
       body
