@@ -41,12 +41,12 @@ const createUrqlClient = (ssrExchange: any, ctx: any): ClientOptions => {
             ) => {
               const allFields = cache.inspectFields("Query"); // get all the query
               const fieldInfos = allFields.filter(
-                (info) => info.fieldName === "posts" // filter the query
+                (info) => info.fieldName === "paginatedPosts" // filter the query
               );
 
               // invalidate all query
               fieldInfos.forEach((fi) => {
-                cache.invalidate("Query", "posts", fi.arguments || {});
+                cache.invalidate("Query", "paginatedPosts", fi.arguments || {});
               });
             },
             register: (result: RegisterMutation, args, cache: Cache, _info) => {

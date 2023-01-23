@@ -1,4 +1,9 @@
 import {
+  faArrowCircleRight,
+  faArrowRightFromBracket,
+  faArrowRightToBracket,
+  faArrowsUpDownLeftRight,
+  faArrowUpFromBracket,
   faBell,
   faGear,
   faHome,
@@ -7,21 +12,24 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Img from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import PROFILE_IMG from "../assets/images/profile.jpg";
-import { useMeQuery, useMyPhotoQuery } from "../gen/graphql";
+import { useLogoutMutation, useMeQuery, useMyPhotoQuery } from "../gen/graphql";
 import RoutePattern from "../routes/RoutePattern";
 import Loader from "./Loader";
 import Notifications from "./Notifications";
 
 const InfoBar = () => {
   const [{ fetching, data }] = useMeQuery();
+  const [, logout] = useLogoutMutation();
+  const router = useRouter();
 
   if (fetching || !data?.me) return null;
 
   const { me } = data;
 
   return (
-    <div className="h-full px-2 py-7 bg-dark text-light flex-col justify-start items-start">
+    <div className="h-full px-2 py-7 bg-dark text-light flex flex-col justify-start items-center ">
       <div className="h-10 w-10 border border-white rounded-full bg-white overflow-hidden">
         {me.photo && (
           <img className="object-cover" src={me.photo.src} alt={me.username} />
@@ -49,6 +57,17 @@ const InfoBar = () => {
           <Link href={RoutePattern.SETTINGS}>
             <FontAwesomeIcon icon={faGear} />
           </Link>
+        </button>
+      </div>
+      <div className="w-full mt-auto mx-auto">
+        <button
+          onClick={async () => {
+            await logout({});
+          }}
+          aria-label="logout"
+          className="p-2 rounded-full bg-red-500 w-10 h-10"
+        >
+          <FontAwesomeIcon icon={faArrowRightFromBracket} />
         </button>
       </div>
     </div>

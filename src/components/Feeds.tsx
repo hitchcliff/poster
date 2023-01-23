@@ -9,6 +9,7 @@ import {
 } from "../gen/graphql";
 import { useGlobalSelector } from "../redux/features/global.selector";
 import Comments from "./Comments";
+import Loader from "./Loader";
 import PosterInfo from "./PosterInfo";
 import PostReactions from "./PostReactions";
 
@@ -20,7 +21,7 @@ interface FeedsProps {
 const Feeds = ({ poster, postDetails }: FeedsProps) => {
   const { toggleComments } = useGlobalSelector();
 
-  if (!poster) return;
+  if (!poster) return <Loader />;
 
   return (
     <div className="relative bg-dark text-light rounded-md overflow-hidden p-5 w-full">
