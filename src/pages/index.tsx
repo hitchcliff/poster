@@ -33,16 +33,7 @@ const Index = () => {
             </p>
             <p className="text-xl mt-5">
               This app is built in NextJs, Postress, NodeJs, Graphql, Urql,
-              Apollo, and Redis.{" "}
-              <a
-                className="italic text-blue-500 underline"
-                href="#"
-                target="_blank"
-                rel="noreferrer"
-              >
-                {" "}
-                View code in Github
-              </a>
+              Apollo, Redis, AWS, and much more.
             </p>
           </div>
 
@@ -52,7 +43,7 @@ const Index = () => {
               <FontAwesomeIcon className="text-red-600" icon={faHeart} /> by{" "}
               <a
                 className="underline text-primary"
-                href="httpsL//kevinnacario.com"
+                href="https://www.linkedin.com/in/kevin-nacario-57485718a/"
                 target="_blank"
                 rel="noreferrer"
               >
