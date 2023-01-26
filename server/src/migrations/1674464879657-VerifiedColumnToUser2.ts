@@ -1,15 +1,17 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class UserAddFirstLast1673252223040 implements MigrationInterface {
+export class VerifiedColumnToUser21674464879657 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
-            ALTER TABLE user ADD "firstName"
+        alter table public.user
+        add verified bool 
         `);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
-        ALTER TABLE user DROP "firstName"
-    `);
+        alter table public.user
+        drop verified 
+        `);
   }
 }

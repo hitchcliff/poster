@@ -29,6 +29,10 @@ class User extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @Field({ defaultValue: false })
+  @Column({ default: false })
+  verified: boolean;
+
   @Field({ nullable: true })
   @Column({ nullable: true })
   firstName: string;

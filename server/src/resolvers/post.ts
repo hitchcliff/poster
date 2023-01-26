@@ -31,11 +31,13 @@ class Poster {
   @Field()
   id: number;
   @Field()
+  verified: boolean;
+  @Field()
   username: string;
   @Field()
   fullName: string;
-  @Field()
-  profileImg: string;
+  @Field({ nullable: true })
+  profileImg?: string;
 }
 
 @ObjectType()
@@ -70,21 +72,20 @@ class PostResolver {
   async paginatedPosts(
     @Arg("options") options: PaginatedPostInput
   ): Promise<PaginatedPostResponse[] | null> {
-    // 2 offset x 3 limit = 6 offset
-
     const sql = `
-        SELECT public.user.id   AS "userId"
-              ,public.user.username
-              ,CONCAT(public.user."firstName" ,public.user."lastName") as "fullName"
-              ,public.post.id   AS "postId"
-              ,public.post.body
-              ,public.post."updatedAt"
-              ,public.photo.src AS "profileImg"
-        FROM public.post
-        INNER JOIN public.user
-        ON public.post."userId" = public.user.id
-        INNER JOIN public.photo
-        ON public.user."photoId" = public.photo.id
+        SELECT  u.id                                AS "userId"
+               ,u.username
+               ,u.verified
+               ,CONCAT(u."firstName" ,u."lastName") AS "fullName"
+               ,post.id                             AS "postId"
+               ,post.body
+               ,post."updatedAt"
+               ,photo.src                           AS "profileImg"
+        FROM public.post post
+        LEFT JOIN public.user u
+          ON post."userId" = u.id
+        LEFT JOIN public.photo photo
+          ON u."photoId" = photo.id
         ORDER BY "updatedAt" desc offset ${options.offset} rows fetch next ${options.limit} rows only
     `;
 
@@ -104,6 +105,7 @@ class PostResolver {
           username: item.username,
           fullName: item.fullName,
           profileImg: item.profileImg,
+          verified: item.verified,
         },
       });
     });

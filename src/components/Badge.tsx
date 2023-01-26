@@ -1,17 +1,12 @@
-import {
-  faCheckCircle,
-  faCheckDouble,
-  faCheckToSlot,
-  faIdBadge,
-  faUserCheck,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Badge = () => {
   return (
-    <div className="ml-2 w-5 h-5 inline-block leading-0 bg-primary text-white rounded-full">
+    <div className="ml-2 inline-block leading-0 text-white">
       <FontAwesomeIcon
-        icon={faCheckDouble}
+        className="leading-0 bg-primary p-1 rounded-full text-xs"
+        icon={faCheck}
         data-label="verified"
         title="verfied"
       />

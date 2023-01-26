@@ -148,6 +148,7 @@ export type Poster = {
   id: Scalars['Float'];
   profileImg: Scalars['String'];
   username: Scalars['String'];
+  verified: Scalars['Boolean'];
 };
 
 export type Query = {
@@ -205,6 +206,7 @@ export type User = {
   posts?: Maybe<Array<Post>>;
   updatedAt: Scalars['DateTime'];
   username: Scalars['String'];
+  verified?: Maybe<Scalars['Boolean']>;
 };
 
 export type UserProfileInput = {
@@ -227,23 +229,23 @@ export type UsernamePasswordInput = {
 
 export type PhotoFragment = { __typename?: 'Photo', id: number, src: string, createdAt: any, updatedAt: any };
 
-export type UserFragment = { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any, photoId?: number | null };
+export type UserFragment = { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any, photoId?: number | null, verified?: boolean | null };
 
-export type UserResponseFragment = { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field?: string | null, message?: string | null }> | null, user?: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any, photoId?: number | null } | null };
+export type UserResponseFragment = { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field?: string | null, message?: string | null }> | null, user?: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any, photoId?: number | null, verified?: boolean | null } | null };
 
 export type ChangePasswordMutationVariables = Exact<{
   options: ForgotPasswordInput;
 }>;
 
 
-export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field?: string | null, message?: string | null }> | null, user?: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any, photoId?: number | null } | null } };
+export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field?: string | null, message?: string | null }> | null, user?: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any, photoId?: number | null, verified?: boolean | null } | null } };
 
 export type CreatePostMutationVariables = Exact<{
   input: PostInput;
 }>;
 
 
-export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: number, body: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any, photoId?: number | null } } };
+export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: number, body: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any, photoId?: number | null, verified?: boolean | null } } };
 
 export type ForgotPasswordMutationVariables = Exact<{
   email: Scalars['String'];
@@ -257,7 +259,7 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field?: string | null, message?: string | null }> | null, user?: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any, photoId?: number | null } | null } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field?: string | null, message?: string | null }> | null, user?: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any, photoId?: number | null, verified?: boolean | null } | null } };
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -269,21 +271,21 @@ export type RegisterMutationVariables = Exact<{
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field?: string | null, message?: string | null }> | null, user?: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any, photoId?: number | null } | null } };
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field?: string | null, message?: string | null }> | null, user?: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any, photoId?: number | null, verified?: boolean | null } | null } };
 
 export type UpdatePasswordMutationVariables = Exact<{
   options: PasswordInput;
 }>;
 
 
-export type UpdatePasswordMutation = { __typename?: 'Mutation', updatePassword: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field?: string | null, message?: string | null }> | null, user?: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any, photoId?: number | null } | null } };
+export type UpdatePasswordMutation = { __typename?: 'Mutation', updatePassword: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field?: string | null, message?: string | null }> | null, user?: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any, photoId?: number | null, verified?: boolean | null } | null } };
 
 export type UpdateUserProfileMutationVariables = Exact<{
   options: UserProfileInput;
 }>;
 
 
-export type UpdateUserProfileMutation = { __typename?: 'Mutation', updateUserProfile?: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field?: string | null, message?: string | null }> | null, user?: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any, photoId?: number | null } | null } | null };
+export type UpdateUserProfileMutation = { __typename?: 'Mutation', updateUserProfile?: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field?: string | null, message?: string | null }> | null, user?: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any, photoId?: number | null, verified?: boolean | null } | null } | null };
 
 export type UploadPhotoMutationVariables = Exact<{
   options: UploadImgInput;
@@ -295,21 +297,21 @@ export type UploadPhotoMutation = { __typename?: 'Mutation', uploadPhoto: { __ty
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any, photoId?: number | null, photo?: { __typename?: 'Photo', id: number, src: string, createdAt: any, updatedAt: any } | null } | null };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any, photoId?: number | null, verified?: boolean | null, photo?: { __typename?: 'Photo', id: number, src: string, createdAt: any, updatedAt: any } | null } | null };
 
 export type MyPhotoQueryVariables = Exact<{
   id?: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type MyPhotoQuery = { __typename?: 'Query', myPhoto?: { __typename?: 'Photo', id: number, src: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any, photoId?: number | null } } | null };
+export type MyPhotoQuery = { __typename?: 'Query', myPhoto?: { __typename?: 'Photo', id: number, src: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any, photoId?: number | null, verified?: boolean | null } } | null };
 
 export type PaginatedPostQueryVariables = Exact<{
   options: PaginatedPostInput;
 }>;
 
 
-export type PaginatedPostQuery = { __typename?: 'Query', paginatedPosts?: Array<{ __typename?: 'PaginatedPostResponse', id: number, postDetails: { __typename?: 'PostDetails', id: string, body: string, updatedAt: string }, poster: { __typename?: 'Poster', id: number, username: string, fullName: string, profileImg: string } }> | null };
+export type PaginatedPostQuery = { __typename?: 'Query', paginatedPosts?: Array<{ __typename?: 'PaginatedPostResponse', id: number, postDetails: { __typename?: 'PostDetails', id: string, body: string, updatedAt: string }, poster: { __typename?: 'Poster', id: number, verified: boolean, username: string, fullName: string, profileImg: string } }> | null };
 
 export type PostsQueryVariables = Exact<{
   take: Scalars['Int'];
@@ -317,7 +319,7 @@ export type PostsQueryVariables = Exact<{
 }>;
 
 
-export type PostsQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', id: number, body: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any, photoId?: number | null } }> };
+export type PostsQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', id: number, body: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', id: number, firstName?: string | null, lastName?: string | null, username: string, email: string, createdAt: any, updatedAt: any, photoId?: number | null, verified?: boolean | null } }> };
 
 import { IntrospectionQuery } from 'graphql';
 export default {
@@ -846,6 +848,17 @@ export default {
               }
             },
             "args": []
+          },
+          {
+            "name": "verified",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
+            },
+            "args": []
           }
         ],
         "interfaces": []
@@ -1124,6 +1137,14 @@ export default {
               }
             },
             "args": []
+          },
+          {
+            "name": "verified",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": []
           }
         ],
         "interfaces": []
@@ -1185,6 +1206,7 @@ export const UserFragmentDoc = gql`
   createdAt
   updatedAt
   photoId
+  verified
 }
     `;
 export const UserResponseFragmentDoc = gql`
@@ -1349,6 +1371,7 @@ export const PaginatedPostDocument = gql`
     }
     poster {
       id
+      verified
       username
       fullName
       profileImg

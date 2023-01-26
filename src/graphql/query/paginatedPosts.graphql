@@ -8,6 +8,7 @@ query PaginatedPost($options: PaginatedPostInput!) {
     }
     poster {
       id
+      verified
       username
       fullName
       profileImg

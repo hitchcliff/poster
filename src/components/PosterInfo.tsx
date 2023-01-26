@@ -19,7 +19,7 @@ const PosterInfo = ({ body, user, updatedAt }: PosterInfoProps) => {
         <div className="flex w-full">
           <h2 className="font-bold mr-2">
             {!user.fullName ? user.username : user.fullName}
-            <Badge />
+            {user.verified && <Badge />}
           </h2>
           <span className="opacity-80 mr-2">@{user.username}</span>
           <span className="opacity-80">
