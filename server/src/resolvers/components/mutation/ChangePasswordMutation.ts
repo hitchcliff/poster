@@ -1,7 +1,7 @@
-import User from "../../entities/User";
-import { FORGET_PASSWORD_PREFIX } from "../../utils/constants";
-import { Context } from "../../types";
-import { ForgotPasswordInput } from "../user";
+import User from "../../../entities/User";
+import { FORGET_PASSWORD_PREFIX } from "../../../utils/constants";
+import { Context } from "../../../types";
+import { ForgotPasswordInput } from "../../user";
 import argon2 from "argon2";
 
 const ChangePasswordMutation = async (

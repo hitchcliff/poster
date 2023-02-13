@@ -13,8 +13,8 @@ import {
 import Photo from "../entities/Photo";
 import isAuth from "../middleware/isAuth";
 import { Context } from "../types";
-import MyPhotoQuery from "./components/MyPhotoQuery";
-import UploadPhotoMutation from "./components/UploadPhotoMutation";
+import { UploadPhotoMutation } from "./components/mutation";
+import { MyPhotoQuery } from "./components/query";
 
 @ObjectType()
 export class PhotoError {

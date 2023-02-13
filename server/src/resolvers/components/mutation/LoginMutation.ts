@@ -1,7 +1,7 @@
-import { Context } from "../../types";
-import { LoginInput } from "../user";
+import { Context } from "../../../types";
+import { LoginInput } from "../../user";
 import argon2 from "argon2";
-import User from "../../entities/User";
+import User from "../../../entities/User";
 
 const LoginMutation = async (options: LoginInput, { req }: Context) => {
   const user = await User.findOne({

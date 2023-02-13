@@ -17,11 +17,11 @@ import {
   ForgotPasswordMutation,
   LoginMutation,
   LogoutMutation,
-  MeQuery,
   RegisterMutation,
   UpdatePasswordMutation,
   UpdateUserProfileMutation,
-} from "./components";
+} from "./components/mutation";
+import { MeQuery } from "./components/query";
 
 @InputType()
 export class UserProfileInput {

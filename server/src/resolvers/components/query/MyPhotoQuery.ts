@@ -1,4 +1,4 @@
-import Photo from "../../entities/Photo";
+import Photo from "../../../entities/Photo";
 
 async function MyPhotoQuery(id: number): Promise<Photo | null> {
   const photo = await Photo.findOne({

@@ -14,7 +14,7 @@ import {
 import isAuth from "../middleware/isAuth";
 import { Context } from "../types";
 import User from "../entities/User";
-import { AppDataSource } from "../data-source";
+import { PaginatedPostQuery } from "./components/query";
 
 @ObjectType()
 class PostDetails {
@@ -41,7 +41,7 @@ class Poster {
 }
 
 @ObjectType()
-class PaginatedPostResponse {
+export class PaginatedPostResponse {
   @Field()
   id: number;
 
@@ -53,7 +53,7 @@ class PaginatedPostResponse {
 }
 
 @InputType()
-class PaginatedPostInput {
+export class PaginatedPostInput {
   @Field()
   offset: number;
   @Field()
@@ -72,45 +72,7 @@ class PostResolver {
   async paginatedPosts(
     @Arg("options") options: PaginatedPostInput
   ): Promise<PaginatedPostResponse[] | null> {
-    const sql = `
-        SELECT  u.id                                AS "userId"
-               ,u.username
-               ,u.verified
-               ,CONCAT(u."firstName" ,u."lastName") AS "fullName"
-               ,post.id                             AS "postId"
-               ,post.body
-               ,post."updatedAt"
-               ,photo.src                           AS "profileImg"
-        FROM public.post post
-        LEFT JOIN public.user u
-          ON post."userId" = u.id
-        LEFT JOIN public.photo photo
-          ON u."photoId" = photo.id
-        ORDER BY "updatedAt" desc offset ${options.offset} rows fetch next ${options.limit} rows only
-    `;
-
-    const data = await AppDataSource.createQueryRunner().query(sql);
-    const formattedData: PaginatedPostResponse[] = [];
-
-    data.map((item: any) => {
-      formattedData.push({
-        id: item.postId,
-        postDetails: {
-          id: item.postId,
-          body: item.body,
-          updatedAt: item.updatedAt,
-        },
-        poster: {
-          id: item.userId,
-          username: item.username,
-          fullName: item.fullName,
-          profileImg: item.profileImg,
-          verified: item.verified,
-        },
-      });
-    });
-
-    return formattedData;
+    return await PaginatedPostQuery(options);
   }
 
   @Query(() => [Post])

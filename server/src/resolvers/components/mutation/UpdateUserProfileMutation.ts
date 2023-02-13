@@ -1,6 +1,6 @@
-import User from "../../entities/User";
-import { Context } from "../../types";
-import { UserProfileInput, UserResponse } from "../user";
+import User from "../../../entities/User";
+import { Context } from "../../../types";
+import { UserProfileInput, UserResponse } from "../../user";
 
 const UpdateUserProfileMutation = async (
   options: UserProfileInput,

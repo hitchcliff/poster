@@ -1,5 +1,5 @@
-import User from "../../entities/User";
-import { Context } from "../../types";
+import User from "../../../entities/User";
+import { Context } from "../../../types";
 
 async function MeQuery({ req }: Context) {
   if (!req.session.userId) return null;

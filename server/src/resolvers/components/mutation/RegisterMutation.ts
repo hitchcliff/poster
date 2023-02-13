@@ -1,7 +1,7 @@
-import { Context } from "../../types";
-import User from "../../entities/User";
-import { unique, validation } from "../../utils";
-import { UsernamePasswordInput } from "../user";
+import { Context } from "../../../types";
+import User from "../../../entities/User";
+import { unique, validation } from "../../../utils";
+import { UsernamePasswordInput } from "../../user";
 import argon2 from "argon2";
 
 const RegisterMutation = async (

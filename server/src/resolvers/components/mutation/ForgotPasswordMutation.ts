@@ -1,8 +1,8 @@
-import { Context } from "../../types";
-import User from "../../entities/User";
+import { Context } from "../../../types";
+import User from "../../../entities/User";
 import { v4 } from "uuid";
-import { BASE_URL, FORGET_PASSWORD_PREFIX } from "../../utils/constants";
-import { sendEmail } from "../../utils";
+import { BASE_URL, FORGET_PASSWORD_PREFIX } from "../../../utils/constants";
+import { sendEmail } from "../../../utils";
 
 const ForgotPasswordMutation = async (email: string, { redis }: Context) => {
   const user = await User.findOne({

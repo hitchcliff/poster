@@ -1,8 +1,8 @@
-import { s3 } from "../../utils";
-import Photo from "../../entities/Photo";
-import User from "../../entities/User";
-import { Context } from "../../types";
-import { UploadImgInput, UploadPhotoResponse } from "../photo";
+import { s3 } from "../../../utils";
+import Photo from "../../../entities/Photo";
+import User from "../../../entities/User";
+import { Context } from "../../../types";
+import { UploadImgInput, UploadPhotoResponse } from "../../photo";
 
 async function UploadPhotoMutation(
   // file: FileUpload,

@@ -18,13 +18,18 @@ const Feeds = ({ poster, postDetails }: FeedsProps) => {
   return (
     <div className="relative bg-light text-dark dark:bg-dark dark:text-light rounded-md overflow-hidden p-5 w-full">
       <div className="flex flex-row justify-start">
-        <div className="h-12 w-12  bg-white dark:bg-dark overflow-hidden">
-          <img
-            className="object-cover w-full h-auto rounded-full m-0 border-2 border-dark"
-            src={poster.profileImg}
-            alt={poster.username}
-          />
+        <div className="w-12">
+          <div className="w-full rounded-full m-0 dark:bg-white bg-dark overflow-hidden">
+            {poster.profileImg && (
+              <img
+                className="object-cover w-full h-auto rounded-full m-0"
+                src={poster.profileImg}
+                alt={poster.username}
+              />
+            )}
+          </div>
         </div>
+
         <div className="px-5 w-full">
           <PosterInfo
             body={postDetails.body}

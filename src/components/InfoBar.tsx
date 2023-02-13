@@ -26,10 +26,10 @@ const InfoBar = () => {
 
   return (
     <div className="h-full px-2 py-7 bg-light text-dark dark:bg-dark dark:text-light flex flex-col justify-start items-center ">
-      <div className="h-10 w-10  dark:border-white bg-white overflow-hidden">
+      <div className="h-10 w-10 rounded-full bg-dark dark:bg-white overflow-hidden">
         {me.photo && (
           <img
-            className="object-cover w-full h-auto m-0 border border-dark rounded-full"
+            className="object-cover w-full h-auto m-0 rounded-full"
             src={me.photo.src}
             alt={me.username}
           />

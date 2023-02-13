@@ -1,5 +1,5 @@
-import { Context } from "../../types";
-import { COOKIE_NAME } from "../../utils/constants";
+import { Context } from "../../../types";
+import { COOKIE_NAME } from "../../../utils/constants";
 
 const LogoutMutation = async ({ req, res }: Context) => {
   return new Promise((resolve) => {

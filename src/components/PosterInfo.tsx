@@ -17,7 +17,7 @@ const PosterInfo = ({ body, user, updatedAt }: PosterInfoProps) => {
     <>
       <div className="flex justify-between w-full">
         <div className="flex w-full">
-          <h2 className="font-bold mr-2">
+          <h2 className="font-bold capitalize mr-2">
             {!user.fullName ? user.username : user.fullName}
             {user.verified && <Badge />}
           </h2>
