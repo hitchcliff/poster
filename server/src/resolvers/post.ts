@@ -6,7 +6,6 @@ import {
   InputType,
   Int,
   Mutation,
-  ObjectType,
   Query,
   Resolver,
   UseMiddleware,
@@ -14,51 +13,6 @@ import {
 import isAuth from "../middleware/isAuth";
 import { Context } from "../types";
 import User from "../entities/User";
-import { PaginatedPostQuery } from "./components/query";
-
-@ObjectType()
-class PostDetails {
-  @Field()
-  id: string;
-  @Field()
-  body: string;
-  @Field()
-  updatedAt: string;
-}
-
-@ObjectType()
-class Poster {
-  @Field()
-  id: number;
-  @Field()
-  verified: boolean;
-  @Field()
-  username: string;
-  @Field()
-  fullName: string;
-  @Field({ nullable: true })
-  profileImg?: string;
-}
-
-@ObjectType()
-export class PaginatedPostResponse {
-  @Field()
-  id: number;
-
-  @Field()
-  poster: Poster;
-
-  @Field()
-  postDetails: PostDetails;
-}
-
-@InputType()
-export class PaginatedPostInput {
-  @Field()
-  offset: number;
-  @Field()
-  limit: number;
-}
 
 @InputType()
 class PostInput {
@@ -68,13 +22,6 @@ class PostInput {
 
 @Resolver(Post)
 class PostResolver {
-  @Query(() => [PaginatedPostResponse], { nullable: true })
-  async paginatedPosts(
-    @Arg("options") options: PaginatedPostInput
-  ): Promise<PaginatedPostResponse[] | null> {
-    return await PaginatedPostQuery(options);
-  }
-
   @Query(() => [Post])
   async posts(
     @Arg("take", () => Int) take: number,

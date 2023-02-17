@@ -103,6 +103,7 @@ class UserResolver {
     return UpdateUserProfileMutation(options, ctx);
   }
 
+  @UseMiddleware(isAuth)
   @Query(() => User, { nullable: true })
   async me(@Ctx() ctx: Context): Promise<User | null> {
     return MeQuery(ctx);
@@ -113,7 +114,7 @@ class UserResolver {
     @Arg("options") options: UsernamePasswordInput,
     @Ctx() ctx: Context
   ): Promise<UserResponse> {
-    return RegisterMutation(options, ctx);
+    return await RegisterMutation(options, ctx);
   }
 
   @Mutation(() => UserResponse)

@@ -28,7 +28,7 @@ const main = async () => {
   // Database
   await AppDataSource.initialize();
   // await Post.delete({}); // deletes posts
-  // await User.delete({}) // deletes users
+  // await User.delete({}); // deletes users
   // await Photo.delete({}); // deletes users
 
   // Run Server

@@ -6,6 +6,9 @@ query Posts($take: Int!, $skip: Int!) {
     updatedAt
     user {
       ...User
+      photo {
+        ...Photo
+      }
     }
   }
 }

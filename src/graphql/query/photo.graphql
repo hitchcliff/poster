@@ -1,0 +1,5 @@
+query Photo($photoId: Int!) {
+  photo(id: $photoId) {
+    ...Photo
+  }
+}

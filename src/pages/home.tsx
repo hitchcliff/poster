@@ -8,23 +8,21 @@ import Loader from "../components/Loader";
 import PrivateRoute from "../components/Route/PrivateRoute";
 import SearchBar from "../components/SearchBar";
 import Trendings from "../components/Trendings";
-import { usePaginatedPostQuery, usePostsQuery } from "../gen/graphql";
+import { Post, usePostsQuery } from "../gen/graphql";
 
 const Home = () => {
-  const [limit, setLimit] = useState<number>(3);
-  const [{ data: fetchPosts, fetching }] = usePaginatedPostQuery({
+  const [take, setTake] = useState<number>(3);
+  const [{ data: fetchPosts, fetching }] = usePostsQuery({
     variables: {
-      options: {
-        offset: 0,
-        limit,
-      },
+      skip: 0,
+      take,
     },
   });
 
-  if (!fetchPosts?.paginatedPosts) return <Loader />;
+  if (!fetchPosts?.posts) return <Loader />;
 
   return (
-    <div className="relative bg-light-mode dark:bg-dark-mode flex flex-row min-h-screen gap-7">
+    <div className="relative bg-light-mode dark:bg-dark-mode flex flex-row min-h-screen gap-7 transition-all">
       <div className="relative skeleton">
         <div className="opacity-0">
           <InfoBar />
@@ -35,18 +33,14 @@ const Home = () => {
       </div>
       <div className="relative py-7 w-full flex flex-col gap-7">
         <CreateFeed />
-        {fetchPosts?.paginatedPosts.map((post, idx) => (
-          <Feeds
-            key={idx}
-            postDetails={post.postDetails}
-            poster={post.poster}
-          />
+        {fetchPosts?.posts.map((post, idx) => (
+          <Feeds key={idx} post={post as any} />
         ))}
         <div className="text-center">
           <Button
             isSubmitting={fetching}
             onClick={() => {
-              setLimit((prev) => prev + 5);
+              setTake((prev) => prev + 3);
             }}
           >
             Load More

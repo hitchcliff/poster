@@ -1,9 +1,17 @@
+import { Context } from "../../../types";
 import Photo from "../../../entities/Photo";
+import User from "../../../entities/User";
 
-async function MyPhotoQuery(id: number): Promise<Photo | null> {
+async function MyPhotoQuery({ req }: Context): Promise<Photo | null> {
+  const user = await User.findOne({
+    where: {
+      id: req.session.userId,
+    },
+  });
+
   const photo = await Photo.findOne({
     where: {
-      id,
+      id: user?.photoId,
     },
     relations: {
       user: true,

@@ -55,12 +55,12 @@ class User extends BaseEntity {
   @Column({ type: "text" })
   password!: string;
 
-  @Field(() => Int, { nullable: true })
-  @Column({ nullable: true })
+  @Field(() => Int, { nullable: true, defaultValue: 1 })
+  @Column({ nullable: true, default: 1 })
   photoId?: number;
 
   @Field(() => Photo, { nullable: true })
-  @OneToOne(() => Photo, (photo) => photo.user)
+  @OneToOne(() => Photo, (photo) => photo.user, { eager: true })
   @JoinColumn()
   photo?: Photo;
 

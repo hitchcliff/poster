@@ -25,17 +25,17 @@ const InfoBar = () => {
   const { me } = data;
 
   return (
-    <div className="h-full px-2 py-7 bg-light text-dark dark:bg-dark dark:text-light flex flex-col justify-start items-center ">
-      <div className="h-10 w-10 rounded-full bg-dark dark:bg-white overflow-hidden">
+    <div className="h-full px-2 py-2 bg-light text-dark dark:bg-dark dark:text-light flex flex-col justify-start items-center transition-all">
+      {/* <div className="h-10 w-10 rounded-md bg-dark dark:bg-white overflow-hidden">
         {me.photo && (
           <img
-            className="object-cover w-full h-auto m-0 rounded-full"
+            className="object-cover w-full h-auto m-0"
             src={me.photo.src}
             alt={me.username}
           />
         )}
-      </div>
-      <div className="flex flex-col justify-center gap-5 mt-5 infobar-icons">
+      </div> */}
+      <div className="flex flex-col justify-center gap-5 infobar-icons">
         <button aria-label="homepage">
           <Link href={RoutePattern.HOME}>
             <FontAwesomeIcon icon={faHome} />

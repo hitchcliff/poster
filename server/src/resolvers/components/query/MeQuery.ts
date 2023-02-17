@@ -14,6 +14,8 @@ async function MeQuery({ req }: Context) {
     },
   });
 
+  console.log(user);
+
   return user;
 }
 

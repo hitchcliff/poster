@@ -6,6 +6,9 @@ mutation CreatePost($input: PostInput!) {
     updatedAt
     user {
       ...User
+      photo {
+        ...Photo
+      }
     }
   }
 }

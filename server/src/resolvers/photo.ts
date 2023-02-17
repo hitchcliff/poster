@@ -46,18 +46,21 @@ export class UploadImgInput {
 class PhotoResolver {
   @UseMiddleware(isAuth)
   @Query(() => Photo, { nullable: true })
-  async myPhoto(
-    @Arg("id", () => Int, { nullable: true }) id: number
-  ): Promise<Photo | null> {
-    return MyPhotoQuery(id);
+  async myPhoto(@Ctx() ctx: Context): Promise<Photo | null> {
+    return MyPhotoQuery(ctx);
   }
 
+  @Query(() => Photo, { nullable: true })
+  async photo(@Arg("id", () => Int) id: number): Promise<Photo | null> {
+    return await Photo.findOne({ where: { id } });
+  }
+
+  @UseMiddleware(isAuth)
   @Mutation(() => UploadPhotoResponse)
   async uploadPhoto(
     @Arg("options") options: UploadImgInput,
     @Ctx() ctx: Context
-  ): Promise<UploadPhotoResponse> {
-    // const f: FileUpload = file as any;
+  ): Promise<UploadPhotoResponse | null> {
     return UploadPhotoMutation(options, ctx);
   }
 }

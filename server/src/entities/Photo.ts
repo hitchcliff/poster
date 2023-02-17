@@ -29,9 +29,9 @@ class Photo extends BaseEntity {
   @Column()
   src: String;
 
-  @Field(() => User)
-  @OneToOne(() => User, (user) => user.photo)
-  user: User;
+  @Field(() => User, { nullable: true })
+  @OneToOne(() => User, (user) => user.photo, { nullable: true })
+  user?: User;
 }
 
 export default Photo;

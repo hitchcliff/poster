@@ -1,4 +1,4 @@
-import { PostDetails, Poster } from "../gen/graphql";
+import { Post, PostsQuery } from "../gen/graphql";
 import { useGlobalSelector } from "../redux/features/global.selector";
 import Comments from "./Comments";
 import Loader from "./Loader";
@@ -6,36 +6,31 @@ import PosterInfo from "./PosterInfo";
 import PostReactions from "./PostReactions";
 
 interface FeedsProps {
-  poster: Poster;
-  postDetails: PostDetails;
+  post: Post;
 }
 
-const Feeds = ({ poster, postDetails }: FeedsProps) => {
+const Feeds = ({ post: { body, updatedAt, user }, ...post }: FeedsProps) => {
   const { toggleComments } = useGlobalSelector();
 
-  if (!poster) return <Loader />;
+  if (!post) return <Loader />;
 
   return (
     <div className="relative bg-light text-dark dark:bg-dark dark:text-light rounded-md overflow-hidden p-5 w-full">
       <div className="flex flex-row justify-start">
-        <div className="w-12">
-          <div className="w-full rounded-full m-0 dark:bg-white bg-dark overflow-hidden">
-            {poster.profileImg && (
+        <div className="w-12 h-full">
+          <div className="w-full h-full rounded-full m-0 dark:bg-white bg-dark overflow-hidden">
+            {user.photo && (
               <img
-                className="object-cover w-full h-auto rounded-full m-0"
-                src={poster.profileImg}
-                alt={poster.username}
+                className="object-cover m-0"
+                src={user.photo.src}
+                alt={user.username}
               />
             )}
           </div>
         </div>
 
         <div className="px-5 w-full">
-          <PosterInfo
-            body={postDetails.body}
-            user={poster}
-            updatedAt={postDetails.updatedAt}
-          />
+          <PosterInfo body={body} user={user} updatedAt={updatedAt} />
           <PostReactions />
           {toggleComments && <Comments />}
         </div>

@@ -1,8 +1,5 @@
-query MyPhoto($id: Int) {
-  myPhoto(id: $id) {
+query MyPhoto {
+  myPhoto {
     ...Photo
-    user {
-      ...User
-    }
   }
 }

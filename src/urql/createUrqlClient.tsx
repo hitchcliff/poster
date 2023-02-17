@@ -1,5 +1,4 @@
 import { Cache, cacheExchange } from "@urql/exchange-graphcache";
-import { multipartFetchExchange } from "@urql/exchange-multipart-fetch";
 import { ClientOptions, dedupExchange, fetchExchange } from "urql";
 import {
   CreatePostMutation,
@@ -7,6 +6,8 @@ import {
   LogoutMutation,
   MeDocument,
   MeQuery,
+  PostsDocument,
+  PostsQuery,
   RegisterMutation,
 } from "../gen/graphql";
 import { GRAPHQL_URL } from "../utils/constants";
@@ -30,24 +31,42 @@ const createUrqlClient = (ssrExchange: any, ctx: any): ClientOptions => {
     },
     exchanges: [
       dedupExchange,
-
       cacheExchange({
         updates: {
           Mutation: {
+            updateUserProfile: (result, args, cache, info) => {
+              // to do
+            },
             createPost: (
               result: CreatePostMutation,
               args,
               cache: Cache,
-              info
+              _info
             ) => {
-              const allFields = cache.inspectFields("Query"); // get all the query
-              const fieldInfos = allFields.filter(
-                (info) => info.fieldName === "paginatedPosts" // filter the query
+              const fields = cache.inspectFields("Query");
+              const fieldInfos = fields.filter(
+                (field) => field.fieldName === "posts"
               );
 
-              // invalidate all query
-              fieldInfos.forEach((fi) => {
-                cache.invalidate("Query", "paginatedPosts", fi.arguments || {});
+              fieldInfos.forEach((fieldInfo) => {
+                cache.updateQuery(
+                  {
+                    query: PostsDocument,
+                    variables: fieldInfo.arguments,
+                  },
+                  (data: PostsQuery | null): PostsQuery | null => {
+                    console.log("args: ", args);
+                    console.log("result: ", result);
+                    console.log("cache: ", cache);
+                    console.log("data: ", data);
+                    if (data && result.createPost) {
+                      data.posts.unshift(result.createPost);
+                      return data;
+                    }
+
+                    return data;
+                  }
+                );
               });
             },
             register: (result: RegisterMutation, args, cache: Cache, _info) => {
@@ -81,7 +100,7 @@ const createUrqlClient = (ssrExchange: any, ctx: any): ClientOptions => {
         },
       }),
       ssrExchange,
-      multipartFetchExchange,
+      fetchExchange,
     ],
   };
 };

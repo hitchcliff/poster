@@ -43,5 +43,5 @@ button {
 
 /* Info Bar */
 .infobar-icons > button {
-  @apply relative hover:text-white transition-all;
+  @apply relative hover:text-secondary transition-all;
 }

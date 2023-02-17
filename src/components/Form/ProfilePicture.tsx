@@ -2,7 +2,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import Dropzone from "react-dropzone";
-import { useUploadPhotoMutation } from "../../gen/graphql";
+import { useMeQuery, useUploadPhotoMutation } from "../../gen/graphql";
 import RoutePattern from "../../routes/RoutePattern";
 import { ThrowError, ThrowSuccess } from "../../utils/swal";
 import Button from "../Button";
@@ -30,6 +30,8 @@ const ProfilePicture = () => {
   const [{ fetching }, uploadPhoto] = useUploadPhotoMutation();
   const route = useRouter();
   const [file, setFile] = useState<File | null>(null);
+  const [data, {}] = useMeQuery();
+  console.log(data.data?.me);
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
@@ -37,21 +39,12 @@ const ProfilePicture = () => {
 
     try {
       // Uploads an image
-      const { data: photo } = await uploadPhoto(
-        {
-          options: {
-            filename: file.name,
-            type: file.type,
-          },
+      const { data: photo } = await uploadPhoto({
+        options: {
+          filename: file.name,
+          type: file.type,
         },
-        {
-          fetchOptions: {
-            headers: {
-              "apollo-require-preflight": "true",
-            },
-          },
-        }
-      );
+      });
 
       if (photo?.uploadPhoto.error) {
         await ThrowError({ text: photo.uploadPhoto.error.message });

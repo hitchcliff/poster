@@ -4,11 +4,12 @@ import User from "../../../entities/User";
 import { Context } from "../../../types";
 import { UploadImgInput, UploadPhotoResponse } from "../../photo";
 
-async function UploadPhotoMutation(
+const UploadPhotoMutation = async (
   // file: FileUpload,
   options: UploadImgInput,
   { req }: Context
-): Promise<UploadPhotoResponse> {
+): Promise<UploadPhotoResponse | null> => {
+  if (!req.session.userId) return null;
   const user = await User.findOne({
     where: {
       id: req.session.userId,
@@ -38,7 +39,7 @@ async function UploadPhotoMutation(
     // upload a photo to bucket
     const { url, signedRequest } = await s3({
       ...options,
-      foldername: "profile-picture",
+      foldername: process.env.PROFILE_PICTURES,
     });
 
     photo.src = url;
@@ -71,6 +72,6 @@ async function UploadPhotoMutation(
     photo,
     signedRequest,
   };
-}
+};
 
 export default UploadPhotoMutation;
