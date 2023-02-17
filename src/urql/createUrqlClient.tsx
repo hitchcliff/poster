@@ -34,12 +34,9 @@ const createUrqlClient = (ssrExchange: any, ctx: any): ClientOptions => {
       cacheExchange({
         updates: {
           Mutation: {
-            updateUserProfile: (result, args, cache, info) => {
-              // to do
-            },
             createPost: (
               result: CreatePostMutation,
-              args,
+              _args,
               cache: Cache,
               _info
             ) => {
@@ -55,10 +52,6 @@ const createUrqlClient = (ssrExchange: any, ctx: any): ClientOptions => {
                     variables: fieldInfo.arguments,
                   },
                   (data: PostsQuery | null): PostsQuery | null => {
-                    console.log("args: ", args);
-                    console.log("result: ", result);
-                    console.log("cache: ", cache);
-                    console.log("data: ", data);
                     if (data && result.createPost) {
                       data.posts.unshift(result.createPost);
                       return data;
