@@ -19,7 +19,7 @@ import { COOKIE_NAME } from "./utils/constants";
 import PhotoResolver from "./resolvers/photo";
 import { graphqlUploadExpress } from "graphql-upload-ts";
 import LikeResolver from "./resolvers/like";
-// import { deleteData } from "./utils/deleteData";
+import { deleteData } from "./utils/deleteData";
 
 const main = async () => {
   dotenv.config();
@@ -28,7 +28,7 @@ const main = async () => {
   await AppDataSource.initialize();
 
   // Delete Data (For dev only)
-  // await deleteData();
+  await deleteData();
 
   // Run Server
   const app = express();
