@@ -18,18 +18,17 @@ import UserResolver from "./resolvers/user";
 import { COOKIE_NAME } from "./utils/constants";
 import PhotoResolver from "./resolvers/photo";
 import { graphqlUploadExpress } from "graphql-upload-ts";
-// import Photo from "./entities/Photo";
-// import Post from "./entities/Post";
-// import User from "./entities/User";
+import LikeResolver from "./resolvers/like";
+// import { deleteData } from "./utils/deleteData";
 
 const main = async () => {
   dotenv.config();
 
   // Database
   await AppDataSource.initialize();
-  // await Post.delete({}); // deletes posts
-  // await User.delete({}); // deletes users
-  // await Photo.delete({}); // deletes users
+
+  // Delete Data (For dev only)
+  // await deleteData();
 
   // Run Server
   const app = express();
@@ -80,7 +79,13 @@ const main = async () => {
   const apolloServer = new ApolloServer({
     csrfPrevention: true,
     schema: await buildSchema({
-      resolvers: [HelloResolver, PostResolver, UserResolver, PhotoResolver],
+      resolvers: [
+        HelloResolver,
+        PostResolver,
+        UserResolver,
+        PhotoResolver,
+        LikeResolver,
+      ],
       validate: false,
     }),
     context: ({ req, res }): Context => ({

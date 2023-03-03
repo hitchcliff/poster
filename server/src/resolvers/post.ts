@@ -30,6 +30,7 @@ class PostResolver {
     const posts = await Post.find({
       relations: {
         user: true,
+        likes: true,
       },
       order: {
         id: "DESC",
@@ -43,7 +44,13 @@ class PostResolver {
 
   @Query(() => Post)
   async post(@Arg("id", () => Int) id: number): Promise<Post | null> {
-    return await Post.findOne({ where: { id } });
+    return await Post.findOne({
+      relations: {
+        user: true,
+        likes: true,
+      },
+      where: { id },
+    });
   }
 
   @Mutation(() => Post)

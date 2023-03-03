@@ -2,6 +2,7 @@ import path from "path";
 import { DataSource, DataSourceOptions } from "typeorm";
 import Photo from "./entities/Photo";
 import Post from "./entities/Post";
+import Like from "./entities/Like";
 import User from "./entities/User";
 
 export const options = {
@@ -14,7 +15,7 @@ export const options = {
   synchronize: true,
   logging: true,
   subscribers: [],
-  entities: [Post, User, Photo],
+  entities: [Post, User, Photo, Like],
   migrations: [path.join(__dirname, "./migrations/*")],
 } as DataSourceOptions;
 

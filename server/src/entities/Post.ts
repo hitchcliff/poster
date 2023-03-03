@@ -8,7 +8,9 @@ import {
   BaseEntity,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from "typeorm";
+import Like from "./Like";
 import User from "./User";
 
 @ObjectType()
@@ -34,6 +36,11 @@ class Post extends BaseEntity {
   @ManyToOne(() => User, (user) => user.posts)
   @JoinColumn()
   user: User;
+
+  @Field(() => [Like], { nullable: true })
+  @OneToMany(() => Like, (like) => like.post)
+  @JoinColumn()
+  likes?: Like[];
 }
 
 export default Post;
