@@ -6,7 +6,7 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
-  ManyToOne,
+  ManyToMany,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -70,9 +70,9 @@ class User extends BaseEntity {
   @OneToMany(() => Post, (post) => post.user)
   posts?: Post[];
 
-  @Field(() => Like, { nullable: true })
-  @ManyToOne(() => Like, (like) => like.users)
-  like?: Like;
+  @Field(() => [Like], { nullable: true })
+  @ManyToMany(() => Like, (like) => like.users)
+  likes?: Like[];
 }
 
 export default User;

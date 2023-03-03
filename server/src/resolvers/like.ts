@@ -14,6 +14,7 @@ import Like from "../entities/Like";
 import { FieldError } from "./user";
 import isAuth from "../middleware/isAuth";
 import getPost from "../utils/getPost";
+import getUser from "../utils/getUser";
 
 @ObjectType()
 class LikeError {
@@ -41,6 +42,7 @@ class LikeResolver {
     @Arg("postId", () => Int) postId: number,
     @Ctx() { req }: Context
   ): Promise<LikeResponse> {
+    const user = await getUser({ id: req.session.userId });
     const post = await getPost({ id: postId }); // gets the post
 
     if (!post) {
@@ -53,7 +55,15 @@ class LikeResolver {
       };
     }
 
-    const userId = req.session.userId;
+    if (!user) {
+      return {
+        errors: [
+          {
+            message: "no user found",
+          },
+        ],
+      };
+    }
 
     // find the post
     const like = await Like.findOne({
@@ -63,21 +73,34 @@ class LikeResolver {
     });
 
     // no like yet
-    // add one like to post
+    // add 1 like to post
     if (!like) {
-      const addLike = new Like();
-      addLike.value = 1;
-      addLike.postId = postId;
-      addLike.userId = userId;
-      await addLike.save();
+      const addLike = await Like.save({
+        value: 1,
+        postId,
+        users: [user],
+      });
 
       return {
         like: addLike,
       };
     }
 
-    // simply increments
+    // if user already liked the post
+    if (like.users.find((user) => user.id === req.session.userId)) {
+      return {
+        errors: [
+          {
+            message: "already liked this post",
+          },
+        ],
+      };
+    }
+
+    // increments
     like.value += 1;
+    like.users = [user, ...like.users];
+
     await like.save();
 
     return {
@@ -103,26 +126,20 @@ class LikeResolver {
       };
     }
 
-    const userId = req.session.userId;
-
-    // find the post
+    // find the like by a user
     const like = await Like.findOne({
       where: {
         postId,
       },
     });
 
-    // no like yet
-    // set value to default
-    if (!like) {
-      const addLike = new Like();
-      addLike.value = 0;
-      addLike.postId = postId;
-      addLike.userId = userId;
-      await addLike.save();
-
+    if (!like?.users.find((user) => user.id === req.session.userId)) {
       return {
-        like: addLike,
+        errors: [
+          {
+            message: "cannot dislike the post if not liked",
+          },
+        ],
       };
     }
 
@@ -131,13 +148,14 @@ class LikeResolver {
       return {
         errors: [
           {
-            message: "currently has 0",
+            message: "can't decrement further, currently has 0 likes",
           },
         ],
       };
     }
 
     like.value -= 1;
+    like.users = like.users.filter((user) => user.id !== req.session.userId);
     await like.save();
 
     return {

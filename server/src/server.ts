@@ -19,7 +19,7 @@ import { COOKIE_NAME } from "./utils/constants";
 import PhotoResolver from "./resolvers/photo";
 import { graphqlUploadExpress } from "graphql-upload-ts";
 import LikeResolver from "./resolvers/like";
-//import { deleteData } from "./utils/deleteData";
+// import { deleteData } from "./utils/deleteData";
 
 const main = async () => {
   dotenv.config();

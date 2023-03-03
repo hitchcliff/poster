@@ -4,7 +4,8 @@ import {
   Column,
   Entity,
   JoinColumn,
-  OneToMany,
+  JoinTable,
+  ManyToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
@@ -32,13 +33,9 @@ class Like extends BaseEntity {
   postId: number;
 
   @Field(() => [User], { nullable: true })
-  @OneToMany(() => User, (user) => user.like, { eager: true })
-  @JoinColumn()
+  @ManyToMany(() => User, (user) => user.likes, { eager: true })
+  @JoinTable()
   users: User[];
-
-  @Field(() => Int)
-  @Column()
-  userId: number;
 }
 
 export default Like;

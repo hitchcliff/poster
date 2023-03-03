@@ -1,15 +1,14 @@
 import { Field, ObjectType } from "type-graphql";
 import {
-  Entity,
-  PrimaryGeneratedColumn,
+  BaseEntity,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
-  BaseEntity,
-  ManyToOne,
+  Entity,
   JoinColumn,
-  OneToMany,
+  ManyToOne,
   OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
 import Like from "./Like";
 import User from "./User";

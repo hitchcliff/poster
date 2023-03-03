@@ -21,20 +21,16 @@
 
    - `User` can have one `photo`
    - `Post` will own 1 `like`
-   - `Like` can be own by 1 `post`
 
 2. @OneToMany
 
    - `User` can create multiple `posts`
-   - `Likes` can have multiple `users`
 
 3. @ManyToOne
 
    - `Posts` can be own by one `user`
    - `Users` can be own by one `likes`
 
-@OneToMany()
-Post can have multiple likes
-
-@ManyToOne()
-Likes/Dislikes will be own by a user
+4. @ManyToMany
+   - `Like` can have multiple `users`
+   - `User` can have multiple `likes`
