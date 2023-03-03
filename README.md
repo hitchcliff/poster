@@ -17,18 +17,21 @@
 
 # Relations (Bi-directional approach)
 
-1. One to Many
+1. @OneToOne
+
+   - `User` can have one `photo`
+   - `Post` will own 1 `like`
+   - `Like` can be own by 1 `post`
+
+2. @OneToMany
 
    - `User` can create multiple `posts`
-   - `Post` can have multiple `likes`
+   - `Likes` can have multiple `users`
 
-2. Many to One
+3. @ManyToOne
 
    - `Posts` can be own by one `user`
-   - `Likes` can be own by one `post`
-
-3. One to One
-   - User can have one photo
+   - `Users` can be own by one `likes`
 
 @OneToMany()
 Post can have multiple likes

@@ -4,7 +4,6 @@ import {
   Column,
   Entity,
   JoinColumn,
-  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -32,9 +31,14 @@ class Like extends BaseEntity {
   @Column()
   postId: number;
 
-  // @Field(() => User)
-  // @ManyToOne(() => User)
-  // user: User;
+  @Field(() => [User], { nullable: true })
+  @OneToMany(() => User, (user) => user.like, { eager: true })
+  @JoinColumn()
+  users: User[];
+
+  @Field(() => Int)
+  @Column()
+  userId: number;
 }
 
 export default Like;

@@ -8,9 +8,12 @@ import {
   ObjectType,
   Query,
   Resolver,
+  UseMiddleware,
 } from "type-graphql";
 import Like from "../entities/Like";
 import { FieldError } from "./user";
+import isAuth from "../middleware/isAuth";
+import User from "../entities/User";
 
 @ObjectType()
 class LikeError {
@@ -32,11 +35,20 @@ class LikeResolver {
     return await Like.find();
   }
 
+  @UseMiddleware(isAuth)
   @Mutation(() => Like, { nullable: true })
   async like(
     @Arg("postId", () => Int) postId: number,
-    @Ctx() {}: Context
+    @Ctx() { req }: Context
   ): Promise<Like> {
+    const userId = req.session.userId;
+    // find the user
+    const user = (await User.findOne({
+      where: {
+        id: userId,
+      },
+    })) as User;
+
     // find the post
     const like = await Like.findOne({
       where: {
@@ -50,6 +62,7 @@ class LikeResolver {
       const addLike = new Like();
       addLike.value = 1;
       addLike.postId = postId;
+      addLike.userId = userId;
 
       return await addLike.save();
     }
@@ -59,6 +72,7 @@ class LikeResolver {
     return await like.save();
   }
 
+  @UseMiddleware(isAuth)
   @Mutation(() => LikeResponse, { nullable: true })
   async dislike(
     @Arg("postId", () => Int) postId: number,

@@ -28,7 +28,7 @@ const main = async () => {
   await AppDataSource.initialize();
 
   // Delete Data (For dev only)
-  //await deleteData();
+  // await deleteData();
 
   // Run Server
   const app = express();

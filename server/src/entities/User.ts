@@ -6,11 +6,13 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import Like from "./Like";
 import Photo from "./Photo";
 import Post from "./Post";
 
@@ -67,6 +69,10 @@ class User extends BaseEntity {
   @Field(() => [Post], { nullable: true })
   @OneToMany(() => Post, (post) => post.user)
   posts?: Post[];
+
+  @Field(() => Like, { nullable: true })
+  @ManyToOne(() => Like, (like) => like.users)
+  like?: Like;
 }
 
 export default User;
