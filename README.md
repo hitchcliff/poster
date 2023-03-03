@@ -19,13 +19,16 @@
 
 1. One to Many
 
-   - User can create multiple post
+   - `User` can create multiple `posts`
+   - `Post` can have multiple `likes`
 
 2. Many to One
 
-   - Post can be own by one user
+   - `Posts` can be own by one `user`
+   - `Likes` can be own by one `post`
 
 3. One to One
+   - User can have one photo
 
 @OneToMany()
 Post can have multiple likes

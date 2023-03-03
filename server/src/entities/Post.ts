@@ -9,6 +9,7 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
+  OneToOne,
 } from "typeorm";
 import Like from "./Like";
 import User from "./User";
@@ -37,10 +38,9 @@ class Post extends BaseEntity {
   @JoinColumn()
   user: User;
 
-  @Field(() => [Like], { nullable: true })
-  @OneToMany(() => Like, (like) => like.post)
-  @JoinColumn()
-  likes?: Like[];
+  @Field(() => Like, { nullable: true })
+  @OneToOne(() => Like, (like) => like.post)
+  likes?: Like;
 }
 
 export default Post;
