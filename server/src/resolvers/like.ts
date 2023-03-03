@@ -13,7 +13,7 @@ import {
 import Like from "../entities/Like";
 import { FieldError } from "./user";
 import isAuth from "../middleware/isAuth";
-import User from "../entities/User";
+import getPost from "../utils/getPost";
 
 @ObjectType()
 class LikeError {
@@ -36,18 +36,24 @@ class LikeResolver {
   }
 
   @UseMiddleware(isAuth)
-  @Mutation(() => Like, { nullable: true })
+  @Mutation(() => LikeResponse, { nullable: true })
   async like(
     @Arg("postId", () => Int) postId: number,
     @Ctx() { req }: Context
-  ): Promise<Like> {
+  ): Promise<LikeResponse> {
+    const post = await getPost({ id: postId }); // gets the post
+
+    if (!post) {
+      return {
+        errors: [
+          {
+            message: "there is no post with id: " + postId,
+          },
+        ],
+      };
+    }
+
     const userId = req.session.userId;
-    // find the user
-    const user = (await User.findOne({
-      where: {
-        id: userId,
-      },
-    })) as User;
 
     // find the post
     const like = await Like.findOne({
@@ -63,21 +69,42 @@ class LikeResolver {
       addLike.value = 1;
       addLike.postId = postId;
       addLike.userId = userId;
+      await addLike.save();
 
-      return await addLike.save();
+      return {
+        like: addLike,
+      };
     }
 
     // simply increments
     like.value += 1;
-    return await like.save();
+    await like.save();
+
+    return {
+      like,
+    };
   }
 
   @UseMiddleware(isAuth)
   @Mutation(() => LikeResponse, { nullable: true })
   async dislike(
     @Arg("postId", () => Int) postId: number,
-    @Ctx() {}: Context
+    @Ctx() { req }: Context
   ): Promise<LikeResponse> {
+    const post = await getPost({ id: postId }); // gets the post
+
+    if (!post) {
+      return {
+        errors: [
+          {
+            message: "there is no post with id: " + postId,
+          },
+        ],
+      };
+    }
+
+    const userId = req.session.userId;
+
     // find the post
     const like = await Like.findOne({
       where: {
@@ -91,6 +118,7 @@ class LikeResolver {
       const addLike = new Like();
       addLike.value = 0;
       addLike.postId = postId;
+      addLike.userId = userId;
       await addLike.save();
 
       return {
