@@ -1,7 +1,7 @@
 import { faDotCircle, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { User } from "../gen/graphql";
-import { useDayJs } from "../hooks";
+import { useAuthService, useDayJs } from "../hooks";
 import Badge from "./Badge";
 
 interface PosterInfoProps {
@@ -11,11 +11,14 @@ interface PosterInfoProps {
 }
 
 const PosterInfo = ({ body, user, updatedAt }: PosterInfoProps) => {
+  const [{ user: u }] = useAuthService();
   const date = useDayJs({ fromNow: updatedAt });
   const name =
     !user.firstName || !user.lastName
       ? user.username
       : user.firstName + " " + user.lastName;
+
+  console.log(u);
 
   return (
     <>
@@ -34,9 +37,11 @@ const PosterInfo = ({ body, user, updatedAt }: PosterInfoProps) => {
             {date}
           </span>
         </div>
-        <div>
-          <FontAwesomeIcon icon={faPenToSquare} />
-        </div>
+        {u!.id === user.id && (
+          <div className="ml-auto">
+            <FontAwesomeIcon icon={faPenToSquare} />
+          </div>
+        )}
       </div>
       <div className="mt-2">
         <p>{body}</p>

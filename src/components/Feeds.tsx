@@ -17,11 +17,11 @@ const Feeds = ({ post: { body, updatedAt, user }, ...post }: FeedsProps) => {
   return (
     <div className="relative bg-light text-dark dark:bg-dark dark:text-light rounded-md overflow-hidden p-5 w-full">
       <div className="flex flex-row justify-start">
-        <div className="w-12 h-full">
-          <div className="w-full h-full rounded-full m-0 dark:bg-white bg-dark overflow-hidden">
+        <div className="w-12 h-12">
+          <div className="w-12 h-12 rounded-full m-0 dark:bg-white bg-dark overflow-hidden">
             {user.photo && (
               <img
-                className="object-cover m-0"
+                className="object-cover h-full w-full object-top m-0"
                 src={user.photo.src}
                 alt={user.username}
               />
