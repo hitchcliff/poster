@@ -7,11 +7,7 @@ import User from "./entities/User";
 
 export const options = {
   type: "postgres",
-  host: "localhost",
-  port: 5432,
-  username: "postgres",
-  password: "postgres",
-  database: "poster",
+  url: process.env.DATABASE_URL,
   synchronize: true,
   logging: true,
   subscribers: [],

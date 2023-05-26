@@ -13,7 +13,7 @@
 	"maxNodeModuleJsDepth": 10,
 	"skipLibCheck": true,
 	"sourceMap": true,
-	"outDir": "./dist",
+	"outDir": "dist",
 	"moduleResolution": "node",
 	"removeComments": true,
 	"noImplicitAny": true,

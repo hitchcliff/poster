@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import "dotenv-safe/config";
 import dotenv from "dotenv";
 import { AppDataSource } from "./data-source";
 import express from "express";
@@ -37,6 +38,8 @@ const main = async () => {
   const RedisStore = connectRedis(session);
   const redis = new Redis();
 
+  app.set("proxy", 1);
+
   app.use(
     session({
       name: COOKIE_NAME,
@@ -44,7 +47,7 @@ const main = async () => {
         client: redis,
         disableTouch: true,
       }),
-      secret: "SECRET",
+      secret: process.env.SECRET,
       resave: false,
       saveUninitialized: false,
       cookie: {
@@ -110,7 +113,7 @@ const main = async () => {
   });
 
   // Run server
-  const PORT = 4000;
+  const PORT = parseInt(process.env.PORT);
   app.listen(PORT, () => {
     console.log(
       `Listening at http://localhost:${PORT}${apolloServer.graphqlPath}`

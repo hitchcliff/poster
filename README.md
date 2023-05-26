@@ -34,3 +34,12 @@
 4. @ManyToMany
    - `Like` can have multiple `users`
    - `User` can have multiple `likes`
+
+# Hosting
+
+Enter Dokku root
+`shh root@159.65.127.20`
+
+`api`
+`db` dokku-postgres
+`session` dokku-redis

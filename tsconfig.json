@@ -15,7 +15,7 @@
     "jsx": "preserve",
     "incremental": true,
     "experimentalDecorators":true,
-    "moduleDetection": "force"
+    "moduleDetection": "force",
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "codegen.yaml"],
   "exclude": ["node_modules", "server"]
