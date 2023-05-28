@@ -1,1 +1,3 @@
-export const GRAPHQL_URL = "http://localhost:4000/graphql";
+export const GRAPHQL_URL = process.env.NEXT_PUBLIC_API_URL
+  ? process.env.NEXT_PUBLIC_API_URL
+  : "";

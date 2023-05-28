@@ -36,7 +36,7 @@ const main = async () => {
 
   // Session
   const RedisStore = connectRedis(session);
-  const redis = new Redis();
+  const redis = new Redis(process.env.REDIS_URL);
 
   app.set("proxy", 1);
 

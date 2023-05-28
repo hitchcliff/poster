@@ -25,7 +25,7 @@ const Index = () => {
         <div className="w-full h-full px-10 flex flex-col relative">
           <div className="my-auto">
             <h1 className="text-5xl uppercase font-brand text-primary">
-              poster.tk
+              poster.asia
             </h1>
             <p className="mt-5 text-2xl">
               A lightweight social media app,{" "}
