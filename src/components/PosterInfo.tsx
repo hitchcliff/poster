@@ -18,8 +18,6 @@ const PosterInfo = ({ body, user, updatedAt }: PosterInfoProps) => {
       ? user.username
       : user.firstName + " " + user.lastName;
 
-  console.log(u);
-
   return (
     <>
       <div className="flex justify-between w-full">

@@ -20,7 +20,6 @@ import { COOKIE_NAME } from "./utils/constants";
 import PhotoResolver from "./resolvers/photo";
 import { graphqlUploadExpress } from "graphql-upload-ts";
 import LikeResolver from "./resolvers/like";
-import cors from "cors";
 // import { deleteData } from "./utils/deleteData";
 
 const main = async () => {
@@ -42,12 +41,12 @@ const main = async () => {
   app.set("proxy", 1);
 
   // cors for live site
-  app.use(
-    cors({
-      origin: "https://poster.asia",
-      credentials: true,
-    })
-  );
+  // app.use(
+  //   cors({
+  //     origin: process.env.CORS_ORIGIN,
+  //     credentials: true,
+  //   })
+  // );
 
   app.use(
     session({
@@ -64,6 +63,8 @@ const main = async () => {
         httpOnly: true,
         sameSite: "lax", // csrf
         secure: process.env.NODE_ENV === "production", //https
+        domain:
+          process.env.NODE_ENV === "production" ? ".poster.asia" : undefined,
       },
     })
   );
@@ -118,9 +119,9 @@ const main = async () => {
     cors: {
       origin: [
         "https://studio.apollographql.com/",
-        "http://localhost:3000",
-        "https://poster.asia",
-        "https://www.poster.asia",
+        "http://localhost:3000/",
+        "https://poster.asia/",
+        "https://www.poster.asia/",
         "https://poster-murex.vercel.app/",
       ],
       credentials: true, // cookies

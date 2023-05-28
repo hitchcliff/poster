@@ -12,6 +12,7 @@ declare global {
       REDIS_URL: string;
       PORT: string;
       SECRET: string;
+      CORS_ORIGIN: string;
     }
   }
 }
