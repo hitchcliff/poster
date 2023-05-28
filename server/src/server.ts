@@ -20,6 +20,7 @@ import { COOKIE_NAME } from "./utils/constants";
 import PhotoResolver from "./resolvers/photo";
 import { graphqlUploadExpress } from "graphql-upload-ts";
 import LikeResolver from "./resolvers/like";
+import cors from "cors";
 // import { deleteData } from "./utils/deleteData";
 
 const main = async () => {
@@ -39,6 +40,14 @@ const main = async () => {
   const redis = new Redis(process.env.REDIS_URL);
 
   app.set("proxy", 1);
+
+  // cors for live site
+  app.use(
+    cors({
+      origin: "https://poster.asia",
+      credentials: true,
+    })
+  );
 
   app.use(
     session({
