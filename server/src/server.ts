@@ -107,7 +107,13 @@ const main = async () => {
   apolloServer.applyMiddleware({
     app,
     cors: {
-      origin: ["https://studio.apollographql.com/", "http://localhost:3000"],
+      origin: [
+        "https://studio.apollographql.com/",
+        "http://localhost:3000",
+        "https://poster.asia",
+        "https://www.poster.asia",
+        "https://poster-murex.vercel.app/",
+      ],
       credentials: true, // cookies
     },
   });
