@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import "dotenv-safe/config";
+import cors from "cors";
 import dotenv from "dotenv";
 import { AppDataSource } from "./data-source";
 import express from "express";
@@ -41,12 +42,12 @@ const main = async () => {
   app.set("proxy", 1);
 
   // cors for live site
-  // app.use(
-  //   cors({
-  //     origin: process.env.CORS_ORIGIN,
-  //     credentials: true,
-  //   })
-  // );
+  app.use(
+    cors({
+      origin: process.env.CORS_ORIGIN,
+      credentials: true,
+    })
+  );
 
   app.use(
     session({
@@ -116,21 +117,22 @@ const main = async () => {
   // runs the middleware
   apolloServer.applyMiddleware({
     app,
-    cors: {
-      origin: [
-        "https://studio.apollographql.com/",
-        "http://localhost:3000/",
-        "https://poster.asia/",
-        "https://www.poster.asia/",
-        "https://poster-murex.vercel.app/",
-      ],
-      credentials: true, // cookies
-      allowedHeaders: [
-        "Access-Control-Allow-Origin: *",
-        "Access-Control-Allow-Credentials: true",
-        "Content-type: application/json",
-      ],
-    },
+    cors: false,
+    // cors: {
+    //   origin: [
+    //     "https://studio.apollographql.com/",
+    //     "http://localhost:3000/",
+    //     "https://poster.asia/",
+    //     "https://www.poster.asia/",
+    //     "https://poster-murex.vercel.app/",
+    //   ],
+    //   credentials: true, // cookies
+    //   allowedHeaders: [
+    //     "Access-Control-Allow-Origin: *",
+    //     "Access-Control-Allow-Credentials: true",
+    //     "Content-type: application/json",
+    //   ],
+    // },
   });
 
   // Run server
