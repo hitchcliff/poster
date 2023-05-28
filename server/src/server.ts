@@ -125,6 +125,11 @@ const main = async () => {
         "https://poster-murex.vercel.app/",
       ],
       credentials: true, // cookies
+      allowedHeaders: [
+        "Access-Control-Allow-Origin: *",
+        "Access-Control-Allow-Credentials: true",
+        "Content-type: application/json",
+      ],
     },
   });
 
