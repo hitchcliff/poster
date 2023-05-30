@@ -17,7 +17,6 @@ import PostResolver from "./resolvers/post";
 import UserResolver from "./resolvers/user";
 import { COOKIE_NAME } from "./utils/constants";
 import PhotoResolver from "./resolvers/photo";
-import { graphqlUploadExpress } from "graphql-upload-ts";
 import LikeResolver from "./resolvers/like";
 // import { deleteData } from "./utils/deleteData";
 
@@ -49,8 +48,8 @@ const main = async () => {
       saveUninitialized: false,
       cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10, //10 years
-        httpOnly: true,
-        sameSite: "none", // csrf
+        httpOnly: process.env.NODE_ENV !== "production",
+        sameSite: "lax", // csrf
         secure: process.env.NODE_ENV === "production", //https
         domain:
           process.env.NODE_ENV === "production" ? ".poster.asia" : undefined,
@@ -59,6 +58,7 @@ const main = async () => {
   );
 
   // Apollo Recommended Plugin
+  // Works for Cookie in studio
   let plugins: any = [];
   if (process.env.NODE_ENV === "production") {
     plugins = [
@@ -66,6 +66,10 @@ const main = async () => {
         embed: true,
         graphRef: "myGraph@prod",
         includeCookies: true,
+        headers: {
+          "Access-Control-Allow-Origin": "https://studio.apollographql.com",
+          "Access-Control-Allow-Credentials": "true",
+        },
       }),
     ];
   } else {
@@ -79,6 +83,7 @@ const main = async () => {
 
   // Apollo
   const apolloServer = new ApolloServer({
+    csrfPrevention: true,
     schema: await buildSchema({
       resolvers: [
         HelloResolver,
@@ -95,21 +100,25 @@ const main = async () => {
       redis,
     }),
     plugins,
+    introspection: true,
   });
-  await apolloServer.start();
 
-  // Uploading a files/images
-  app.use(graphqlUploadExpress({ maxFileSize: 100000, maxFiles: 1 }));
+  await apolloServer.start();
 
   // runs the middleware
   apolloServer.applyMiddleware({
     app,
     cors: {
       origin: [
+        "*",
         "https://studio.apollographql.com",
-        "https://api.poster.asia",
-        "https://poster.asia",
         "http://localhost:3000",
+        "https://www.poster.asia",
+        "https://poster.asia",
+        "https://api.poster.asia",
+        "https://api.poster.asia/graphql",
+        "https://app.netlify.com/",
+        "https://neon-baklava-889a07.netlify.app",
       ],
       credentials: true,
     },
