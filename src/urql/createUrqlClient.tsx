@@ -20,7 +20,10 @@ const createUrqlClient = (ssrExchange: any, ctx: any): ClientOptions => {
   }
 
   return {
-    url: process.env.NEXT_PUBLIC_API_URL as string,
+    url:
+      process.env.NODE_ENV === "production"
+        ? (process.env.NEXT_PUBLIC_API_URL as string)
+        : "http://localhost:4000/graphql",
     fetchOptions: {
       credentials: "include" as const,
       headers: cookie
