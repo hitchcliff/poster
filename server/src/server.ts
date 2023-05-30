@@ -1,6 +1,5 @@
 import "reflect-metadata";
 import "dotenv-safe/config";
-import cors, { CorsOptions } from "cors";
 import { AppDataSource } from "./data-source";
 import express from "express";
 import session from "express-session";
@@ -36,15 +35,7 @@ const main = async () => {
   const RedisStore = connectRedis(session);
   const redis = new Redis(process.env.REDIS_URL);
 
-  // const corsOptions: CorsOptions = {
-  //   origin: process.env.CORS_ORIGIN,
-  //   credentials: true,
-  //   preflightContinue: true,
-  // };
-
-  // app.set("trust proxy", 1);
-
-  // console.log(process.env.CORS_ORIGIN);
+  app.set("trust proxy", 1);
 
   app.use(
     session({
@@ -59,7 +50,7 @@ const main = async () => {
       cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10, //10 years
         httpOnly: true,
-        sameSite: "lax", // csrf
+        sameSite: "none", // csrf
         secure: process.env.NODE_ENV === "production", //https
         domain:
           process.env.NODE_ENV === "production" ? ".poster.asia" : undefined,
@@ -69,22 +60,22 @@ const main = async () => {
 
   // Apollo Recommended Plugin
   let plugins: any = [];
-  // if (process.env.NODE_ENV === "production") {
-  //   plugins = [
-  //     ApolloServerPluginLandingPageProductionDefault({
-  //       embed: true,
-  //       graphRef: "myGraph@prod",
-  //       includeCookies: true,
-  //     }),
-  //   ];
-  // } else {
-  plugins = [
-    ApolloServerPluginLandingPageLocalDefault({
-      embed: true,
-      includeCookies: true,
-    }),
-  ];
-  // }
+  if (process.env.NODE_ENV === "production") {
+    plugins = [
+      ApolloServerPluginLandingPageProductionDefault({
+        embed: true,
+        graphRef: "myGraph@prod",
+        includeCookies: true,
+      }),
+    ];
+  } else {
+    plugins = [
+      ApolloServerPluginLandingPageLocalDefault({
+        embed: true,
+        includeCookies: true,
+      }),
+    ];
+  }
 
   // Apollo
   const apolloServer = new ApolloServer({
@@ -114,7 +105,12 @@ const main = async () => {
   apolloServer.applyMiddleware({
     app,
     cors: {
-      origin: [process.env.CORS_ORIGIN, "https://studio.apollographql.com"],
+      origin: [
+        "https://studio.apollographql.com",
+        "https://api.poster.asia",
+        "https://poster.asia",
+        "http://localhost:3000",
+      ],
       credentials: true,
     },
   });
