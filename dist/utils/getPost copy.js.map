@@ -1,0 +1,1 @@
+{"version":3,"file":"getPost copy.js","sourceRoot":"","sources":["../../src/utils/getPost copy.ts"],"names":[],"mappings":";;;;;AAAA,4DAAoC;AAMpC,MAAM,OAAO,GAAG,KAAK,EAAE,EAAE,EAAE,EAAgB,EAAwB,EAAE;IACnE,MAAM,IAAI,GAAG,MAAM,cAAI,CAAC,OAAO,CAAC;QAC9B,KAAK,EAAE;YACL,EAAE;SACH;KACF,CAAC,CAAC;IAEH,OAAO,IAAI,CAAC;AACd,CAAC,CAAC;AACF,kBAAe,OAAO,CAAC"}

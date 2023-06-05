@@ -1,0 +1,1 @@
+{"version":3,"file":"AmazonS3.js","sourceRoot":"","sources":["../../../src/resolvers/components/AmazonS3.ts"],"names":[],"mappings":";;AAOA,MAAM,QAAQ,GAAG,KAAK,EAAE,EAAE,QAAQ,EAAE,QAAQ,EAAU,EAAE,EAAE;IACxD,OAAO,CAAC,GAAG,CAAC,QAAQ,EAAE,QAAQ,CAAC,CAAC;AAClC,CAAC,CAAC;AAEF,kBAAe,QAAQ,CAAC"}
