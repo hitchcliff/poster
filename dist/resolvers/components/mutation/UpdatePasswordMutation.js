@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const User_1 = __importDefault(require("../../../entities/User"));
-const argon2_1 = __importDefault(require("argon2"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const UpdatePasswordMutation = async (options, { req }) => {
     const user = await User_1.default.findOne({
         where: {
@@ -14,7 +14,7 @@ const UpdatePasswordMutation = async (options, { req }) => {
     if (!user) {
         throw new Error("no user found");
     }
-    const newPasswordMatch = await argon2_1.default.verify(user.password, options.newPassword);
+    const newPasswordMatch = await bcrypt_1.default.compare(options.newPassword, user.password);
     if (newPasswordMatch) {
         return {
             errors: [
@@ -39,7 +39,7 @@ const UpdatePasswordMutation = async (options, { req }) => {
             ],
         };
     }
-    const newPassword = await argon2_1.default.hash(options.newPassword);
+    const newPassword = await bcrypt_1.default.hash(options.newPassword);
     user.password = newPassword;
     user.save();
     return {

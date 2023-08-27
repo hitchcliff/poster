@@ -17,13 +17,8 @@ const UploadPhotoMutation = async (options, { req }) => {
     if (!user) {
         throw new Error("no user found");
     }
-    if (user.photoId) {
-        const photo = await Photo_1.default.findOne({
-            where: {
-                id: user.photoId,
-            },
-        });
-        if (!photo)
+    if (user.photo) {
+        if (!user.photo)
             return {
                 error: {
                     message: "there is something wrong in the backend",
@@ -33,12 +28,11 @@ const UploadPhotoMutation = async (options, { req }) => {
             ...options,
             foldername: process.env.PROFILE_PICTURES,
         });
-        photo.src = url;
-        await photo.save();
-        user.photo = photo;
+        user.photo.src = url;
+        await user.photo.save();
         await user.save();
         return {
-            photo,
+            photo: user.photo,
             signedRequest,
         };
     }

@@ -1,6 +1,6 @@
 import { Context } from "../../../types";
 import User from "../../../entities/User";
-import argon2 from "argon2";
+import bcrypt from "bcrypt";
 import { PasswordInput } from "../../user";
 
 const UpdatePasswordMutation = async (
@@ -17,9 +17,9 @@ const UpdatePasswordMutation = async (
     throw new Error("no user found");
   }
 
-  const newPasswordMatch = await argon2.verify(
-    user.password,
-    options.newPassword
+  const newPasswordMatch = await bcrypt.compare(
+    options.newPassword,
+    user.password
   );
 
   if (newPasswordMatch) {
@@ -49,7 +49,7 @@ const UpdatePasswordMutation = async (
   }
 
   // Hash new password
-  const newPassword = await argon2.hash(options.newPassword);
+  const newPassword = await bcrypt.hash(options.newPassword);
 
   // Set new password
   user.password = newPassword;

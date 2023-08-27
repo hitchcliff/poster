@@ -40,6 +40,7 @@ __decorate([
 __decorate([
     (0, type_graphql_1.Field)(() => User_1.default, { nullable: true }),
     (0, typeorm_1.OneToOne)(() => User_1.default, (user) => user.photo, { nullable: true }),
+    (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", User_1.default)
 ], Photo.prototype, "user", void 0);
 Photo = __decorate([

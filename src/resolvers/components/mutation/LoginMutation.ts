@@ -1,7 +1,7 @@
 import { Context } from "../../../types";
 import { LoginInput } from "../../user";
-import argon2 from "argon2";
 import User from "../../../entities/User";
+import bcrypt from "bcrypt";
 
 const LoginMutation = async (options: LoginInput, { req }: Context) => {
   const user = await User.findOne({
@@ -21,7 +21,7 @@ const LoginMutation = async (options: LoginInput, { req }: Context) => {
     };
   }
 
-  const verified = await argon2.verify(user.password, options.password);
+  const verified = await bcrypt.compare(options.password, user.password);
 
   if (!verified) {
     return {

@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  db:
+    image: postgres 
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+  cache:
+    image: redis
+    restart: always
+    ports:
+      - '6379:6379'
+  api:
+    build: .
+    ports: 
+      - "4000:4000"
+    environment:
+      - TOKEN=SECRET
+      - BUCKET_NAME=likeposter
+      - REGION_CODE=ap-southeast-1
+      - PROFILE_PICTURES=profile-picture
+      - AWS_ACCESS_KEY_ID=AKIAXFA2VPPALBE3ZK55
+      - AWS_SECRET_ACCESS_KEY=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
+      - AWS_SECRET_ACCESS_KEY_BACKUP=hXmg/7FDaxBh8V07s9/aq/eQCLLYfbuJDEaSn2ab
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
+      - REDIS_URL=cache:6379
+      - REDIS_PASSWORD=secret
+      - PORT=4000
+      - SECRET=SECRET
+      - CORS_ORIGIN=http://localhost:3000
+    depends_on:
+      - db
+      - cache

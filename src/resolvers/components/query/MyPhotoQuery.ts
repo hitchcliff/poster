@@ -9,20 +9,11 @@ async function MyPhotoQuery({ req }: Context): Promise<Photo | null> {
     },
   });
 
-  const photo = await Photo.findOne({
-    where: {
-      id: user?.photoId,
-    },
-    relations: {
-      user: true,
-    },
-  });
-
-  if (!photo) {
+  if (!user?.photo) {
     return null;
   }
 
-  return photo;
+  return user.photo;
 }
 
 export default MyPhotoQuery;

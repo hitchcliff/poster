@@ -21,15 +21,9 @@ const UploadPhotoMutation = async (
   }
 
   // replace the photo
-  if (user.photoId) {
-    const photo = await Photo.findOne({
-      where: {
-        id: user.photoId,
-      },
-    });
-
+  if (user.photo) {
     // there must be something wrong or missing data
-    if (!photo)
+    if (!user.photo)
       return {
         error: {
           message: "there is something wrong in the backend",
@@ -42,14 +36,13 @@ const UploadPhotoMutation = async (
       foldername: process.env.PROFILE_PICTURES,
     });
 
-    photo.src = url;
-    await photo.save();
+    user.photo.src = url;
+    await user.photo.save();
 
-    user.photo = photo;
     await user.save();
 
     return {
-      photo,
+      photo: user.photo,
       signedRequest,
     };
   }

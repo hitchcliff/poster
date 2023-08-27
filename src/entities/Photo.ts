@@ -4,6 +4,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -31,6 +32,7 @@ class Photo extends BaseEntity {
 
   @Field(() => User, { nullable: true })
   @OneToOne(() => User, (user) => user.photo, { nullable: true })
+  @JoinColumn()
   user?: User;
 }
 

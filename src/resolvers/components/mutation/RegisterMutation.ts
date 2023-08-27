@@ -2,7 +2,7 @@ import { Context } from "../../../types";
 import User from "../../../entities/User";
 import { unique, validation } from "../../../utils";
 import { UsernamePasswordInput } from "../../user";
-import argon2 from "argon2";
+import bcrypt from "bcrypt";
 
 const RegisterMutation = async (
   options: UsernamePasswordInput,
@@ -33,7 +33,7 @@ const RegisterMutation = async (
   }
 
   // Hash Password
-  const hashedPassword = await argon2.hash(options.password);
+  const hashedPassword = await bcrypt.hash(options.password, 7);
   const user = new User();
 
   try {

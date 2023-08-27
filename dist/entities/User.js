@@ -68,14 +68,8 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => type_graphql_1.Int, { nullable: true, defaultValue: 1 }),
-    (0, typeorm_1.Column)({ nullable: true, default: 1 }),
-    __metadata("design:type", Number)
-], User.prototype, "photoId", void 0);
-__decorate([
-    (0, type_graphql_1.Field)(() => Photo_1.default, { nullable: true }),
+    (0, type_graphql_1.Field)(() => Photo_1.default),
     (0, typeorm_1.OneToOne)(() => Photo_1.default, (photo) => photo.user, { eager: true }),
-    (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", Photo_1.default)
 ], User.prototype, "photo", void 0);
 __decorate([

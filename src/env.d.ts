@@ -10,6 +10,7 @@ declare global {
       AWS_SECRET_ACCESS_KEY_BACKUP: string;
       DATABASE_URL: string;
       REDIS_URL: string;
+      REDIS_PASSWORD: string;
       PORT: string;
       SECRET: string;
       CORS_ORIGIN: string;
@@ -17,4 +18,4 @@ declare global {
   }
 }
 
-export {}
+export {};

@@ -7,7 +7,9 @@ import User from "./entities/User";
 
 export const options = {
   type: "postgres",
-  url: process.env.DATABASE_URL,
+  url: process.env.DATABASE_URL
+    ? process.env.DATABASE_URL
+    : "postgresql://postgres:postgres@localhost:5432/poster",
   synchronize: true,
   logging: true,
   subscribers: [],

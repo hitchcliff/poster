@@ -1,11 +1,10 @@
 import { IsEmail, Min } from "class-validator";
-import { Field, Int, ObjectType } from "type-graphql";
+import { Field, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
   ManyToMany,
   OneToMany,
   OneToOne,
@@ -57,13 +56,8 @@ class User extends BaseEntity {
   @Column({ type: "text" })
   password!: string;
 
-  @Field(() => Int, { nullable: true, defaultValue: 1 })
-  @Column({ nullable: true, default: 1 })
-  photoId?: number;
-
-  @Field(() => Photo, { nullable: true })
+  @Field(() => Photo)
   @OneToOne(() => Photo, (photo) => photo.user, { eager: true })
-  @JoinColumn()
   photo?: Photo;
 
   @Field(() => [Post], { nullable: true })

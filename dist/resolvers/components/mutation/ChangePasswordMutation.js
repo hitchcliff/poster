@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const User_1 = __importDefault(require("../../../entities/User"));
 const constants_1 = require("../../../utils/constants");
-const argon2_1 = __importDefault(require("argon2"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const ChangePasswordMutation = async (options, { redis, req }) => {
     if (options.newPassword.length <= 3) {
         return {
@@ -44,7 +44,7 @@ const ChangePasswordMutation = async (options, { redis, req }) => {
             ],
         };
     }
-    user.password = await argon2_1.default.hash(options.newPassword);
+    user.password = await bcrypt_1.default.hash(options.newPassword);
     user.save();
     req.session.userId = userId;
     await redis.del(key);

@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
-require("dotenv-safe/config");
 const data_source_1 = require("./data-source");
 const express_1 = __importDefault(require("express"));
 const express_session_1 = __importDefault(require("express-session"));
@@ -19,7 +18,13 @@ const user_1 = __importDefault(require("./resolvers/user"));
 const constants_1 = require("./utils/constants");
 const photo_1 = __importDefault(require("./resolvers/photo"));
 const like_1 = __importDefault(require("./resolvers/like"));
+require("dotenv-safe/config");
+require("dotenv").config({
+    path: __dirname + "/.env",
+    allowEmptyValues: true,
+});
 const main = async () => {
+    console.log(process.env.PORT);
     await data_source_1.AppDataSource.initialize();
     const app = (0, express_1.default)();
     const RedisStore = (0, connect_redis_1.default)(express_session_1.default);
@@ -94,10 +99,6 @@ const main = async () => {
                 "http://localhost:3000",
                 "https://www.poster.asia",
                 "https://poster.asia",
-                "https://api.poster.asia",
-                "https://api.poster.asia/graphql",
-                "https://app.netlify.com/",
-                "https://neon-baklava-889a07.netlify.app",
             ],
             credentials: true,
         },

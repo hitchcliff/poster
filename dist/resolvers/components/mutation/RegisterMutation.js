@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const User_1 = __importDefault(require("../../../entities/User"));
 const utils_1 = require("../../../utils");
-const argon2_1 = __importDefault(require("argon2"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const RegisterMutation = async (options, { req }) => {
     const errors = (0, utils_1.validation)(options);
     if (errors.length) {
@@ -28,7 +28,7 @@ const RegisterMutation = async (options, { req }) => {
             ],
         };
     }
-    const hashedPassword = await argon2_1.default.hash(options.password);
+    const hashedPassword = await bcrypt_1.default.hash(options.password, 7);
     const user = new User_1.default();
     try {
         user.username = options.username;

@@ -1,7 +1,7 @@
-FROM node:14
+FROM node:16
 
 # Create app directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
@@ -12,12 +12,9 @@ COPY yarn.lock ./
 RUN yarn
 
 COPY . .
-COPY .env.production .env
 
 RUN yarn build
 
-ENV NODE_ENV production
-
-EXPOSE 8080
+EXPOSE 4000 
 CMD [ "node", "dist/server.js" ]
 USER node

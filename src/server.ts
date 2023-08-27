@@ -1,5 +1,4 @@
 import "reflect-metadata";
-import "dotenv-safe/config";
 import { AppDataSource } from "./data-source";
 import express from "express";
 import session from "express-session";
@@ -19,8 +18,16 @@ import { COOKIE_NAME } from "./utils/constants";
 import PhotoResolver from "./resolvers/photo";
 import LikeResolver from "./resolvers/like";
 // import { deleteData } from "./utils/deleteData";
+import "dotenv-safe/config";
+
+// enable dotenv
+require("dotenv").config({
+  path: __dirname + "/.env",
+  allowEmptyValues: true,
+});
 
 const main = async () => {
+  console.log(process.env.PORT);
   // Database
   await AppDataSource.initialize();
 
@@ -115,10 +122,6 @@ const main = async () => {
         "http://localhost:3000",
         "https://www.poster.asia",
         "https://poster.asia",
-        "https://api.poster.asia",
-        "https://api.poster.asia/graphql",
-        "https://app.netlify.com/",
-        "https://neon-baklava-889a07.netlify.app",
       ],
       credentials: true,
     },
