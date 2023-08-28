@@ -18,16 +18,9 @@ import { COOKIE_NAME } from "./utils/constants";
 import PhotoResolver from "./resolvers/photo";
 import LikeResolver from "./resolvers/like";
 // import { deleteData } from "./utils/deleteData";
-import "dotenv-safe/config";
-
-// enable dotenv
-require("dotenv").config({
-  path: __dirname + "/.env",
-  allowEmptyValues: true,
-});
+import "dotenv/config";
 
 const main = async () => {
-  console.log(process.env.PORT);
   // Database
   await AppDataSource.initialize();
 
@@ -39,7 +32,7 @@ const main = async () => {
 
   // Session
   const RedisStore = connectRedis(session);
-  const redis = new Redis(process.env.REDIS_URL);
+  const redis = new Redis(process.env.REDIS_URL as string);
 
   app.set("trust proxy", 1);
 
@@ -50,7 +43,7 @@ const main = async () => {
         client: redis,
         disableTouch: true,
       }),
-      secret: process.env.SECRET,
+      secret: process.env.SECRET as string,
       resave: false,
       saveUninitialized: false,
       cookie: {
@@ -128,7 +121,7 @@ const main = async () => {
   });
 
   // Run server
-  const PORT = parseInt(process.env.PORT);
+  const PORT = parseInt(process.env.PORT as string);
   app.listen(PORT, () => {
     console.log(
       `Listening at http://localhost:${PORT}${apolloServer.graphqlPath}`
@@ -138,4 +131,5 @@ const main = async () => {
 
 main().catch((err) => {
   console.error(err);
+  console.log(err.code);
 });

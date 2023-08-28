@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:18
 
 # Create app directory
 WORKDIR /app
@@ -16,5 +16,7 @@ COPY . .
 RUN yarn build
 
 EXPOSE 4000 
+
 CMD [ "node", "dist/server.js" ]
+
 USER node

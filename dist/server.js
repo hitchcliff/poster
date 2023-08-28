@@ -18,13 +18,8 @@ const user_1 = __importDefault(require("./resolvers/user"));
 const constants_1 = require("./utils/constants");
 const photo_1 = __importDefault(require("./resolvers/photo"));
 const like_1 = __importDefault(require("./resolvers/like"));
-require("dotenv-safe/config");
-require("dotenv").config({
-    path: __dirname + "/.env",
-    allowEmptyValues: true,
-});
+require("dotenv/config");
 const main = async () => {
-    console.log(process.env.PORT);
     await data_source_1.AppDataSource.initialize();
     const app = (0, express_1.default)();
     const RedisStore = (0, connect_redis_1.default)(express_session_1.default);
@@ -110,5 +105,6 @@ const main = async () => {
 };
 main().catch((err) => {
     console.error(err);
+    console.log(err.code);
 });
 //# sourceMappingURL=server.js.map
