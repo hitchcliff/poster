@@ -21,11 +21,18 @@ services:
       - poster:/data/cache
   api:
     build: .
+    image: hitchcliff/poster
     ports: 
       - "4000:4000"
     environment:
       REDIS_URL: cache:6379
-      DATABASE_URL: postgresql://postgres:postgres@database:5432/poster
+      # RDS_POSTGRES_URL: poster-db.cqqp651p6ntg.ap-southeast-1.rds.amazonaws.com
+      # RDS_POSTGRES_USER: notkev1n
+      # RDS_POSTGRES_PASSWORD: postappbuiltbykevin
+      NODE_ENV: production
+      RDS_POSTGRES_URL: database
+      RDS_POSTGRES_USER: postgres
+      RDS_POSTGRES_PASSWORD: postgres
     env_file:
       - .env
 volumes:

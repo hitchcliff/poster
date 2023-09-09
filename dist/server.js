@@ -18,7 +18,7 @@ const user_1 = __importDefault(require("./resolvers/user"));
 const constants_1 = require("./utils/constants");
 const photo_1 = __importDefault(require("./resolvers/photo"));
 const like_1 = __importDefault(require("./resolvers/like"));
-require("dotenv/config");
+require("dotenv-safe/config");
 const main = async () => {
     await data_source_1.AppDataSource.initialize();
     const app = (0, express_1.default)();

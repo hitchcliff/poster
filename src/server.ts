@@ -17,15 +17,11 @@ import UserResolver from "./resolvers/user";
 import { COOKIE_NAME } from "./utils/constants";
 import PhotoResolver from "./resolvers/photo";
 import LikeResolver from "./resolvers/like";
-// import { deleteData } from "./utils/deleteData";
-import "dotenv/config";
+import "dotenv-safe/config";
 
 const main = async () => {
   // Database
   await AppDataSource.initialize();
-
-  // Delete Data (For dev only)
-  // await deleteData();
 
   // Run Server
   const app = express();

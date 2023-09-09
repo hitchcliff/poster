@@ -10,11 +10,11 @@ const Photo_1 = __importDefault(require("./entities/Photo"));
 const Post_1 = __importDefault(require("./entities/Post"));
 const Like_1 = __importDefault(require("./entities/Like"));
 const User_1 = __importDefault(require("./entities/User"));
+require("dotenv-safe/config");
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
 exports.options = {
     type: "postgres",
-    url: process.env.DATABASE_URL
-        ? process.env.DATABASE_URL
-        : "postgresql://postgres:postgres@localhost:5432/poster",
+    url: `postgres://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}:${process.env.DB_PORT}/poster?sslmode=true`,
     synchronize: true,
     logging: true,
     subscribers: [],
