@@ -4,37 +4,28 @@ services:
     image: postgres 
     restart: always
     environment:
-      POSTGRES_DB: poster
-      POSTGRES_USER: postgres
+      DB_URL: postgres://postgres:postgres@db-poster-02.cqqp651p6ntg.ap-southeast-1.rds.amazonaws.com:5432/poster?sslmode=true
       POSTGRES_PASSWORD: postgres
-      PGDATA: /data/db
     ports:
       - '5432:5432'
-    volumes:
-      - poster:/data/db
   cache:
     image: redis
     restart: always
+    environment:
+      REDIS_URL: redis://poster-redis.dvcl5k.clustercfg.apse1.cache.amazonaws.com:6379
     ports:
       - '6379:6379'
-    volumes:
-      - poster:/data/cache
   api:
     build: .
-    image: hitchcliff/poster
+    image: hitchcliff/poster:v1.1
     ports: 
       - "4000:4000"
     environment:
-      REDIS_URL: cache:6379
-      # RDS_POSTGRES_URL: poster-db.cqqp651p6ntg.ap-southeast-1.rds.amazonaws.com
-      # RDS_POSTGRES_USER: notkev1n
-      # RDS_POSTGRES_PASSWORD: postappbuiltbykevin
+      REDIS_URL: redis://cache:6379
+      DB_URL: postgres://postgres:postgres@db-poster-02.cqqp651p6ntg.ap-southeast-1.rds.amazonaws.com:5432/poster?sslmode=true
       NODE_ENV: production
-      RDS_POSTGRES_URL: database
-      RDS_POSTGRES_USER: postgres
-      RDS_POSTGRES_PASSWORD: postgres
     env_file:
       - .env
-volumes:
-  poster:
-    external: true
+    depends_on:
+      - cache
+      - database

@@ -9,7 +9,6 @@ const express_1 = __importDefault(require("express"));
 const express_session_1 = __importDefault(require("express-session"));
 const ioredis_1 = __importDefault(require("ioredis"));
 const connect_redis_1 = __importDefault(require("connect-redis"));
-const default_1 = require("@apollo/server/plugin/landingPage/default");
 const apollo_server_express_1 = require("apollo-server-express");
 const type_graphql_1 = require("type-graphql");
 const hello_1 = __importDefault(require("./resolvers/hello"));
@@ -18,12 +17,13 @@ const user_1 = __importDefault(require("./resolvers/user"));
 const constants_1 = require("./utils/constants");
 const photo_1 = __importDefault(require("./resolvers/photo"));
 const like_1 = __importDefault(require("./resolvers/like"));
-require("dotenv-safe/config");
+const default_1 = require("@apollo/server/plugin/landingPage/default");
+require("dotenv/config");
 const main = async () => {
     await data_source_1.AppDataSource.initialize();
     const app = (0, express_1.default)();
     const RedisStore = (0, connect_redis_1.default)(express_session_1.default);
-    const redis = new ioredis_1.default(process.env.REDIS_URL);
+    const redis = new ioredis_1.default("redis://127.0.0.1:6379");
     app.set("trust proxy", 1);
     app.use((0, express_session_1.default)({
         name: constants_1.COOKIE_NAME,
@@ -31,7 +31,7 @@ const main = async () => {
             client: redis,
             disableTouch: true,
         }),
-        secret: process.env.SECRET,
+        secret: process.env.REDIS_SECRET,
         resave: false,
         saveUninitialized: false,
         cookie: {
@@ -66,6 +66,8 @@ const main = async () => {
     }
     const apolloServer = new apollo_server_express_1.ApolloServer({
         csrfPrevention: true,
+        cache: "bounded",
+        persistedQueries: false,
         schema: await (0, type_graphql_1.buildSchema)({
             resolvers: [
                 hello_1.default,
@@ -102,6 +104,7 @@ const main = async () => {
     app.listen(PORT, () => {
         console.log(`Listening at http://localhost:${PORT}${apolloServer.graphqlPath}`);
     });
+    console.log("Is Production: ", constants_1.isProd);
 };
 main().catch((err) => {
     console.error(err);

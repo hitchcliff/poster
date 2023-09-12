@@ -5,14 +5,14 @@ import Post from "./entities/Post";
 import Like from "./entities/Like";
 import User from "./entities/User";
 // import { isProd } from "./utils/constants";
-import "dotenv-safe/config";
+import "dotenv/config";
 
-// temporary reject ssl
+// reject ssl on production when requesting to db
 process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0";
 
 export const options = {
   type: "postgres",
-  url: `postgres://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}:${process.env.DB_PORT}/poster?sslmode=true`,
+  url: process.env.DB_URL,
   synchronize: true,
   logging: true,
   subscribers: [],

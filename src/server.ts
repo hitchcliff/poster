@@ -1,3 +1,4 @@
+// @ts-ignore
 import "reflect-metadata";
 import { AppDataSource } from "./data-source";
 import express from "express";
@@ -5,19 +6,21 @@ import session from "express-session";
 import Redis from "ioredis";
 import connectRedis from "connect-redis";
 import { Context } from "./types";
-import {
-  ApolloServerPluginLandingPageLocalDefault,
-  ApolloServerPluginLandingPageProductionDefault,
-} from "@apollo/server/plugin/landingPage/default";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import HelloResolver from "./resolvers/hello";
 import PostResolver from "./resolvers/post";
 import UserResolver from "./resolvers/user";
-import { COOKIE_NAME } from "./utils/constants";
+import { COOKIE_NAME, isProd } from "./utils/constants";
 import PhotoResolver from "./resolvers/photo";
 import LikeResolver from "./resolvers/like";
-import "dotenv-safe/config";
+import {
+  ApolloServerPluginLandingPageLocalDefault,
+  ApolloServerPluginLandingPageProductionDefault,
+  // @ts-ignore
+} from "@apollo/server/plugin/landingPage/default";
+
+import "dotenv/config";
 
 const main = async () => {
   // Database
@@ -28,7 +31,8 @@ const main = async () => {
 
   // Session
   const RedisStore = connectRedis(session);
-  const redis = new Redis(process.env.REDIS_URL as string);
+  // const redis = new Redis(process.env.REDIS_URL as string);
+  const redis = new Redis("redis://127.0.0.1:6379");
 
   app.set("trust proxy", 1);
 
@@ -39,7 +43,7 @@ const main = async () => {
         client: redis,
         disableTouch: true,
       }),
-      secret: process.env.SECRET as string,
+      secret: process.env.REDIS_SECRET as string,
       resave: false,
       saveUninitialized: false,
       cookie: {
@@ -80,6 +84,8 @@ const main = async () => {
   // Apollo
   const apolloServer = new ApolloServer({
     csrfPrevention: true,
+    cache: "bounded",
+    persistedQueries: false,
     schema: await buildSchema({
       resolvers: [
         HelloResolver,
@@ -123,6 +129,8 @@ const main = async () => {
       `Listening at http://localhost:${PORT}${apolloServer.graphqlPath}`
     );
   });
+
+  console.log("Is Production: ", isProd);
 };
 
 main().catch((err) => {

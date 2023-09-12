@@ -14,7 +14,7 @@
 	"skipLibCheck": true,
 	"sourceMap": true,
 	"outDir": "dist",
-	"moduleResolution": "node",
+	"moduleResolution": "Node16",
 	"removeComments": true,
 	"noImplicitAny": true,
 	"strictNullChecks": true,

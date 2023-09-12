@@ -4,5 +4,5 @@ exports.isProd = exports.FORGET_PASSWORD_PREFIX = exports.BASE_URL = exports.COO
 exports.COOKIE_NAME = "kevinid";
 exports.BASE_URL = "http://localhost:3000";
 exports.FORGET_PASSWORD_PREFIX = "forget-password";
-exports.isProd = process.env.NODE_ENV !== "production";
+exports.isProd = process.env.NODE_ENV === "production";
 //# sourceMappingURL=constants.js.map
